@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TutorialVideo extends Model
 {
+    protected $table = 'tutorial_video';
+    
     protected $fillable = [
         'kategori_id',
         'link',

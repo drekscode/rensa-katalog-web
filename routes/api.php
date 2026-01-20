@@ -25,15 +25,3 @@ Route::apiResource('toko', TokoController::class)->only(['index', 'show']);
 Route::apiResource('artikel', ArtikelController::class)->only(['index', 'show']);
 Route::apiResource('tutorial-gambar', TutorialGambarController::class)->only(['index', 'show']);
 Route::apiResource('tutorial-video', TutorialVideoController::class)->only(['index', 'show']);
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('kategori', KategoriController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('rumus', RumusController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('banner', BannerController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('series', SeriesController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('product', ProductController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('toko', TokoController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('artikel', ArtikelController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('tutorial-gambar', TutorialGambarController::class)->only(['store', 'update', 'destroy']);
-    Route::apiResource('tutorial-video', TutorialVideoController::class)->only(['store', 'update', 'destroy']);
-});
