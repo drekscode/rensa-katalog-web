@@ -16,12 +16,24 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('kategori', KategoriController::class);
-Route::apiResource('rumus', RumusController::class);
-Route::apiResource('banner', BannerController::class);
-Route::apiResource('series', SeriesController::class);
-Route::apiResource('product', ProductController::class);
-Route::apiResource('toko', TokoController::class);
-Route::apiResource('artikel', ArtikelController::class);
-Route::apiResource('tutorial-gambar', TutorialGambarController::class);
-Route::apiResource('tutorial-video', TutorialVideoController::class);
+Route::apiResource('kategori', KategoriController::class)->only(['index', 'show']);
+Route::apiResource('rumus', RumusController::class)->only(['index', 'show']);
+Route::apiResource('banner', BannerController::class)->only(['index', 'show']);
+Route::apiResource('series', SeriesController::class)->only(['index', 'show']);
+Route::apiResource('product', ProductController::class)->only(['index', 'show']);
+Route::apiResource('toko', TokoController::class)->only(['index', 'show']);
+Route::apiResource('artikel', ArtikelController::class)->only(['index', 'show']);
+Route::apiResource('tutorial-gambar', TutorialGambarController::class)->only(['index', 'show']);
+Route::apiResource('tutorial-video', TutorialVideoController::class)->only(['index', 'show']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('kategori', KategoriController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('rumus', RumusController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('banner', BannerController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('series', SeriesController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('product', ProductController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('toko', TokoController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('artikel', ArtikelController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('tutorial-gambar', TutorialGambarController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('tutorial-video', TutorialVideoController::class)->only(['store', 'update', 'destroy']);
+});
