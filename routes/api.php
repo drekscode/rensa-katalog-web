@@ -16,9 +16,15 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('kategori', KategoriController::class)->only(['index', 'show']);
+Route::prefix('kategori')->group(function () {
+    Route::get('list', [KategoriController::class, 'getAllKategori']);
+    Route::get('{id}', [KategoriController::class, 'show']);
+});
 Route::apiResource('rumus', RumusController::class)->only(['index', 'show']);
-Route::apiResource('banner', BannerController::class)->only(['index', 'show']);
+Route::prefix('banner')->group(function () {
+    Route::get('list', [BannerController::class, 'getAllBanner']);
+    Route::get('{id}', [BannerController::class, 'show']);
+});
 Route::apiResource('series', SeriesController::class)->only(['index', 'show']);
 Route::apiResource('product', ProductController::class)->only(['index', 'show']);
 Route::apiResource('toko', TokoController::class)->only(['index', 'show']);

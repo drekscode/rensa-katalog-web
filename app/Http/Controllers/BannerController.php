@@ -10,9 +10,10 @@ class BannerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllBanner()
     {
-        return Banner::all();
+        $banners = Banner::all();
+        return response()->json($banners);
     }
 
     /**
@@ -50,6 +51,7 @@ class BannerController extends Controller
             'banner_image' => 'sometimes|string',
             'slug' => 'nullable|string',
             'link' => 'nullable|string',
+            'urutan' => 'nullable|integer',
         ]);
 
         $banner->update($request->all());
@@ -64,5 +66,11 @@ class BannerController extends Controller
         $banner = Banner::findOrFail($id);
         $banner->delete();
         return response()->json(['message' => 'Banner deleted successfully']);
+    }
+
+    public function getAllBanners()
+    {
+        $banners = Banner::get();
+        return response()->json($banners);
     }
 }
