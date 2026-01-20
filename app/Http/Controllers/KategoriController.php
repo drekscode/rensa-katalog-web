@@ -13,8 +13,7 @@ class KategoriController extends Controller
      */
     public function index(): JsonResponse
     {
-        $kategoris = Kategori::all();
-        return response()->json($kategoris);
+        
     }
 
     /**
@@ -60,5 +59,12 @@ class KategoriController extends Controller
     {
         $kategori->delete();
         return response()->json(['message' => 'Kategori deleted successfully']);
+    }
+
+    #API
+    public function getAllKategori(): JsonResponse
+    {
+        $kategoris = Kategori::all();
+        return response()->json($kategoris);
     }
 }
