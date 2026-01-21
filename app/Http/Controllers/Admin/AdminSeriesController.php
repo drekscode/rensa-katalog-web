@@ -26,11 +26,19 @@ class AdminSeriesController extends Controller
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
             'nama_series' => 'required|string|max:255',
-            'struktur_img' => 'nullable|string',
-            'cover_area' => 'nullable|string',
+            'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_area' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'material' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('struktur_img')) {
+            $validated['struktur_img'] = $request->file('struktur_img')->store('series/struktur', 'public');
+        }
+
+        if ($request->hasFile('cover_area')) {
+            $validated['cover_area'] = $request->file('cover_area')->store('series/cover', 'public');
+        }
 
         Series::create($validated);
 
@@ -49,11 +57,19 @@ class AdminSeriesController extends Controller
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
             'nama_series' => 'required|string|max:255',
-            'struktur_img' => 'nullable|string',
-            'cover_area' => 'nullable|string',
+            'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_area' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'material' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('struktur_img')) {
+            $validated['struktur_img'] = $request->file('struktur_img')->store('series/struktur', 'public');
+        }
+
+        if ($request->hasFile('cover_area')) {
+            $validated['cover_area'] = $request->file('cover_area')->store('series/cover', 'public');
+        }
 
         $series->update($validated);
 

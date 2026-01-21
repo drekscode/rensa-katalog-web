@@ -27,11 +27,15 @@ class AdminArtikelController extends Controller
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255',
-            'konten' => 'required|string',
-            'gambar' => 'nullable|string',
-            'penulis' => 'nullable|string|max:255',
-            'tanggal_publikasi' => 'nullable|date',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'hastag_kategori' => 'nullable|string|max:255',
+            'date' => 'nullable|date',
+            'deskripsi' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('artikels', 'public');
+        }
 
         Artikel::create($validated);
 
@@ -50,11 +54,15 @@ class AdminArtikelController extends Controller
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255',
-            'konten' => 'required|string',
-            'gambar' => 'nullable|string',
-            'penulis' => 'nullable|string|max:255',
-            'tanggal_publikasi' => 'nullable|date',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'hastag_kategori' => 'nullable|string|max:255',
+            'date' => 'nullable|date',
+            'deskripsi' => 'nullable|string',
         ]);
+
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('artikels', 'public');
+        }
 
         $artikel->update($validated);
 

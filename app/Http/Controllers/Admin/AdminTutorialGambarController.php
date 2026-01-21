@@ -28,9 +28,13 @@ class AdminTutorialGambarController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar_url' => 'required|string',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'urutan' => 'nullable|integer',
         ]);
+
+        if ($request->hasFile('gambar')) {
+            $validated['gambar'] = $request->file('gambar')->store('tutorials', 'public');
+        }
 
         TutorialGambar::create($validated);
 
@@ -51,9 +55,13 @@ class AdminTutorialGambarController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar_url' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'urutan' => 'nullable|integer',
         ]);
+
+        if ($request->hasFile('gambar')) {
+            $validated['gambar'] = $request->file('gambar')->store('tutorials', 'public');
+        }
 
         $tutorialGambar->update($validated);
 

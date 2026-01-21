@@ -22,10 +22,14 @@ class AdminBannerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'banner_image' => 'required|string',
+            'banner_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'nullable|string',
             'urutan' => 'nullable|integer',
         ]);
+
+        if ($request->hasFile('banner_image')) {
+            $validated['banner_image'] = $request->file('banner_image')->store('banners', 'public');
+        }
 
         Banner::create($validated);
 
@@ -41,10 +45,14 @@ class AdminBannerController extends Controller
     public function update(Request $request, Banner $banner)
     {
         $validated = $request->validate([
-            'banner_image' => 'required|string',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'link' => 'nullable|string',
             'urutan' => 'nullable|integer',
         ]);
+
+        if ($request->hasFile('banner_image')) {
+            $validated['banner_image'] = $request->file('banner_image')->store('banners', 'public');
+        }
 
         $banner->update($validated);
 

@@ -26,9 +26,17 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'series_id' => 'required|exists:series,id',
             'nama_product' => 'required|string|max:255',
-            'thumbnail' => 'nullable|string',
-            'big_pic' => 'nullable|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
+        }
+
+        if ($request->hasFile('big_pic')) {
+            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
+        }
 
         Product::create($validated);
 
@@ -47,9 +55,17 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'series_id' => 'required|exists:series,id',
             'nama_product' => 'required|string|max:255',
-            'thumbnail' => 'nullable|string',
-            'big_pic' => 'nullable|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
+        }
+
+        if ($request->hasFile('big_pic')) {
+            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
+        }
 
         $product->update($validated);
 
