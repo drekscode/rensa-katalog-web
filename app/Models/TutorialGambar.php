@@ -10,9 +10,10 @@ class TutorialGambar extends Model
     
     protected $fillable = [
         'kategori_id',
+        'judul',
         'gambar',
         'deskripsi',
-        'slug',
+        'urutan',
     ];
 
     public function kategori()

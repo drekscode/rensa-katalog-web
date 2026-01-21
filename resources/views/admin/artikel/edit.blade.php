@@ -16,6 +16,20 @@
             </div>
             <div class="px-4 py-6 sm:p-8">
                 <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8">
+                    <!-- Judul -->
+                    <div class="col-span-full">
+                        <label for="judul" class="block text-sm font-medium leading-6 text-gray-900">
+                            Judul Artikel <span class="text-red-500">*</span>
+                        </label>
+                        <div class="mt-2">
+                            <input type="text" name="judul" id="judul" value="{{ old('judul', $artikel->judul) }}" required
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
+                        </div>
+                        @error('judul')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Kategori -->
                     <div class="col-span-full">
                         <label for="kategori_id" class="block text-sm font-medium leading-6 text-gray-900">

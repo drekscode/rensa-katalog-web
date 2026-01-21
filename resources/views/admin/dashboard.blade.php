@@ -1,218 +1,277 @@
 @extends('layouts.admin')
 
 @section('title', 'Dashboard')
-@section('page-title', 'Dashboard')
+@section('page-title', 'Dashboard Overview')
 
 @section('content')
-<div class="space-y-8">
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Kategori Card -->
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="h-12 w-12 rounded-lg bg-[#8b9b7e]/10 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Kategori</dt>
-                            <dd class="flex items-baseline">
-                                <div class="text-2xl font-bold text-gray-900">{{ $stats['kategori'] }}</div>
-                            </dd>
-                        </dl>
-                    </div>
+<div class="space-y-8 animate-in fade-in duration-500">
+    <!-- Header Summary Section -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Products Summary -->
+        <div class="relative overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-6 group hover:shadow-md transition-all duration-300">
+            <div class="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#8b9b7e]/5 transition-all group-hover:bg-[#8b9b7e]/10"></div>
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Products</p>
+                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['products'] }}</h3>
                 </div>
-                <div class="mt-4">
-                    <a href="{{ route('admin.kategori.index') }}" class="text-sm font-medium text-[#8b9b7e] hover:text-[#7a8a6f] transition-colors">
-                        View all →
-                    </a>
+                <div class="h-12 w-12 rounded-xl bg-[#8b9b7e]/10 flex items-center justify-center text-[#8b9b7e]">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
                 </div>
+            </div>
+            <div class="mt-4 flex items-center text-xs text-green-600 font-medium">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                Active Catalog
             </div>
         </div>
 
-        <!-- Series Card -->
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="h-12 w-12 rounded-lg bg-[#8b9b7e]/10 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Series</dt>
-                            <dd class="flex items-baseline">
-                                <div class="text-2xl font-bold text-gray-900">{{ $stats['series'] }}</div>
-                            </dd>
-                        </dl>
-                    </div>
+        <!-- Articles Summary -->
+        <div class="relative overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-6 group hover:shadow-md transition-all duration-300">
+            <div class="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#8b9b7e]/5 transition-all group-hover:bg-[#8b9b7e]/10"></div>
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Articles</p>
+                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['artikel'] }}</h3>
                 </div>
-                <div class="mt-4">
-                    <a href="{{ route('admin.series.index') }}" class="text-sm font-medium text-[#8b9b7e] hover:text-[#7a8a6f] transition-colors">
-                        View all →
-                    </a>
+                <div class="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2v4a2 2 0 002 2h4" />
+                    </svg>
                 </div>
+            </div>
+            <div class="mt-4 flex items-center text-xs text-blue-600 font-medium">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Published Content
             </div>
         </div>
 
-        <!-- Products Card -->
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="h-12 w-12 rounded-lg bg-[#8b9b7e]/10 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Products</dt>
-                            <dd class="flex items-baseline">
-                                <div class="text-2xl font-bold text-gray-900">{{ $stats['products'] }}</div>
-                            </dd>
-                        </dl>
-                    </div>
+        <!-- Stores Summary -->
+        <div class="relative overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-6 group hover:shadow-md transition-all duration-300">
+            <div class="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#8b9b7e]/5 transition-all group-hover:bg-[#8b9b7e]/10"></div>
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Toko</p>
+                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['toko'] }}</h3>
                 </div>
-                <div class="mt-4">
-                    <a href="{{ route('admin.product.index') }}" class="text-sm font-medium text-[#8b9b7e] hover:text-[#7a8a6f] transition-colors">
-                        View all →
-                    </a>
+                <div class="h-12 w-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
                 </div>
+            </div>
+            <div class="mt-4 flex items-center text-xs text-orange-600 font-medium">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                Distribution Network
             </div>
         </div>
 
-        <!-- Banners Card -->
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="h-12 w-12 rounded-lg bg-[#8b9b7e]/10 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Banners</dt>
-                            <dd class="flex items-baseline">
-                                <div class="text-2xl font-bold text-gray-900">{{ $stats['banners'] }}</div>
-                            </dd>
-                        </dl>
-                    </div>
+        <!-- Tutorials Summary -->
+        <div class="relative overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-6 group hover:shadow-md transition-all duration-300">
+            <div class="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#8b9b7e]/5 transition-all group-hover:bg-[#8b9b7e]/10"></div>
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Tutorials</p>
+                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['tutorial_gambar'] + $stats['tutorial_video'] }}</h3>
                 </div>
-                <div class="mt-4">
-                    <a href="{{ route('admin.banner.index') }}" class="text-sm font-medium text-[#8b9b7e] hover:text-[#7a8a6f] transition-colors">
-                        View all →
-                    </a>
+                <div class="h-12 w-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
                 </div>
+            </div>
+            <div class="mt-4 flex items-center text-xs text-purple-600 font-medium">
+                {{ $stats['tutorial_gambar'] }} Images • {{ $stats['tutorial_video'] }} Videos
+            </div>
+        </div>
+    </div>
+
+    <!-- Middle Section: Categories Chart & Quick Links -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Distribution Chart -->
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Resource Distribution</h3>
+                <span class="px-3 py-1 bg-gray-50 text-xs font-medium text-gray-500 rounded-full border border-gray-100">by Kategori</span>
+            </div>
+            <div class="relative h-64">
+                <canvas id="distributionChart"></canvas>
             </div>
         </div>
 
-        <!-- Toko Card -->
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="h-12 w-12 rounded-lg bg-[#8b9b7e]/10 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
-                            </svg>
-                        </div>
+        <!-- Quick Access Grid -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-6 font-primary">Quick Navigation</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <a href="{{ route('admin.product.create') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-50 bg-gray-50/50 hover:bg-[#8b9b7e]/10 hover:border-[#8b9b7e]/20 transition-all duration-200 group text-center">
+                    <div class="h-10 w-10 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform mb-3">
+                        <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Toko</dt>
-                            <dd class="flex items-baseline">
-                                <div class="text-2xl font-bold text-gray-900">{{ $stats['toko'] }}</div>
-                            </dd>
-                        </dl>
+                    <span class="text-xs font-semibold text-gray-600">New Product</span>
+                </a>
+                <a href="{{ route('admin.artikel.create') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-50 bg-gray-50/50 hover:bg-[#8b9b7e]/10 hover:border-[#8b9b7e]/20 transition-all duration-200 group text-center">
+                    <div class="h-10 w-10 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform mb-3">
+                        <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
-                </div>
-                <div class="mt-4">
-                    <a href="{{ route('admin.toko.index') }}" class="text-sm font-medium text-[#8b9b7e] hover:text-[#7a8a6f] transition-colors">
-                        View all →
-                    </a>
-                </div>
+                    <span class="text-xs font-semibold text-gray-600">New Article</span>
+                </a>
+                <a href="{{ route('admin.banner.index') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-50 bg-gray-50/50 hover:bg-[#8b9b7e]/10 hover:border-[#8b9b7e]/20 transition-all duration-200 group text-center">
+                    <div class="h-10 w-10 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform mb-3">
+                        <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-600">Banners</span>
+                </a>
+                <a href="{{ route('admin.toko.index') }}" class="flex flex-col items-center justify-center p-4 rounded-xl border border-gray-50 bg-gray-50/50 hover:bg-[#8b9b7e]/10 hover:border-[#8b9b7e]/20 transition-all duration-200 group text-center">
+                    <div class="h-10 w-10 rounded-lg bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform mb-3">
+                        <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-600">Store Finder</span>
+                </a>
             </div>
-        </div>
-
-        <!-- Artikel Card -->
-        <div class="bg-white overflow-hidden shadow-sm rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-200">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="h-12 w-12 rounded-lg bg-[#8b9b7e]/10 flex items-center justify-center">
-                            <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Artikel</dt>
-                            <dd class="flex items-baseline">
-                                <div class="text-2xl font-bold text-gray-900">{{ $stats['artikel'] }}</div>
-                            </dd>
-                        </dl>
-                    </div>
+            <div class="mt-6 pt-6 border-t border-gray-50">
+                <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="text-gray-500">Storage Usage</span>
+                    <span class="font-bold text-gray-700">{{ $storagePercentage }}%</span>
                 </div>
-                <div class="mt-4">
-                    <a href="{{ route('admin.artikel.index') }}" class="text-sm font-medium text-[#8b9b7e] hover:text-[#7a8a6f] transition-colors">
-                        View all →
-                    </a>
+                <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                    <div class="bg-[#8b9b7e] h-full rounded-full transition-all duration-500" style="width: {{ $storagePercentage }}%"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="bg-white shadow-sm rounded-xl border border-gray-100 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <a href="{{ route('admin.kategori.create') }}" 
-               class="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#8b9b7e] hover:bg-[#7a8a6f] transition-colors duration-200 shadow-sm hover:shadow-md">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Add Kategori
-            </a>
-            
-            <a href="{{ route('admin.series.create') }}" 
-               class="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#8b9b7e] hover:bg-[#7a8a6f] transition-colors duration-200 shadow-sm hover:shadow-md">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Add Series
-            </a>
-            
-            <a href="{{ route('admin.product.create') }}" 
-               class="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#8b9b7e] hover:bg-[#7a8a6f] transition-colors duration-200 shadow-sm hover:shadow-md">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Add Product
-            </a>
-            
-            <a href="{{ route('admin.banner.create') }}" 
-               class="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-[#8b9b7e] hover:bg-[#7a8a6f] transition-colors duration-200 shadow-sm hover:shadow-md">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Add Banner
-            </a>
+    <!-- Lower Section: Recent Items -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Recent Products -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+                <h3 class="text-lg font-bold text-gray-800">New Additions</h3>
+                <a href="{{ route('admin.product.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">See All Products</a>
+            </div>
+            <div class="divide-y divide-gray-50">
+                @forelse($latest_products as $product)
+                <div class="px-6 py-4 hover:bg-gray-50/50 transition-all flex items-center gap-4 group">
+                    <div class="h-12 w-12 rounded-lg bg-gray-100 flex-shrink-0 border border-gray-200 overflow-hidden">
+                         @if($product->image_url)
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-full w-full object-cover">
+                         @else
+                            <div class="h-full w-full flex items-center justify-center text-gray-400">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg>
+                            </div>
+                         @endif
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-gray-900 truncate group-hover:text-[#8b9b7e] transition-colors">{{ $product->nama_product }}</p>
+                        <p class="text-xs text-gray-500">{{ $product->series->nama_series ?? '-' }} • {{ $product->series->kategori->nama_kategori ?? '-' }}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-flex items-center px-2 py-1 rounded-md bg-green-50 text-[10px] font-bold text-green-700 uppercase tracking-tight">Active</span>
+                    </div>
+                </div>
+                @empty
+                 <div class="px-6 py-10 text-center text-gray-400 text-sm">No recent products</div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Recent Articles -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+                <h3 class="text-lg font-bold text-gray-800">Article Updates</h3>
+                <a href="{{ route('admin.artikel.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">Manage Articles</a>
+            </div>
+            <div class="divide-y divide-gray-50">
+                @forelse($latest_artikels as $art)
+                <div class="px-6 py-4 hover:bg-gray-50/50 transition-all flex items-center gap-4 group">
+                    <div class="h-12 w-12 rounded-full bg-[#8b9b7e]/10 flex-shrink-0 flex items-center justify-center text-[#8b9b7e] font-primary">
+                        {{ substr($art->judul, 0, 1) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-gray-900 truncate group-hover:text-[#8b9b7e] transition-colors">{{ $art->judul }}</p>
+                        <p class="text-xs text-gray-500">{{ $art->kategori->nama_kategori ?? 'Uncategorized' }} • {{ \Carbon\Carbon::parse($art->date)->diffForHumans() }}</p>
+                    </div>
+                    <a href="{{ route('admin.artikel.edit', $art) }}" class="opacity-0 group-hover:opacity-100 p-2 text-gray-400 hover:text-[#8b9b7e] transition-all">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+                @empty
+                 <div class="px-6 py-10 text-center text-gray-400 text-sm">No recent articles</div>
+                @endforelse
+            </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('distributionChart').getContext('2d');
+        const data = @json($kategori_data);
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.name),
+                datasets: [{
+                    label: 'Series Count',
+                    data: data.map(item => item.count),
+                    backgroundColor: '#8b9b7e90',
+                    borderColor: '#8b9b7e',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    barThickness: 32,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#2d2d2d',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f3f4f6',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            precision: 0,
+                            color: '#9ca3af',
+                            font: { size: 11, weight: '600' }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#6b7280',
+                            font: { size: 11, weight: '600' }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
 @endsection

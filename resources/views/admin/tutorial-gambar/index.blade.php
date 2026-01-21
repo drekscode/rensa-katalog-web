@@ -27,8 +27,10 @@
                     <thead class="bg-gray-50/50">
                         <tr>
                             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ID</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Judul</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Gambar</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Kategori</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Order</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Deskripsi</th>
                             <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                 <span class="sr-only">Actions</span>
@@ -41,6 +43,9 @@
                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                 {{ $tg->id }}
                             </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-600">
+                                {{ $tg->judul }}
+                            </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 @if($tg->gambar)
                                     <img src="{{ asset('storage/' . $tg->gambar) }}" alt="Gambar" class="h-10 w-10 rounded-lg object-cover">
@@ -50,6 +55,9 @@
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-600">
                                 {{ $tg->kategori->nama_kategori ?? '-' }}
+                            </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-600">
+                                {{ $tg->urutan ?? '-' }}
                             </td>
                             <td class="px-3 py-4 text-sm text-gray-600">
                                 {{ Str::limit($tg->deskripsi, 50) }}

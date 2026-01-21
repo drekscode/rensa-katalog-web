@@ -12,7 +12,7 @@ class AdminTutorialGambarController extends Controller
 {
     public function index()
     {
-        $tutorial_gambars = TutorialGambar::with('kategori')->latest()->paginate(10);
+        $tutorial_gambars = TutorialGambar::with('kategori')->orderBy('urutan', 'asc')->latest()->paginate(10);
         return view('admin.tutorial-gambar.index', compact('tutorial_gambars'));
     }
 

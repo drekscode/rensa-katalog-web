@@ -10,7 +10,7 @@ class AdminBannerController extends Controller
 {
     public function index()
     {
-        $banners = Banner::latest()->paginate(10);
+        $banners = Banner::orderBy('urutan', 'asc')->latest()->paginate(10);
         return view('admin.banner.index', compact('banners'));
     }
 
@@ -23,8 +23,8 @@ class AdminBannerController extends Controller
     {
         $validated = $request->validate([
             'banner_image' => 'required|string',
-            'slug' => 'nullable|string|max:255',
             'link' => 'nullable|string',
+            'urutan' => 'nullable|integer',
         ]);
 
         Banner::create($validated);
@@ -42,8 +42,8 @@ class AdminBannerController extends Controller
     {
         $validated = $request->validate([
             'banner_image' => 'required|string',
-            'slug' => 'nullable|string|max:255',
             'link' => 'nullable|string',
+            'urutan' => 'nullable|integer',
         ]);
 
         $banner->update($validated);

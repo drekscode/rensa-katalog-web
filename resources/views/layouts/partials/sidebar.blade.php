@@ -1,4 +1,4 @@
-<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-[#2d2d2d] px-6 pb-4 shadow-xl">
+<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-[#2d2d2d] px-6 pt-6 pb-4 shadow-xl">
     <div class="flex h-16 shrink-0 items-center border-b border-gray-700/30 pb-3">
         <div class="flex items-center gap-3">
             <div class="h-10 w-10 rounded-lg bg-[#8b9b7e] flex items-center justify-center">

@@ -10,12 +10,24 @@ class Artikel extends Model
     
     protected $fillable = [
         'kategori_id',
+        'judul',
         'foto',
         'deskripsi',
         'hastag_kategori',
         'date',
         'slug',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($artikel) {
+            $artikel->slug = \Illuminate\Support\Str::slug($artikel->judul);
+        });
+        static::updating(function ($artikel) {
+            $artikel->slug = \Illuminate\Support\Str::slug($artikel->judul);
+        });
+    }
 
     public function kategori()
     {

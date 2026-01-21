@@ -33,6 +33,20 @@
                         @enderror
                     </div>
 
+                    <!-- Order (Urutan) -->
+                    <div class="col-span-full">
+                        <label for="urutan" class="block text-sm font-medium leading-6 text-gray-900">
+                            Display Order (Optional)
+                        </label>
+                        <div class="mt-2">
+                            <input type="number" name="urutan" id="urutan" value="{{ old('urutan', $banner->urutan) }}"
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
+                        </div>
+                        @error('urutan')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Link -->
                     <div class="col-span-full">
                         <label for="link" class="block text-sm font-medium leading-6 text-gray-900">

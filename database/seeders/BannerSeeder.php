@@ -12,23 +12,23 @@ class BannerSeeder extends Seeder
         $banners = [
             [
                 'banner_image' => 'https://via.placeholder.com/1200x400/4F46E5/ffffff?text=Promo+Atap+Metal',
-                'slug' => 'promo-atap-metal',
                 'link' => null,
+                'urutan' => 1,
             ],
             [
                 'banner_image' => 'https://via.placeholder.com/1200x400/EC4899/ffffff?text=New+Bitumen+Series',
-                'slug' => 'new-bitumen-series',
                 'link' => null,
+                'urutan' => 2,
             ],
             [
                 'banner_image' => 'https://via.placeholder.com/1200x400/10B981/ffffff?text=Genteng+Berkualitas',
-                'slug' => 'genteng-berkualitas',
                 'link' => null,
+                'urutan' => 3,
             ],
             [
                 'banner_image' => 'https://via.placeholder.com/1200x400/F59E0B/ffffff?text=Konsultasi+Gratis',
-                'slug' => 'konsultasi-gratis',
                 'link' => null,
+                'urutan' => 4,
             ],
         ];
 
