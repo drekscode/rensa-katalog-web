@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rumus extends Model
 {
+    protected $table = 'rumus';
+    
     protected $fillable = [
         'kategori_id',
         'ukuran',

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\ArtikelResource;
+
 class ArtikelController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class ArtikelController extends Controller
      */
     public function index()
     {
-        return Artikel::with('kategori')->get();
+        return ArtikelResource::collection(Artikel::with('kategori')->orderBy('date', 'desc')->get());
     }
 
     /**
@@ -30,7 +32,7 @@ class ArtikelController extends Controller
         ]);
 
         $artikel = Artikel::create($request->all());
-        return response()->json($artikel, 201);
+        return new ArtikelResource($artikel);
     }
 
     /**
@@ -39,7 +41,7 @@ class ArtikelController extends Controller
     public function show(string $id)
     {
         $artikel = Artikel::with('kategori')->findOrFail($id);
-        return response()->json($artikel);
+        return new ArtikelResource($artikel);
     }
 
     /**
@@ -59,7 +61,7 @@ class ArtikelController extends Controller
         ]);
 
         $artikel->update($request->all());
-        return response()->json($artikel);
+        return new ArtikelResource($artikel);
     }
 
     /**

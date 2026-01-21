@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\ProductResource;
+
 class ProductController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::with('series')->get();
+        return ProductResource::collection(Product::with('series')->orderBy('id', 'asc')->get());
     }
 
     /**
@@ -28,7 +30,7 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create($request->all());
-        return response()->json($product, 201);
+        return new ProductResource($product);
     }
 
     /**
@@ -37,7 +39,7 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::with('series')->findOrFail($id);
-        return response()->json($product);
+        return new ProductResource($product);
     }
 
     /**
@@ -55,7 +57,7 @@ class ProductController extends Controller
         ]);
 
         $product->update($request->all());
-        return response()->json($product);
+        return new ProductResource($product);
     }
 
     /**

@@ -6,20 +6,22 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
+use App\Http\Resources\KategoriResource;
+
 class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        
+        return KategoriResource::collection(Kategori::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
@@ -27,21 +29,21 @@ class KategoriController extends Controller
         ]);
 
         $kategori = Kategori::create($request->all());
-        return response()->json($kategori, 201);
+        return new KategoriResource($kategori);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Kategori $kategori): JsonResponse
+    public function show(Kategori $kategori)
     {
-        return response()->json($kategori);
+        return new KategoriResource($kategori);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kategori $kategori): JsonResponse
+    public function update(Request $request, Kategori $kategori)
     {
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
@@ -49,7 +51,7 @@ class KategoriController extends Controller
         ]);
 
         $kategori->update($request->all());
-        return response()->json($kategori);
+        return new KategoriResource($kategori);
     }
 
     /**
@@ -61,10 +63,9 @@ class KategoriController extends Controller
         return response()->json(['message' => 'Kategori deleted successfully']);
     }
 
-    #API
-    public function getAllKategori(): JsonResponse
+    public function getAllKategori()
     {
-        $kategoris = Kategori::all();
-        return response()->json($kategoris);
+        $kategoris = Kategori::orderBy('id', 'asc')->get();
+        return KategoriResource::collection($kategoris);
     }
 }

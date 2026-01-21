@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TutorialVideo;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TutorialVideoResource;
+
 class TutorialVideoController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class TutorialVideoController extends Controller
      */
     public function index()
     {
-        return TutorialVideo::with('kategori')->get();
+        return TutorialVideoResource::collection(TutorialVideo::with('kategori')->orderBy('id', 'asc')->get());
     }
 
     /**
@@ -26,7 +28,7 @@ class TutorialVideoController extends Controller
         ]);
 
         $tutorialVideo = TutorialVideo::create($request->all());
-        return response()->json($tutorialVideo, 201);
+        return new TutorialVideoResource($tutorialVideo);
     }
 
     /**
@@ -35,7 +37,7 @@ class TutorialVideoController extends Controller
     public function show(string $id)
     {
         $tutorialVideo = TutorialVideo::with('kategori')->findOrFail($id);
-        return response()->json($tutorialVideo);
+        return new TutorialVideoResource($tutorialVideo);
     }
 
     /**
@@ -51,7 +53,7 @@ class TutorialVideoController extends Controller
         ]);
 
         $tutorialVideo->update($request->all());
-        return response()->json($tutorialVideo);
+        return new TutorialVideoResource($tutorialVideo);
     }
 
     /**
