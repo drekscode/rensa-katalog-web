@@ -10,9 +10,20 @@ use App\Models\Kategori;
 
 class AdminTutorialGambarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tutorial_gambars = TutorialGambar::with('kategori')->orderBy('urutan', 'asc')->latest()->paginate(10);
+        $query = TutorialGambar::with('kategori')->orderBy('urutan', 'asc')->latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('judul', 'like', "%{$search}%")
+                  ->orWhere('deskripsi', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function($q) use ($search) {
+                      $q->where('nama_kategori', 'like', "%{$search}%");
+                  });
+        }
+
+        $tutorial_gambars = $query->paginate(10);
         return view('admin.tutorial-gambar.index', compact('tutorial_gambars'));
     }
 
@@ -37,6 +48,11 @@ class AdminTutorialGambarController extends Controller
         }
 
         TutorialGambar::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.tutorial-gambar.create')
+                ->with('success', 'Tutorial Gambar created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.tutorial-gambar.index')
             ->with('success', 'Tutorial Gambar created successfully.');
@@ -64,6 +80,11 @@ class AdminTutorialGambarController extends Controller
         }
 
         $tutorialGambar->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.tutorial-gambar.create')
+                ->with('success', 'Tutorial Gambar updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.tutorial-gambar.index')
             ->with('success', 'Tutorial Gambar updated successfully.');

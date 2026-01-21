@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\BannerResource;
+
 class BannerController extends Controller
 {
     /**
@@ -12,8 +14,8 @@ class BannerController extends Controller
      */
     public function getAllBanner()
     {
-        $banners = Banner::all();
-        return response()->json($banners);
+        $banners = Banner::orderBy('urutan', 'asc')->get();
+        return BannerResource::collection($banners);
     }
 
     /**
@@ -28,7 +30,7 @@ class BannerController extends Controller
         ]);
 
         $banner = Banner::create($request->all());
-        return response()->json($banner, 201);
+        return new BannerResource($banner);
     }
 
     /**
@@ -37,7 +39,7 @@ class BannerController extends Controller
     public function show(string $id)
     {
         $banner = Banner::findOrFail($id);
-        return response()->json($banner);
+        return new BannerResource($banner);
     }
 
     /**
@@ -55,7 +57,7 @@ class BannerController extends Controller
         ]);
 
         $banner->update($request->all());
-        return response()->json($banner);
+        return new BannerResource($banner);
     }
 
     /**
@@ -70,7 +72,7 @@ class BannerController extends Controller
 
     public function getAllBanners()
     {
-        $banners = Banner::get();
-        return response()->json($banners);
+        $banners = Banner::orderBy('urutan', 'asc')->get();
+        return BannerResource::collection($banners);
     }
 }

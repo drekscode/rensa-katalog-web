@@ -7,15 +7,34 @@
 <div x-data="{ 
     showViewModal: false, 
     selectedItem: {},
+    search: '',
     openViewModal(item) {
         this.selectedItem = item;
         this.showViewModal = true;
     }
 }">
-    <div class="sm:flex sm:items-center">
+    <div class="sm:flex sm:items-center justify-between gap-4">
         <div class="sm:flex-auto">
             <p class="mt-2 text-sm text-gray-600">A list of all categories in your catalog.</p>
         </div>
+
+        <!-- Search Bar -->
+        <div class="mt-4 sm:mt-0 flex-1 max-w-md">
+            <form action="{{ route('admin.kategori.index') }}" method="GET" class="relative" id="searchFormKategori">
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </div>
+                <input type="text" 
+                       name="search"
+                       value="{{ request('search') }}"
+                       @input="document.getElementById('searchFormKategori').submit()"
+                       class="block w-full rounded-xl border-0 py-2.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all" 
+                       placeholder="Search categories by name...">
+            </form>
+        </div>
+
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <a href="{{ route('admin.kategori.create') }}" 
                class="flex items-center justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] transition-colors duration-200">
@@ -37,7 +56,6 @@
                                 <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ID</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nama Kategori</th>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Keunggulan Produk</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created At</th>
                                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                     <span class="sr-only">Actions</span>
                                 </th>
@@ -54,9 +72,6 @@
                                 </td>
                                 <td class="px-3 py-4 text-sm text-gray-600">
                                     {{ Str::limit($kategori->keunggulan_produk, 50) }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    {{ $kategori->created_at->format('d M Y') }}
                                 </td>
                                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                     <div class="flex items-center justify-end gap-2">
@@ -82,11 +97,17 @@
                                         </a>
                                         <form action="{{ route('admin.kategori.destroy', $kategori) }}" 
                                               method="POST" 
-                                              class="inline"
-                                              onsubmit="return confirm('Are you sure you want to delete this kategori?');">
+                                              id="delete-form-{{ $kategori->id }}"
+                                              class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="inline-flex items-center gap-x-1.5 rounded-md bg-red-50 px-2.5 py-1.5 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-100 transition-colors">
+                                            <button type="button" 
+                                                    @click="$dispatch('confirm-delete', { 
+                                                        title: 'Delete Category?', 
+                                                        message: 'Are you sure you want to delete \'{{ addslashes($kategori->nama_kategori) }}\'? This will permanently remove it and all related items.',
+                                                        formId: 'delete-form-{{ $kategori->id }}' 
+                                                    })"
+                                                    class="inline-flex items-center gap-x-1.5 rounded-md bg-red-50 px-2.5 py-1.5 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-100 transition-colors">
                                                 <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                   <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                                 </svg>

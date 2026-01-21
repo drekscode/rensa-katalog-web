@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TutorialGambar;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TutorialGambarResource;
+
 class TutorialGambarController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class TutorialGambarController extends Controller
      */
     public function index()
     {
-        return TutorialGambar::with('kategori')->get();
+        return TutorialGambarResource::collection(TutorialGambar::with('kategori')->orderBy('urutan', 'asc')->get());
     }
 
     /**
@@ -28,7 +30,7 @@ class TutorialGambarController extends Controller
         ]);
 
         $tutorialGambar = TutorialGambar::create($request->all());
-        return response()->json($tutorialGambar, 201);
+        return new TutorialGambarResource($tutorialGambar);
     }
 
     /**
@@ -37,7 +39,7 @@ class TutorialGambarController extends Controller
     public function show(string $id)
     {
         $tutorialGambar = TutorialGambar::with('kategori')->findOrFail($id);
-        return response()->json($tutorialGambar);
+        return new TutorialGambarResource($tutorialGambar);
     }
 
     /**
@@ -55,7 +57,7 @@ class TutorialGambarController extends Controller
         ]);
 
         $tutorialGambar->update($request->all());
-        return response()->json($tutorialGambar);
+        return new TutorialGambarResource($tutorialGambar);
     }
 
     /**

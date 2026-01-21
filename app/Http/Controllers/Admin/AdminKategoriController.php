@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 
 class AdminKategoriController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategoris = Kategori::latest()->paginate(10);
+        $query = Kategori::latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('nama_kategori', 'like', "%{$search}%")
+                  ->orWhere('keunggulan_produk', 'like', "%{$search}%");
+        }
+
+        $kategoris = $query->paginate(10);
         return view('admin.kategori.index', compact('kategoris'));
     }
 
@@ -27,6 +35,11 @@ class AdminKategoriController extends Controller
         ]);
 
         Kategori::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.kategori.create')
+                ->with('success', 'Kategori created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori created successfully.');
@@ -45,6 +58,11 @@ class AdminKategoriController extends Controller
         ]);
 
         $kategori->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.kategori.create')
+                ->with('success', 'Kategori updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.kategori.index')
             ->with('success', 'Kategori updated successfully.');

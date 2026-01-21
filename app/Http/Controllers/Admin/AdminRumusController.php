@@ -9,9 +9,20 @@ use Illuminate\Http\Request;
 
 class AdminRumusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $rumus = Rumus::with('kategori')->latest()->paginate(10);
+        $query = Rumus::with('kategori')->latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('ukuran', 'like', "%{$search}%")
+                  ->orWhere('rumus', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function($q) use ($search) {
+                      $q->where('nama_kategori', 'like', "%{$search}%");
+                  });
+        }
+
+        $rumus = $query->paginate(10);
         return view('admin.rumus.index', compact('rumus'));
     }
 
@@ -30,6 +41,11 @@ class AdminRumusController extends Controller
         ]);
 
         Rumus::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.rumus.create')
+                ->with('success', 'Rumus created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.rumus.index')
             ->with('success', 'Rumus created successfully.');
@@ -50,6 +66,11 @@ class AdminRumusController extends Controller
         ]);
 
         $rumus->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.rumus.create')
+                ->with('success', 'Rumus updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.rumus.index')
             ->with('success', 'Rumus updated successfully.');

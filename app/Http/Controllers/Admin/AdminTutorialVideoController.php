@@ -10,9 +10,19 @@ use App\Models\Kategori;
 
 class AdminTutorialVideoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tutorial_videos = TutorialVideo::with('kategori')->latest()->paginate(10);
+        $query = TutorialVideo::with('kategori')->latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('link', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function($q) use ($search) {
+                      $q->where('nama_kategori', 'like', "%{$search}%");
+                  });
+        }
+
+        $tutorial_videos = $query->paginate(10);
         return view('admin.tutorial-video.index', compact('tutorial_videos'));
     }
 
@@ -26,12 +36,15 @@ class AdminTutorialVideoController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'video_url' => 'required|string',
-            'thumbnail' => 'nullable|string',
+            'link' => 'required|string',
         ]);
 
         TutorialVideo::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.tutorial-video.create')
+                ->with('success', 'Tutorial Video created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.tutorial-video.index')
             ->with('success', 'Tutorial Video created successfully.');
@@ -48,12 +61,15 @@ class AdminTutorialVideoController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'video_url' => 'required|string',
-            'thumbnail' => 'nullable|string',
+            'link' => 'required|string',
         ]);
 
         $tutorialVideo->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.tutorial-video.create')
+                ->with('success', 'Tutorial Video updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.tutorial-video.index')
             ->with('success', 'Tutorial Video updated successfully.');

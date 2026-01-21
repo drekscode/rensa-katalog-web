@@ -45,13 +45,24 @@ class DashboardController extends Controller
         $usedSpace = $totalSpace - $freeSpace;
         $storagePercentage = round(($usedSpace / $totalSpace) * 100);
 
+        // Alerts: Empty Categories
+        $empty_kategoris = Kategori::doesntHave('series')->take(5)->get();
+
+        // Recent Tutorials (Combined)
+        $latest_tut_img = TutorialGambar::with('kategori')->latest()->take(3)->get();
+        $latest_tut_vid = TutorialVideo::with('kategori')->latest()->take(3)->get();
+        $recent_tutorials = $latest_tut_img->concat($latest_tut_vid)->sortByDesc('created_at')->take(5);
+
+
         return view('admin.dashboard', compact(
             'stats', 
             'latest_artikels', 
             'latest_products', 
             'latest_toko', 
             'kategori_data',
-            'storagePercentage'
+            'storagePercentage',
+            'empty_kategoris',
+            'recent_tutorials'
         ));
     }
 }

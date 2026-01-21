@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Toko;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\TokoResource;
+
 class TokoController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class TokoController extends Controller
      */
     public function index()
     {
-        return Toko::all();
+        return TokoResource::collection(Toko::orderBy('id', 'asc')->get());
     }
 
     /**
@@ -28,7 +30,7 @@ class TokoController extends Controller
         ]);
 
         $toko = Toko::create($request->all());
-        return response()->json($toko, 201);
+        return new TokoResource($toko);
     }
 
     /**
@@ -37,7 +39,7 @@ class TokoController extends Controller
     public function show(string $id)
     {
         $toko = Toko::findOrFail($id);
-        return response()->json($toko);
+        return new TokoResource($toko);
     }
 
     /**
@@ -55,7 +57,7 @@ class TokoController extends Controller
         ]);
 
         $toko->update($request->all());
-        return response()->json($toko);
+        return new TokoResource($toko);
     }
 
     /**

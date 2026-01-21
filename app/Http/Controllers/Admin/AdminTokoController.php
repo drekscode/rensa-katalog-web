@@ -8,9 +8,18 @@ use Illuminate\Http\Request;
 
 class AdminTokoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tokos = Toko::latest()->paginate(10);
+        $query = Toko::latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('nama_toko', 'like', "%{$search}%")
+                  ->orWhere('alamat', 'like', "%{$search}%")
+                  ->orWhere('kontak', 'like', "%{$search}%");
+        }
+
+        $tokos = $query->paginate(10);
         return view('admin.toko.index', compact('tokos'));
     }
 
@@ -24,11 +33,16 @@ class AdminTokoController extends Controller
         $validated = $request->validate([
             'nama_toko' => 'required|string|max:255',
             'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string|max:50',
-            'maps_url' => 'nullable|string',
+            'kontak' => 'nullable|string|max:50',
+            'link_maps' => 'nullable|string',
         ]);
 
         Toko::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.toko.create')
+                ->with('success', 'Toko created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.toko.index')
             ->with('success', 'Toko created successfully.');
@@ -44,11 +58,16 @@ class AdminTokoController extends Controller
         $validated = $request->validate([
             'nama_toko' => 'required|string|max:255',
             'alamat' => 'nullable|string',
-            'telepon' => 'nullable|string|max:50',
-            'maps_url' => 'nullable|string',
+            'kontak' => 'nullable|string|max:50',
+            'link_maps' => 'nullable|string',
         ]);
 
         $toko->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.toko.create')
+                ->with('success', 'Toko updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.toko.index')
             ->with('success', 'Toko updated successfully.');

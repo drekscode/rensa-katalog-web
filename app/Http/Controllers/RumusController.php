@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Rumus;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\RumusResource;
+
 class RumusController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class RumusController extends Controller
      */
     public function index()
     {
-        return Rumus::with('kategori')->get();
+        return RumusResource::collection(Rumus::with('kategori')->orderBy('id', 'asc')->get());
     }
 
     /**
@@ -27,7 +29,7 @@ class RumusController extends Controller
         ]);
 
         $rumus = Rumus::create($request->all());
-        return response()->json($rumus, 201);
+        return new RumusResource($rumus);
     }
 
     /**
@@ -36,7 +38,7 @@ class RumusController extends Controller
     public function show(string $id)
     {
         $rumus = Rumus::with('kategori')->findOrFail($id);
-        return response()->json($rumus);
+        return new RumusResource($rumus);
     }
 
     /**
@@ -53,7 +55,7 @@ class RumusController extends Controller
         ]);
 
         $rumus->update($request->all());
-        return response()->json($rumus);
+        return new RumusResource($rumus);
     }
 
     /**

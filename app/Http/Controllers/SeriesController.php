@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Series;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\SeriesResource;
+
 class SeriesController extends Controller
 {
     /**
@@ -12,7 +14,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        return Series::with('kategori')->get();
+        return SeriesResource::collection(Series::with('kategori')->orderBy('id', 'asc')->get());
     }
 
     /**
@@ -30,7 +32,7 @@ class SeriesController extends Controller
         ]);
 
         $series = Series::create($request->all());
-        return response()->json($series, 201);
+        return new SeriesResource($series);
     }
 
     /**
@@ -39,7 +41,7 @@ class SeriesController extends Controller
     public function show(string $id)
     {
         $series = Series::with('kategori', 'products')->findOrFail($id);
-        return response()->json($series);
+        return new SeriesResource($series);
     }
 
     /**
@@ -59,7 +61,7 @@ class SeriesController extends Controller
         ]);
 
         $series->update($request->all());
-        return response()->json($series);
+        return new SeriesResource($series);
     }
 
     /**

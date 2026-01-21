@@ -5,6 +5,33 @@
 
 @section('content')
 <div class="space-y-8 animate-in fade-in duration-500">
+    <!-- Alerts Section -->
+    @if($empty_kategoris->count() > 0)
+    <div class="rounded-xl bg-amber-50 border border-amber-100 p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-amber-800">Attention Needed: Empty Categories</h3>
+                <div class="mt-2 text-sm text-amber-700">
+                    <p>The following categories have no series assigned. Consider adding content or removing them.</p>
+                    <ul role="list" class="list-disc pl-5 space-y-1 mt-2">
+                        @foreach($empty_kategoris as $kategori)
+                            <li>
+                                <span class="font-semibold">{{ $kategori->nama_kategori }}</span>
+                                <a href="{{ route('admin.kategori.edit', $kategori) }}" class="ml-2 text-amber-600 hover:text-amber-900 underline">Manage</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Header Summary Section -->
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <!-- Products Summary -->
@@ -150,12 +177,12 @@
     </div>
 
     <!-- Lower Section: Recent Items -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Recent Products -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
                 <h3 class="text-lg font-bold text-gray-800">New Additions</h3>
-                <a href="{{ route('admin.product.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">See All Products</a>
+                <a href="{{ route('admin.product.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">See All</a>
             </div>
             <div class="divide-y divide-gray-50">
                 @forelse($latest_products as $product)
@@ -187,7 +214,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="px-6 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
                 <h3 class="text-lg font-bold text-gray-800">Article Updates</h3>
-                <a href="{{ route('admin.artikel.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">Manage Articles</a>
+                <a href="{{ route('admin.artikel.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">Manage</a>
             </div>
             <div class="divide-y divide-gray-50">
                 @forelse($latest_artikels as $art)
@@ -205,6 +232,46 @@
                 </div>
                 @empty
                  <div class="px-6 py-10 text-center text-gray-400 text-sm">No recent articles</div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Recent Tutorials -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+                <h3 class="text-lg font-bold text-gray-800">Media Updates</h3>
+                <div class="flex gap-2">
+                    <a href="{{ route('admin.tutorial-gambar.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">Img</a>
+                    <span class="text-gray-300">|</span>
+                    <a href="{{ route('admin.tutorial-video.index') }}" class="text-sm font-semibold text-[#8b9b7e] hover:underline transition-all">Vid</a>
+                </div>
+            </div>
+            <div class="divide-y divide-gray-50">
+                @forelse($recent_tutorials as $tut)
+                <div class="px-6 py-4 hover:bg-gray-50/50 transition-all flex items-center gap-4 group">
+                    <div class="h-12 w-12 rounded-lg bg-purple-50 flex-shrink-0 flex items-center justify-center text-purple-600">
+                        @if(isset($tut->link))
+                             <!-- Video Icon -->
+                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                             </svg>
+                        @else
+                             <!-- Image Icon -->
+                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                             </svg>
+                        @endif
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-gray-900 truncate group-hover:text-[#8b9b7e] transition-colors">
+                            {{ $tut->judul ?? 'Video Tutorial' }}
+                        </p>
+                        <p class="text-xs text-gray-500">{{ $tut->kategori->nama_kategori ?? 'Uncategorized' }} • {{ $tut->created_at->diffForHumans() }}</p>
+                    </div>
+                </div>
+                @empty
+                 <div class="px-6 py-10 text-center text-gray-400 text-sm">No recent media</div>
                 @endforelse
             </div>
         </div>

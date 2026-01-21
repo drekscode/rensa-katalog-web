@@ -8,9 +8,16 @@ use Illuminate\Http\Request;
 
 class AdminBannerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $banners = Banner::orderBy('urutan', 'asc')->latest()->paginate(10);
+        $query = Banner::orderBy('urutan', 'asc')->latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('link', 'like', "%{$search}%");
+        }
+
+        $banners = $query->paginate(10);
         return view('admin.banner.index', compact('banners'));
     }
 
@@ -32,6 +39,11 @@ class AdminBannerController extends Controller
         }
 
         Banner::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.banner.create')
+                ->with('success', 'Banner created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.banner.index')
             ->with('success', 'Banner created successfully.');
@@ -55,6 +67,11 @@ class AdminBannerController extends Controller
         }
 
         $banner->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.banner.create')
+                ->with('success', 'Banner updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.banner.index')
             ->with('success', 'Banner updated successfully.');

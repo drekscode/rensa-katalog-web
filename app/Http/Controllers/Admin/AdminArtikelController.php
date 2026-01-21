@@ -10,9 +10,20 @@ use App\Models\Kategori;
 
 class AdminArtikelController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $artikels = Artikel::latest()->paginate(10);
+        $query = Artikel::latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('judul', 'like', "%{$search}%")
+                  ->orWhere('hastag_kategori', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function($q) use ($search) {
+                      $q->where('nama_kategori', 'like', "%{$search}%");
+                  });
+        }
+
+        $artikels = $query->paginate(10);
         return view('admin.artikel.index', compact('artikels'));
     }
 
@@ -37,7 +48,17 @@ class AdminArtikelController extends Controller
             $validated['foto'] = $request->file('foto')->store('artikels', 'public');
         }
 
+        // Set date to today if not provided
+        if (empty($validated['date'])) {
+            $validated['date'] = now()->format('Y-m-d');
+        }
+
         Artikel::create($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.artikel.create')
+                ->with('success', 'Artikel created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.artikel.index')
             ->with('success', 'Artikel created successfully.');
@@ -64,7 +85,17 @@ class AdminArtikelController extends Controller
             $validated['foto'] = $request->file('foto')->store('artikels', 'public');
         }
 
+        // Set date to today if not provided
+        if (empty($validated['date'])) {
+            $validated['date'] = now()->format('Y-m-d');
+        }
+
         $artikel->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.artikel.create')
+                ->with('success', 'Artikel updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.artikel.index')
             ->with('success', 'Artikel updated successfully.');

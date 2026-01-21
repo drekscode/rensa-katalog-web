@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 
 class AdminProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('series')->latest()->paginate(10);
+        $query = Product::with('series')->latest();
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('nama_product', 'like', "%{$search}%")
+                  ->orWhereHas('series', function($q) use ($search) {
+                      $q->where('nama_series', 'like', "%{$search}%");
+                  });
+        }
+
+        $products = $query->paginate(10);
         return view('admin.product.index', compact('products'));
     }
 
@@ -39,6 +49,11 @@ class AdminProductController extends Controller
         }
 
         Product::create($validated);
+        
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.product.create')
+                ->with('success', 'Product created successfully. You can add another one below.');
+        }
 
         return redirect()->route('admin.product.index')
             ->with('success', 'Product created successfully.');
@@ -68,6 +83,11 @@ class AdminProductController extends Controller
         }
 
         $product->update($validated);
+
+        if ($request->input('action') === 'save_and_add_another') {
+            return redirect()->route('admin.product.create')
+                ->with('success', 'Product updated successfully. You can add a new one below.');
+        }
 
         return redirect()->route('admin.product.index')
             ->with('success', 'Product updated successfully.');
