@@ -12,65 +12,42 @@ class SeriesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getAllSeries()
     {
         return SeriesResource::collection(Series::with('kategori')->orderBy('id', 'asc')->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function getSeriesByKategori($kategoriId)
     {
-        $request->validate([
-            'kategori_id' => 'required|exists:kategori,id',
-            'nama_series' => 'required|string',
-            'struktur_img' => 'nullable|string',
-            'cover_area' => 'nullable|string',
-            'material' => 'nullable|string',
-            'deskripsi_produk' => 'nullable|string',
+        $series = Series::where('kategori_id', $kategoriId)->orderBy('id', 'asc')->get();
+        return SeriesResource::collection($series);
+    }
+
+    public function getSeriesPaginate()
+    {
+        $series = Series::with('kategori')
+            ->orderBy('id', 'asc')
+            ->paginate(4);
+
+        return response()->json([
+            'data' => SeriesResource::collection($series->items()),
+            'meta' => [
+                'current_page' => $series->currentPage(),
+                'per_page' => $series->perPage(),
+                'total' => $series->total(),
+                'sisa_item' => $series->total() - ($series->currentPage() * $series->perPage()),
+            ]
         ]);
-
-        $series = Series::create($request->all());
-        return new SeriesResource($series);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function getProductsBySeries($seriesId)
     {
-        $series = Series::with('kategori', 'products')->findOrFail($id);
-        return new SeriesResource($series);
-    }
+        $series = Series::with([
+            'products',
+            'kategori.tutorial_gambars',
+            'kategori.tutorial_videos',
+            ])->findOrFail($seriesId);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $series = Series::findOrFail($id);
-
-        $request->validate([
-            'kategori_id' => 'sometimes|exists:kategori,id',
-            'nama_series' => 'sometimes|string',
-            'struktur_img' => 'nullable|string',
-            'cover_area' => 'nullable|string',
-            'material' => 'nullable|string',
-            'deskripsi_produk' => 'nullable|string',
-        ]);
-
-        $series->update($request->all());
-        return new SeriesResource($series);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $series = Series::findOrFail($id);
-        $series->delete();
-        return response()->json(['message' => 'Series deleted successfully']);
+        return SeriesResource::make($series);
     }
 }

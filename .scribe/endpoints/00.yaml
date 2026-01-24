@@ -1,0 +1,546 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/categories
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"},{"id":2,"nama_kategori":"Pakaian","keunggulan_produk":"Koleksi pakaian fashion terbaru dan nyaman.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"},{"id":3,"nama_kategori":"Makanan","keunggulan_produk":"Makanan sehat dan lezat untuk keluarga.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"},{"id":4,"nama_kategori":"Atap Metal","keunggulan_produk":"Ringan, tahan lama, dan anti karat. Cocok untuk berbagai jenis bangunan dari rumah tinggal hingga gedung komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":5,"nama_kategori":"Atap Bitumen","keunggulan_produk":"Kedap air sempurna, fleksibel, dan mudah dipasang. Ideal untuk atap datar dan berbagai aplikasi waterproofing.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":6,"nama_kategori":"Atap Genteng","keunggulan_produk":"Estetika klasik, isolasi panas yang baik, dan ramah lingkungan. Memberikan tampilan elegan pada bangunan.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":7,"nama_kategori":"Plafon","keunggulan_produk":"Berbagai pilihan desain, mudah perawatan, dan meningkatkan estetika interior ruangan.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":8,"nama_kategori":"Dinding","keunggulan_produk":"Kuat, tahan cuaca, dan mudah dipasang. Memberikan proteksi maksimal untuk bangunan Anda.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/banners
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"banner_image":"https:\/\/via.placeholder.com\/1200x400\/4F46E5\/ffffff?text=Promo+Atap+Metal","link":null,"urutan":1,"created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":2,"banner_image":"https:\/\/via.placeholder.com\/1200x400\/EC4899\/ffffff?text=New+Bitumen+Series","link":null,"urutan":2,"created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":3,"banner_image":"https:\/\/via.placeholder.com\/1200x400\/10B981\/ffffff?text=Genteng+Berkualitas","link":null,"urutan":3,"created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":4,"banner_image":"https:\/\/via.placeholder.com\/1200x400\/F59E0B\/ffffff?text=Konsultasi+Gratis","link":null,"urutan":4,"created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/series
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"kategori_id":1,"nama_series":"Rensa Metal Roof Premium","struktur_img":"https:\/\/via.placeholder.com\/800x600\/4F46E5\/ffffff?text=Metal+Roof+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/4F46E5\/ffffff?text=Cover+1.05m2","material":"Zinc-Aluminium coating steel","deskripsi_produk":"Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":2,"kategori_id":1,"nama_series":"Rensa Spandek Pro","struktur_img":"https:\/\/via.placeholder.com\/800x600\/7C3AED\/ffffff?text=Spandek+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/7C3AED\/ffffff?text=Cover+1.00m2","material":"Galvalume steel","deskripsi_produk":"Atap spandek berkualitas tinggi dengan ketahanan korosi superior. Cocok untuk bangunan industri dan komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":3,"kategori_id":2,"nama_series":"Rensa Bitumen Shield","struktur_img":"https:\/\/via.placeholder.com\/800x600\/EC4899\/ffffff?text=Bitumen+Shield","cover_area":"https:\/\/via.placeholder.com\/600x400\/EC4899\/ffffff?text=Cover+10m2","material":"Modified bitumen membrane","deskripsi_produk":"Membran bitumen modified dengan daya rekat tinggi. Solusi waterproofing terbaik untuk atap datar.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":2,"nama_kategori":"Pakaian","keunggulan_produk":"Koleksi pakaian fashion terbaru dan nyaman.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":4,"kategori_id":3,"nama_series":"Rensa Genteng Keramik","struktur_img":"https:\/\/via.placeholder.com\/800x600\/F59E0B\/ffffff?text=Ceramic+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/F59E0B\/ffffff?text=Cover+10pcs\/m2","material":"High quality ceramic","deskripsi_produk":"Genteng keramik dengan finishing glazur. Tahan lama, tidak pudar, dan memberikan kesan mewah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":3,"nama_kategori":"Makanan","keunggulan_produk":"Makanan sehat dan lezat untuk keluarga.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":5,"kategori_id":3,"nama_series":"Rensa Genteng Beton","struktur_img":"https:\/\/via.placeholder.com\/800x600\/10B981\/ffffff?text=Concrete+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/10B981\/ffffff?text=Cover+10pcs\/m2","material":"High strength concrete","deskripsi_produk":"Genteng beton dengan kekuatan tinggi. Ekonomis dan tahan terhadap perubahan cuaca ekstrem.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":3,"nama_kategori":"Makanan","keunggulan_produk":"Makanan sehat dan lezat untuk keluarga.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":6,"kategori_id":4,"nama_series":"Rensa Gypsum Board","struktur_img":"https:\/\/via.placeholder.com\/800x600\/3B82F6\/ffffff?text=Gypsum+Board","cover_area":"https:\/\/via.placeholder.com\/600x400\/3B82F6\/ffffff?text=Cover+2.88m2","material":"Gypsum core with paper liner","deskripsi_produk":"Plafon gypsum berkualitas tinggi untuk interior modern. Permukaan halus dan mudah finishing.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":4,"nama_kategori":"Atap Metal","keunggulan_produk":"Ringan, tahan lama, dan anti karat. Cocok untuk berbagai jenis bangunan dari rumah tinggal hingga gedung komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":7,"kategori_id":4,"nama_series":"Rensa PVC Ceiling","struktur_img":"https:\/\/via.placeholder.com\/800x600\/8B5CF6\/ffffff?text=PVC+Ceiling","cover_area":"https:\/\/via.placeholder.com\/600x400\/8B5CF6\/ffffff?text=Cover+3m","material":"UV resistant PVC","deskripsi_produk":"Plafon PVC anti air dan mudah dibersihkan. Ideal untuk kamar mandi dan area basah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":4,"nama_kategori":"Atap Metal","keunggulan_produk":"Ringan, tahan lama, dan anti karat. Cocok untuk berbagai jenis bangunan dari rumah tinggal hingga gedung komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":8,"kategori_id":5,"nama_series":"Rensa Wall Panel","struktur_img":"https:\/\/via.placeholder.com\/800x600\/EF4444\/ffffff?text=Wall+Panel","cover_area":"https:\/\/via.placeholder.com\/600x400\/EF4444\/ffffff?text=Cover+2.4m2","material":"Composite sandwich panel","deskripsi_produk":"Panel dinding sandwich dengan insulasi thermal. Ringan, kuat, dan cepat dipasang.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":5,"nama_kategori":"Atap Bitumen","keunggulan_produk":"Kedap air sempurna, fleksibel, dan mudah dipasang. Ideal untuk atap datar dan berbagai aplikasi waterproofing.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/series/by-category/{kategoriId}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      kategoriId:
+        custom: []
+        name: kategoriId
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      kategoriId: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/series/paginate
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"kategori_id":1,"nama_series":"Rensa Metal Roof Premium","struktur_img":"https:\/\/via.placeholder.com\/800x600\/4F46E5\/ffffff?text=Metal+Roof+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/4F46E5\/ffffff?text=Cover+1.05m2","material":"Zinc-Aluminium coating steel","deskripsi_produk":"Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":2,"kategori_id":1,"nama_series":"Rensa Spandek Pro","struktur_img":"https:\/\/via.placeholder.com\/800x600\/7C3AED\/ffffff?text=Spandek+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/7C3AED\/ffffff?text=Cover+1.00m2","material":"Galvalume steel","deskripsi_produk":"Atap spandek berkualitas tinggi dengan ketahanan korosi superior. Cocok untuk bangunan industri dan komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":3,"kategori_id":2,"nama_series":"Rensa Bitumen Shield","struktur_img":"https:\/\/via.placeholder.com\/800x600\/EC4899\/ffffff?text=Bitumen+Shield","cover_area":"https:\/\/via.placeholder.com\/600x400\/EC4899\/ffffff?text=Cover+10m2","material":"Modified bitumen membrane","deskripsi_produk":"Membran bitumen modified dengan daya rekat tinggi. Solusi waterproofing terbaik untuk atap datar.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":2,"nama_kategori":"Pakaian","keunggulan_produk":"Koleksi pakaian fashion terbaru dan nyaman.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":4,"kategori_id":3,"nama_series":"Rensa Genteng Keramik","struktur_img":"https:\/\/via.placeholder.com\/800x600\/F59E0B\/ffffff?text=Ceramic+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/F59E0B\/ffffff?text=Cover+10pcs\/m2","material":"High quality ceramic","deskripsi_produk":"Genteng keramik dengan finishing glazur. Tahan lama, tidak pudar, dan memberikan kesan mewah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":3,"nama_kategori":"Makanan","keunggulan_produk":"Makanan sehat dan lezat untuk keluarga.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}}],"meta":{"current_page":1,"per_page":4,"total":8,"sisa_item":4}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/articles
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"kategori_id":1,"judul":"Tips Memilih Atap yang Tepat","slug":"tips-memilih-atap-yang-tepat","foto":"https:\/\/via.placeholder.com\/800x600\/4F46E5\/ffffff?text=Tips+Memilih+Atap","deskripsi":"Memilih atap yang tepat adalah keputusan penting dalam pembangunan rumah. Berikut beberapa faktor yang perlu dipertimbangkan: 1) Budget, 2) Iklim setempat, 3) Gaya arsitektur, 4) Daya tahan, 5) Perawatan. Atap metal cocok untuk daerah tropis karena tahan panas dan anti karat, sementara genteng keramik memberikan kesan klasik dan elegan.","hastag_kategori":"tips,atap,konstruksi","date":"2026-01-15","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":2,"kategori_id":2,"judul":"Keunggulan Atap Bitumen","slug":"keunggulan-atap-bitumen","foto":"https:\/\/via.placeholder.com\/800x600\/EC4899\/ffffff?text=Atap+Bitumen","deskripsi":"Atap bitumen semakin populer untuk bangunan modern karena berbagai keunggulannya. Material ini menawarkan waterproofing yang sempurna, fleksibilitas tinggi, dan mudah dipasang bahkan pada permukaan yang tidak rata. Cocok for atap datar, teras, dan berbagai aplikasi waterproofing lainnya.","hastag_kategori":"bitumen,waterproofing,modern","date":"2026-01-10","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":2,"nama_kategori":"Pakaian","keunggulan_produk":"Koleksi pakaian fashion terbaru dan nyaman.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":3,"kategori_id":1,"judul":"Panduan Perawatan Atap Metal","slug":"panduan-perawatan-atap-metal","foto":"https:\/\/via.placeholder.com\/800x600\/10B981\/ffffff?text=Perawatan+Atap","deskripsi":"Atap metal terkenal dengan daya tahannya, namun tetap memerlukan perawatan berkala. Lakukan inspeksi rutin setiap 6 bulan, bersihkan dari kotoran dan lumut, periksa sekrup dan baut, serta cat ulang jika diperlukan. Dengan perawatan yang tepat, atap metal dapat bertahan hingga 30-50 tahun.","hastag_kategori":"perawatan,atap metal,tips","date":"2026-01-05","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":1,"nama_kategori":"Elektronik","keunggulan_produk":"Produk elektronik berkualitas tinggi dengan garansi.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}},{"id":4,"kategori_id":4,"judul":"Tren Desain Plafon Modern","slug":"tren-desain-plafon-modern","foto":"https:\/\/via.placeholder.com\/800x600\/F59E0B\/ffffff?text=Desain+Plafon","deskripsi":"Plafon tidak hanya berfungsi sebagai penutup langit-langit, tetapi juga elemen penting dalam desain interior. Tren saat ini mencakup plafon dengan pencahayaan tersembunyi, kombinasi material, dan desain bertingkat. Gypsum board sangat fleksibel untuk berbagai kreasi desain modern.","hastag_kategori":"plafon,interior,desain","date":"2025-12-28","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":4,"nama_kategori":"Atap Metal","keunggulan_produk":"Ringan, tahan lama, dan anti karat. Cocok untuk berbagai jenis bangunan dari rumah tinggal hingga gedung komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":5,"kategori_id":3,"judul":"Mengapa Genteng Beton Lebih Ekonomis","slug":"mengapa-genteng-beton-lebih-ekonomis","foto":"https:\/\/via.placeholder.com\/800x600\/8B5CF6\/ffffff?text=Genteng+Beton","deskripsi":"Genteng beton menawarkan solusi atap yang ekonomis tanpa mengorbankan kualitas. Dengan harga lebih terjangkau dibanding genteng keramik, genteng beton memiliki kekuatan yang tinggi dan daya tahan luar biasa. Material ini juga memiliki kemampuan insulasi panas yang baik, membantu menjaga suhu ruangan tetap nyaman.","hastag_kategori":"genteng,beton,ekonomis","date":"2025-12-20","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","kategori":{"id":3,"nama_kategori":"Makanan","keunggulan_produk":"Makanan sehat dan lezat untuk keluarga.","created_at":"2026-01-16T10:07:50+00:00","updated_at":"2026-01-16T10:07:50+00:00"}}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/articles/by-category/hp/{kategoriId}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      kategoriId:
+        custom: []
+        name: kategoriId
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      kategoriId: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/articles/by-category/tab/{kategoriId}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      kategoriId:
+        custom: []
+        name: kategoriId
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      kategoriId: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/articles/by-series/{seriesId}/products'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      seriesId:
+        custom: []
+        name: seriesId
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      seriesId: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 404
+        content: |-
+          {
+              "message": "No query results for model [App\\Models\\Series] architecto"
+          }
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/formulas/by-category/{kategoriId}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      kategoriId:
+        custom: []
+        name: kategoriId
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      kategoriId: architecto
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/products
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"series_id":1,"nama_product":"Metal Roof Premium - Red","thumbnail":"https:\/\/via.placeholder.com\/300x300\/DC2626\/ffffff?text=Red","big_pic":"https:\/\/via.placeholder.com\/1200x800\/DC2626\/ffffff?text=Metal+Roof+Red","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":1,"kategori_id":1,"nama_series":"Rensa Metal Roof Premium","struktur_img":"https:\/\/via.placeholder.com\/800x600\/4F46E5\/ffffff?text=Metal+Roof+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/4F46E5\/ffffff?text=Cover+1.05m2","material":"Zinc-Aluminium coating steel","deskripsi_produk":"Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":2,"series_id":1,"nama_product":"Metal Roof Premium - Blue","thumbnail":"https:\/\/via.placeholder.com\/300x300\/2563EB\/ffffff?text=Blue","big_pic":"https:\/\/via.placeholder.com\/1200x800\/2563EB\/ffffff?text=Metal+Roof+Blue","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":1,"kategori_id":1,"nama_series":"Rensa Metal Roof Premium","struktur_img":"https:\/\/via.placeholder.com\/800x600\/4F46E5\/ffffff?text=Metal+Roof+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/4F46E5\/ffffff?text=Cover+1.05m2","material":"Zinc-Aluminium coating steel","deskripsi_produk":"Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":3,"series_id":1,"nama_product":"Metal Roof Premium - Green","thumbnail":"https:\/\/via.placeholder.com\/300x300\/059669\/ffffff?text=Green","big_pic":"https:\/\/via.placeholder.com\/1200x800\/059669\/ffffff?text=Metal+Roof+Green","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":1,"kategori_id":1,"nama_series":"Rensa Metal Roof Premium","struktur_img":"https:\/\/via.placeholder.com\/800x600\/4F46E5\/ffffff?text=Metal+Roof+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/4F46E5\/ffffff?text=Cover+1.05m2","material":"Zinc-Aluminium coating steel","deskripsi_produk":"Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":4,"series_id":2,"nama_product":"Spandek Pro - Natural Silver","thumbnail":"https:\/\/via.placeholder.com\/300x300\/94A3B8\/ffffff?text=Silver","big_pic":"https:\/\/via.placeholder.com\/1200x800\/94A3B8\/ffffff?text=Spandek+Silver","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":2,"kategori_id":1,"nama_series":"Rensa Spandek Pro","struktur_img":"https:\/\/via.placeholder.com\/800x600\/7C3AED\/ffffff?text=Spandek+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/7C3AED\/ffffff?text=Cover+1.00m2","material":"Galvalume steel","deskripsi_produk":"Atap spandek berkualitas tinggi dengan ketahanan korosi superior. Cocok untuk bangunan industri dan komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":5,"series_id":2,"nama_product":"Spandek Pro - Dark Grey","thumbnail":"https:\/\/via.placeholder.com\/300x300\/475569\/ffffff?text=Grey","big_pic":"https:\/\/via.placeholder.com\/1200x800\/475569\/ffffff?text=Spandek+Grey","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":2,"kategori_id":1,"nama_series":"Rensa Spandek Pro","struktur_img":"https:\/\/via.placeholder.com\/800x600\/7C3AED\/ffffff?text=Spandek+Structure","cover_area":"https:\/\/via.placeholder.com\/600x400\/7C3AED\/ffffff?text=Cover+1.00m2","material":"Galvalume steel","deskripsi_produk":"Atap spandek berkualitas tinggi dengan ketahanan korosi superior. Cocok untuk bangunan industri dan komersial.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":6,"series_id":3,"nama_product":"Bitumen Shield - Standard Roll","thumbnail":"https:\/\/via.placeholder.com\/300x300\/1F2937\/ffffff?text=Bitumen","big_pic":"https:\/\/via.placeholder.com\/1200x800\/1F2937\/ffffff?text=Bitumen+Roll","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":3,"kategori_id":2,"nama_series":"Rensa Bitumen Shield","struktur_img":"https:\/\/via.placeholder.com\/800x600\/EC4899\/ffffff?text=Bitumen+Shield","cover_area":"https:\/\/via.placeholder.com\/600x400\/EC4899\/ffffff?text=Cover+10m2","material":"Modified bitumen membrane","deskripsi_produk":"Membran bitumen modified dengan daya rekat tinggi. Solusi waterproofing terbaik untuk atap datar.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":7,"series_id":4,"nama_product":"Genteng Keramik - Gelombang Merah","thumbnail":"https:\/\/via.placeholder.com\/300x300\/B91C1C\/ffffff?text=Ceramic+Red","big_pic":"https:\/\/via.placeholder.com\/1200x800\/B91C1C\/ffffff?text=Genteng+Merah","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":4,"kategori_id":3,"nama_series":"Rensa Genteng Keramik","struktur_img":"https:\/\/via.placeholder.com\/800x600\/F59E0B\/ffffff?text=Ceramic+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/F59E0B\/ffffff?text=Cover+10pcs\/m2","material":"High quality ceramic","deskripsi_produk":"Genteng keramik dengan finishing glazur. Tahan lama, tidak pudar, dan memberikan kesan mewah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":8,"series_id":4,"nama_product":"Genteng Keramik - Gelombang Coklat","thumbnail":"https:\/\/via.placeholder.com\/300x300\/92400E\/ffffff?text=Ceramic+Brown","big_pic":"https:\/\/via.placeholder.com\/1200x800\/92400E\/ffffff?text=Genteng+Coklat","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":4,"kategori_id":3,"nama_series":"Rensa Genteng Keramik","struktur_img":"https:\/\/via.placeholder.com\/800x600\/F59E0B\/ffffff?text=Ceramic+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/F59E0B\/ffffff?text=Cover+10pcs\/m2","material":"High quality ceramic","deskripsi_produk":"Genteng keramik dengan finishing glazur. Tahan lama, tidak pudar, dan memberikan kesan mewah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":9,"series_id":5,"nama_product":"Genteng Beton - Natural Grey","thumbnail":"https:\/\/via.placeholder.com\/300x300\/6B7280\/ffffff?text=Concrete","big_pic":"https:\/\/via.placeholder.com\/1200x800\/6B7280\/ffffff?text=Genteng+Beton","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":5,"kategori_id":3,"nama_series":"Rensa Genteng Beton","struktur_img":"https:\/\/via.placeholder.com\/800x600\/10B981\/ffffff?text=Concrete+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/10B981\/ffffff?text=Cover+10pcs\/m2","material":"High strength concrete","deskripsi_produk":"Genteng beton dengan kekuatan tinggi. Ekonomis dan tahan terhadap perubahan cuaca ekstrem.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":10,"series_id":5,"nama_product":"Genteng Beton - Terracotta","thumbnail":"https:\/\/via.placeholder.com\/300x300\/D97706\/ffffff?text=Terracotta","big_pic":"https:\/\/via.placeholder.com\/1200x800\/D97706\/ffffff?text=Genteng+Terracotta","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":5,"kategori_id":3,"nama_series":"Rensa Genteng Beton","struktur_img":"https:\/\/via.placeholder.com\/800x600\/10B981\/ffffff?text=Concrete+Tile","cover_area":"https:\/\/via.placeholder.com\/600x400\/10B981\/ffffff?text=Cover+10pcs\/m2","material":"High strength concrete","deskripsi_produk":"Genteng beton dengan kekuatan tinggi. Ekonomis dan tahan terhadap perubahan cuaca ekstrem.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":11,"series_id":6,"nama_product":"Gypsum Board - Standard 9mm","thumbnail":"https:\/\/via.placeholder.com\/300x300\/F3F4F6\/1F2937?text=Gypsum+9mm","big_pic":"https:\/\/via.placeholder.com\/1200x800\/F3F4F6\/1F2937?text=Gypsum+Board+9mm","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":6,"kategori_id":4,"nama_series":"Rensa Gypsum Board","struktur_img":"https:\/\/via.placeholder.com\/800x600\/3B82F6\/ffffff?text=Gypsum+Board","cover_area":"https:\/\/via.placeholder.com\/600x400\/3B82F6\/ffffff?text=Cover+2.88m2","material":"Gypsum core with paper liner","deskripsi_produk":"Plafon gypsum berkualitas tinggi untuk interior modern. Permukaan halus dan mudah finishing.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":12,"series_id":6,"nama_product":"Gypsum Board - Standard 12mm","thumbnail":"https:\/\/via.placeholder.com\/300x300\/F3F4F6\/1F2937?text=Gypsum+12mm","big_pic":"https:\/\/via.placeholder.com\/1200x800\/F3F4F6\/1F2937?text=Gypsum+Board+12mm","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":6,"kategori_id":4,"nama_series":"Rensa Gypsum Board","struktur_img":"https:\/\/via.placeholder.com\/800x600\/3B82F6\/ffffff?text=Gypsum+Board","cover_area":"https:\/\/via.placeholder.com\/600x400\/3B82F6\/ffffff?text=Cover+2.88m2","material":"Gypsum core with paper liner","deskripsi_produk":"Plafon gypsum berkualitas tinggi untuk interior modern. Permukaan halus dan mudah finishing.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":13,"series_id":7,"nama_product":"PVC Ceiling - White","thumbnail":"https:\/\/via.placeholder.com\/300x300\/FFFFFF\/1F2937?text=PVC+White","big_pic":"https:\/\/via.placeholder.com\/1200x800\/FFFFFF\/1F2937?text=PVC+Ceiling+White","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":7,"kategori_id":4,"nama_series":"Rensa PVC Ceiling","struktur_img":"https:\/\/via.placeholder.com\/800x600\/8B5CF6\/ffffff?text=PVC+Ceiling","cover_area":"https:\/\/via.placeholder.com\/600x400\/8B5CF6\/ffffff?text=Cover+3m","material":"UV resistant PVC","deskripsi_produk":"Plafon PVC anti air dan mudah dibersihkan. Ideal untuk kamar mandi dan area basah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":14,"series_id":7,"nama_product":"PVC Ceiling - Wood Pattern","thumbnail":"https:\/\/via.placeholder.com\/300x300\/78350F\/ffffff?text=PVC+Wood","big_pic":"https:\/\/via.placeholder.com\/1200x800\/78350F\/ffffff?text=PVC+Wood+Pattern","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":7,"kategori_id":4,"nama_series":"Rensa PVC Ceiling","struktur_img":"https:\/\/via.placeholder.com\/800x600\/8B5CF6\/ffffff?text=PVC+Ceiling","cover_area":"https:\/\/via.placeholder.com\/600x400\/8B5CF6\/ffffff?text=Cover+3m","material":"UV resistant PVC","deskripsi_produk":"Plafon PVC anti air dan mudah dibersihkan. Ideal untuk kamar mandi dan area basah.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}},{"id":15,"series_id":8,"nama_product":"Wall Panel - Cream","thumbnail":"https:\/\/via.placeholder.com\/300x300\/FEF3C7\/1F2937?text=Panel+Cream","big_pic":"https:\/\/via.placeholder.com\/1200x800\/FEF3C7\/1F2937?text=Wall+Panel+Cream","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00","series":{"id":8,"kategori_id":5,"nama_series":"Rensa Wall Panel","struktur_img":"https:\/\/via.placeholder.com\/800x600\/EF4444\/ffffff?text=Wall+Panel","cover_area":"https:\/\/via.placeholder.com\/600x400\/EF4444\/ffffff?text=Cover+2.4m2","material":"Composite sandwich panel","deskripsi_produk":"Panel dinding sandwich dengan insulasi thermal. Ringan, kuat, dan cepat dipasang.","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/stores
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a listing of the resource.'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"data":[{"id":1,"nama_toko":"Rensa Store Jakarta Pusat","alamat":"Jl. Gatot Subroto No. 123, Jakarta Pusat, DKI Jakarta 10270","link_maps":"https:\/\/maps.google.com\/?q=-6.2088,106.8456","kontak":"021-5551234","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":2,"nama_toko":"Rensa Store Bandung","alamat":"Jl. Asia Afrika No. 45, Bandung, Jawa Barat 40111","link_maps":"https:\/\/maps.google.com\/?q=-6.9175,107.6191","kontak":"022-4447890","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":3,"nama_toko":"Rensa Store Surabaya","alamat":"Jl. Basuki Rahmat No. 78, Surabaya, Jawa Timur 60271","link_maps":"https:\/\/maps.google.com\/?q=-7.2575,112.7521","kontak":"031-3335678","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":4,"nama_toko":"Rensa Store Medan","alamat":"Jl. Imam Bonjol No. 56, Medan, Sumatera Utara 20152","link_maps":"https:\/\/maps.google.com\/?q=3.5952,98.6722","kontak":"061-4449012","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"},{"id":5,"nama_toko":"Rensa Store Makassar","alamat":"Jl. Ahmad Yani No. 89, Makassar, Sulawesi Selatan 90174","link_maps":"https:\/\/maps.google.com\/?q=-5.1477,119.4327","kontak":"0411-3216789","created_at":"2026-01-24T09:11:57+00:00","updated_at":"2026-01-24T09:11:57+00:00"}]}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
