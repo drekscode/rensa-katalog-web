@@ -12,22 +12,37 @@ use App\Http\Controllers\TutorialVideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-Route::prefix('kategori')->group(function () {
-    Route::get('list', [KategoriController::class, 'getAllKategori']);
+Route::prefix('categories')->group(function () {
+    Route::get('/', [KategoriController::class, 'getAllKategori']);
     Route::get('{id}', [KategoriController::class, 'show']);
 });
-Route::apiResource('rumus', RumusController::class)->only(['index', 'show']);
-Route::prefix('banner')->group(function () {
-    Route::get('list', [BannerController::class, 'getAllBanner']);
+
+Route::prefix('banners')->group(function () {
+    Route::get('/', [BannerController::class, 'getAllBanner']);
     Route::get('{id}', [BannerController::class, 'show']);
 });
-Route::apiResource('series', SeriesController::class)->only(['index', 'show']);
-Route::apiResource('product', ProductController::class)->only(['index', 'show']);
-Route::apiResource('toko', TokoController::class)->only(['index', 'show']);
-Route::apiResource('artikel', ArtikelController::class)->only(['index', 'show']);
-Route::apiResource('tutorial-gambar', TutorialGambarController::class)->only(['index', 'show']);
-Route::apiResource('tutorial-video', TutorialVideoController::class)->only(['index', 'show']);
+
+Route::prefix('series')->group(function () {
+    Route::get('/', [SeriesController::class, 'getAllSeries']);
+    Route::get('by-category/{kategoriId}', [SeriesController::class, 'getSeriesByKategori']);
+    Route::get('paginate', [SeriesController::class, 'getSeriesPaginate']);
+});
+
+Route::prefix('articles')->group(function () {
+    Route::get('/', [ArtikelController::class, 'getArtikel']);
+    Route::get('by-category/hp/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateHPByKategori']);
+    Route::get('by-category/tab/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateTabByKategori']);
+    Route::get('by-series/{seriesId}/products', [SeriesController::class, 'getProductsBySeries']);
+});
+
+Route::prefix('formulas')->group(function () {
+    Route::get('by-category/{kategoriId}', [RumusController::class, 'getRumusByKategori']);
+});
+
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'getAllProduct']);
+});
+
+Route::prefix('stores')->group(function () {
+    Route::get('/', [TokoController::class, 'getAllToko']);
+});

@@ -21,6 +21,12 @@ class KategoriResource extends JsonResource
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
             'series' => SeriesResource::collection($this->whenLoaded('series')),
+            'tutorial_gambars' => TutorialGambarResource::collection(
+            $this->whenLoaded('tutorial_gambars')
+            ),
+            'tutorial_videos' => TutorialVideoResource::collection(
+            $this->whenLoaded('tutorial_videos')
+            ),
         ];
     }
 }
