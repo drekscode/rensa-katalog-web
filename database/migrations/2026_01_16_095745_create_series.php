@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('kategori_id');
             $table->string('nama_series');
-            $table->string('struktur_img')->nullable();
-            $table->string('cover_area')->nullable();
+            $table->longText('struktur_img')->nullable();
+            $table->longText('cover_area')->nullable();
             $table->string('material')->nullable();
             $table->text('deskripsi_produk')->nullable();
             $table->timestamps();

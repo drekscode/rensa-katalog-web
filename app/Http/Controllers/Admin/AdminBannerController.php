@@ -35,7 +35,9 @@ class AdminBannerController extends Controller
         ]);
 
         if ($request->hasFile('banner_image')) {
-            $validated['banner_image'] = $request->file('banner_image')->store('banners', 'public');
+            $file = $request->file('banner_image');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['banner_image'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         Banner::create($validated);
@@ -63,7 +65,9 @@ class AdminBannerController extends Controller
         ]);
 
         if ($request->hasFile('banner_image')) {
-            $validated['banner_image'] = $request->file('banner_image')->store('banners', 'public');
+            $file = $request->file('banner_image');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['banner_image'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         $banner->update($validated);

@@ -13,7 +13,7 @@ class TutorialGambarResource extends JsonResource
             'id' => $this->id,
             'kategori_id' => $this->kategori_id,
             'judul' => $this->judul,
-            'gambar' => $this->gambar && str_starts_with($this->gambar, 'http') ? $this->gambar : ($this->gambar ? asset('storage/' . $this->gambar) : null),
+            'gambar' => $this->gambar && (str_starts_with($this->gambar, 'http') || str_starts_with($this->gambar, 'data:')) ? $this->gambar : ($this->gambar ? asset('storage/' . $this->gambar) : null),
             'deskripsi' => $this->deskripsi,
             'urutan' => $this->urutan,
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,

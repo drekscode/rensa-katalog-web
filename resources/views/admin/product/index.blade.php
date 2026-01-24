@@ -76,10 +76,10 @@
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                     @if($product->thumbnail)
-                                        <img src="{{ asset('storage/' . $product->thumbnail) }}" 
+                                        <img src="{{ $product->thumbnail }}" 
                                              alt="Thumbnail" 
                                              class="h-10 w-10 rounded-lg object-cover cursor-zoom-in hover:opacity-80 transition-all border border-gray-100 shadow-sm"
-                                             @click="$dispatch('open-lightbox', { url: '{{ asset('storage/' . $product->thumbnail) }}' })">
+                                             @click="$dispatch('open-lightbox', { url: '{{ $product->thumbnail }}' })">
                                     @else
                                         <span class="text-gray-400 italic">No Image</span>
                                     @endif
@@ -90,8 +90,8 @@
                                             'id': '{{ $product->id }}',
                                             'series': '{{ $product->series->nama_series ?? '-' }}',
                                             'name': '{{ $product->nama_product }}',
-                                            'thumbnail': '{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : '' }}',
-                                            'big_pic': '{{ $product->big_pic ? asset('storage/' . $product->big_pic) : '' }}'
+                                            'thumbnail': '{{ $product->thumbnail ? $product->thumbnail : '' }}',
+                                            'big_pic': '{{ $product->big_pic ? $product->big_pic : '' }}'
                                         })"
                                         class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-50 px-2.5 py-1.5 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-100 transition-colors">
                                             <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tutorial_gambar', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kategori_id');
-            $table->string('gambar')->nullable();
+            $table->longText('gambar')->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();

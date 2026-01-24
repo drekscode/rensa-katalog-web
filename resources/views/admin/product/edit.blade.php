@@ -82,7 +82,7 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($product->thumbnail)
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Thumbnail">
+                                <img src="{{ $product->thumbnail }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Thumbnail">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="thumbnail" id="thumbnail"
@@ -106,7 +106,7 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($product->big_pic)
-                                <img src="{{ asset('storage/' . $product->big_pic) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
+                                <img src="{{ $product->big_pic }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="big_pic" id="big_pic"

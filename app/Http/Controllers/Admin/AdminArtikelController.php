@@ -45,7 +45,9 @@ class AdminArtikelController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('artikels', 'public');
+            $file = $request->file('foto');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['foto'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         // Set date to today if not provided
@@ -82,7 +84,9 @@ class AdminArtikelController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('artikels', 'public');
+            $file = $request->file('foto');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['foto'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         // Set date to today if not provided

@@ -85,8 +85,8 @@
                                             'name': '{{ $s->nama_series }}',
                                             'material': '{{ addslashes($s->material) }}',
                                             'deskripsi': '{{ addslashes($s->deskripsi_produk) }}',
-                                            'struktur': '{{ $s->struktur_img ? asset('storage/' . $s->struktur_img) : '' }}',
-                                            'cover': '{{ $s->cover_area ? asset('storage/' . $s->cover_area) : '' }}'
+                                            'struktur': '{{ $s->struktur_img ? $s->struktur_img : '' }}',
+                                            'cover': '{{ $s->cover_area ? $s->cover_area : '' }}'
                                         })"
                                         class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-50 px-2.5 py-1.5 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-100 transition-colors">
                                             <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

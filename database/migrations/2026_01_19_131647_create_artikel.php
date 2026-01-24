@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('artikel', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kategori_id');
-            $table->string('foto')->nullable();
+            $table->longText('foto')->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('hastag_kategori')->nullable();
             $table->date('date')->nullable();

@@ -82,7 +82,7 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($tutorial_gambar->gambar)
-                                <img src="{{ asset('storage/' . $tutorial_gambar->gambar) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Gambar">
+                                <img src="{{ $tutorial_gambar->gambar }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Gambar">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="gambar" id="gambar"

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('series_id');
             $table->string('nama_product');
-            $table->string('thumbnail')->nullable();
-            $table->string('big_pic')->nullable();
+            $table->longText('thumbnail')->nullable();
+            $table->longText('big_pic')->nullable();
             $table->timestamps();
 
             $table->foreign('series_id')->references('id')->on('series')->onDelete('cascade')->onUpdate('cascade');

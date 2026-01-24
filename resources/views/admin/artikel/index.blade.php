@@ -75,10 +75,10 @@
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                     @if($artikel->foto)
-                                        <img src="{{ asset('storage/' . $artikel->foto) }}" 
+                                        <img src="{{ $artikel->foto }}" 
                                              alt="Foto" 
                                              class="h-10 w-10 rounded-lg object-cover cursor-zoom-in hover:opacity-80 transition-all border border-gray-100 shadow-sm"
-                                             @click="$dispatch('open-lightbox', { url: '{{ asset('storage/' . $artikel->foto) }}' })">
+                                             @click="$dispatch('open-lightbox', { url: '{{ $artikel->foto }}' })">
                                     @else
                                         <span class="text-gray-400 italic">No Image</span>
                                     @endif
@@ -102,7 +102,7 @@
                                             'hastag': '{{ $artikel->hastag_kategori }}',
                                             'deskripsi': '{{ addslashes($artikel->deskripsi) }}',
                                             'date': '{{ $artikel->date ? \Carbon\Carbon::parse($artikel->date)->format('d M Y') : '-' }}',
-                                            'foto': '{{ $artikel->foto ? asset('storage/' . $artikel->foto) : '' }}'
+                                            'foto': '{{ $artikel->foto ? $artikel->foto : '' }}'
                                         })"
                                         class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-50 px-2.5 py-1.5 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-100 transition-colors">
                                             <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

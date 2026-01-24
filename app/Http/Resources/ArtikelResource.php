@@ -14,7 +14,7 @@ class ArtikelResource extends JsonResource
             'kategori_id' => $this->kategori_id,
             'judul' => $this->judul,
             'slug' => $this->slug,
-            'foto' => $this->foto && str_starts_with($this->foto, 'http') ? $this->foto : ($this->foto ? asset('storage/' . $this->foto) : null),
+            'foto' => $this->foto && (str_starts_with($this->foto, 'http') || str_starts_with($this->foto, 'data:')) ? $this->foto : ($this->foto ? asset('storage/' . $this->foto) : null),
             'deskripsi' => $this->deskripsi,
             'hastag_kategori' => $this->hastag_kategori,
             'date' => $this->date,

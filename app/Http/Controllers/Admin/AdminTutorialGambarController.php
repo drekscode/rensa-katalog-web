@@ -44,7 +44,9 @@ class AdminTutorialGambarController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            $validated['gambar'] = $request->file('gambar')->store('tutorials', 'public');
+            $file = $request->file('gambar');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         TutorialGambar::create($validated);
@@ -76,7 +78,9 @@ class AdminTutorialGambarController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            $validated['gambar'] = $request->file('gambar')->store('tutorials', 'public');
+            $file = $request->file('gambar');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         $tutorialGambar->update($validated);

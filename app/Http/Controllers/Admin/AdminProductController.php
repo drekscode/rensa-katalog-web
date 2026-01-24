@@ -41,11 +41,15 @@ class AdminProductController extends Controller
         ]);
 
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
+            $file = $request->file('thumbnail');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['thumbnail'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         if ($request->hasFile('big_pic')) {
-            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
+            $file = $request->file('big_pic');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['big_pic'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         Product::create($validated);
@@ -75,11 +79,15 @@ class AdminProductController extends Controller
         ]);
 
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
+            $file = $request->file('thumbnail');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['thumbnail'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         if ($request->hasFile('big_pic')) {
-            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
+            $file = $request->file('big_pic');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['big_pic'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         $product->update($validated);

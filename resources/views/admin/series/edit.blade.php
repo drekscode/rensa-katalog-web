@@ -101,7 +101,7 @@
                         </label>
                         <div class="mt-2 flex items-center gap-x-4">
                             @if($series->struktur_img)
-                                <img src="{{ asset('storage/' . $series->struktur_img) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
+                                <img src="{{ $series->struktur_img }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="struktur_img" id="struktur_img"
@@ -124,7 +124,7 @@
                         </label>
                         <div class="mt-2 flex items-center gap-x-4">
                              @if($series->cover_area)
-                                <img src="{{ asset('storage/' . $series->cover_area) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
+                                <img src="{{ $series->cover_area }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="cover_area" id="cover_area"

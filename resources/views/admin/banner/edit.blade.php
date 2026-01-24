@@ -23,7 +23,7 @@
                         </label>
                         <div class="mt-2 flex items-center gap-x-4">
                             @if($banner->banner_image)
-                                <img src="{{ asset('storage/' . $banner->banner_image) }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Banner">
+                                <img src="{{ $banner->banner_image }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Banner">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="banner_image" id="banner_image"

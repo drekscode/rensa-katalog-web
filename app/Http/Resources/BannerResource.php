@@ -11,7 +11,7 @@ class BannerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'banner_image' => $this->banner_image && str_starts_with($this->banner_image, 'http') ? $this->banner_image : ($this->banner_image ? asset('storage/' . $this->banner_image) : null),
+            'banner_image' => $this->banner_image && (str_starts_with($this->banner_image, 'http') || str_starts_with($this->banner_image, 'data:')) ? $this->banner_image : ($this->banner_image ? asset('storage/' . $this->banner_image) : null),
             'link' => $this->link,
             'urutan' => $this->urutan,
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,

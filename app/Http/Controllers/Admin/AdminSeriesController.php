@@ -43,11 +43,15 @@ class AdminSeriesController extends Controller
         ]);
 
         if ($request->hasFile('struktur_img')) {
-            $validated['struktur_img'] = $request->file('struktur_img')->store('series/struktur', 'public');
+            $file = $request->file('struktur_img');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         if ($request->hasFile('cover_area')) {
-            $validated['cover_area'] = $request->file('cover_area')->store('series/cover', 'public');
+            $file = $request->file('cover_area');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['cover_area'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         Series::create($validated);
@@ -79,11 +83,15 @@ class AdminSeriesController extends Controller
         ]);
 
         if ($request->hasFile('struktur_img')) {
-            $validated['struktur_img'] = $request->file('struktur_img')->store('series/struktur', 'public');
+            $file = $request->file('struktur_img');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         if ($request->hasFile('cover_area')) {
-            $validated['cover_area'] = $request->file('cover_area')->store('series/cover', 'public');
+            $file = $request->file('cover_area');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['cover_area'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         $series->update($validated);

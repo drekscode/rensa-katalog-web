@@ -120,7 +120,7 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($artikel->foto)
-                                <img src="{{ asset('storage/' . $artikel->foto) }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto">
+                                <img src="{{ $artikel->foto }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="foto" id="foto"
