@@ -145,7 +145,7 @@
 
             <!-- Main content -->
             <main class="py-10">
-                <div class="px-4 sm:px-6 lg:px-8">
+                <div class="px-4 sm:px-6 lg:px-8 animate-fade-in-up">
 
 
                     @yield('content')
@@ -156,6 +156,22 @@
 
     <style>
         [x-cloak] { display: none !important; }
+        
+        /* Smooth Page Transitions */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
     </style>
 
     <!-- Global Image Lightbox -->
