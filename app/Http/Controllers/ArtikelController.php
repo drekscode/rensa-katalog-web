@@ -14,22 +14,10 @@ class ArtikelController extends Controller
      */
     public function getArtikel()
     {
-        return ArtikelResource::collection(Artikel::with('kategori')->orderBy('date', 'desc')->get());
+        return ArtikelResource::collection(Artikel::with('kategori')->orderBy('date', 'desc')->paginate(4));
     }
 
-    public function getArtikelPaginateHPByKategori($kategoriId)
-    {
-        $artikels = Artikel::where('kategori_id', $kategoriId)
-            ->with('kategori')
-            ->orderBy('date', 'desc')
-            ->paginate(3);
-
-        return response()->json([
-            'data' => ArtikelResource::collection($artikels->items()),
-        ]);
-    }
-
-    public function getArtikelPaginateTabByKategori($kategoriId)
+    public function getArtikelPaginateByKategori($kategoriId)
     {
         $artikels = Artikel::where('kategori_id', $kategoriId)
             ->with('kategori')
@@ -40,6 +28,18 @@ class ArtikelController extends Controller
             'data' => ArtikelResource::collection($artikels->items()),
         ]);
     }
+
+    // public function getArtikelPaginateTabByKategori($kategoriId)
+    // {
+    //     $artikels = Artikel::where('kategori_id', $kategoriId)
+    //         ->with('kategori')
+    //         ->orderBy('date', 'desc')
+    //         ->paginate(6);
+
+    //     return response()->json([
+    //         'data' => ArtikelResource::collection($artikels->items()),
+    //     ]);
+    // }
 
     /**
      * Store a newly created resource in storage.

@@ -26,13 +26,13 @@ Route::prefix('series')->group(function () {
     Route::get('/', [SeriesController::class, 'getAllSeries']);
     Route::get('by-category/{kategoriId}', [SeriesController::class, 'getSeriesByKategori']);
     Route::get('paginate', [SeriesController::class, 'getSeriesPaginate']);
+    Route::get('by-series/{seriesId}/products', [SeriesController::class, 'getProductsBySeries']);
 });
 
 Route::prefix('articles')->group(function () {
     Route::get('/', [ArtikelController::class, 'getArtikel']);
-    Route::get('by-category/hp/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateHPByKategori']);
-    Route::get('by-category/tab/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateTabByKategori']);
-    Route::get('by-series/{seriesId}/products', [SeriesController::class, 'getProductsBySeries']);
+    Route::get('by-category/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateByKategori']);
+    // Route::get('by-category/tab/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateTabByKategori']);
 });
 
 Route::prefix('formulas')->group(function () {
