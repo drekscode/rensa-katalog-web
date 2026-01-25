@@ -40,7 +40,9 @@
             <div class="relative flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Products</p>
-                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['products'] }}</h3>
+                    <h3 x-data="animatedCounter({{ $stats['products'] }})" x-text="current" class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">
+                        {{ $stats['products'] }}
+                    </h3>
                 </div>
                 <div class="h-12 w-12 rounded-xl bg-[#8b9b7e]/10 flex items-center justify-center text-[#8b9b7e]">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,7 +64,9 @@
             <div class="relative flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Articles</p>
-                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['artikel'] }}</h3>
+                    <h3 x-data="animatedCounter({{ $stats['artikel'] }})" x-text="current" class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">
+                        {{ $stats['artikel'] }}
+                    </h3>
                 </div>
                 <div class="h-12 w-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,7 +89,9 @@
             <div class="relative flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Toko</p>
-                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['toko'] }}</h3>
+                    <h3 x-data="animatedCounter({{ $stats['toko'] }})" x-text="current" class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">
+                        {{ $stats['toko'] }}
+                    </h3>
                 </div>
                 <div class="h-12 w-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,7 +114,9 @@
             <div class="relative flex items-center justify-between">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Tutorials</p>
-                    <h3 class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">{{ $stats['tutorial_gambar'] + $stats['tutorial_video'] }}</h3>
+                    <h3 x-data="animatedCounter({{ $stats['tutorial_gambar'] + $stats['tutorial_video'] }})" x-text="current" class="mt-1 text-3xl font-extrabold text-gray-900 group-hover:text-[#8b9b7e] transition-colors">
+                        {{ $stats['tutorial_gambar'] + $stats['tutorial_video'] }}
+                    </h3>
                 </div>
                 <div class="h-12 w-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -339,6 +347,26 @@
                 }
             }
         });
+    });
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('animatedCounter', (target, duration = 2000) => ({
+            current: 0,
+            target: target,
+            time: duration,
+            init() {
+                let start = 0;
+                const step = (timestamp) => {
+                    if (!start) start = timestamp;
+                    const progress = Math.min((timestamp - start) / this.time, 1);
+                    this.current = Math.floor(progress * this.target);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+        }));
     });
 </script>
 @endsection
