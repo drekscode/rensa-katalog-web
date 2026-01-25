@@ -7,20 +7,39 @@
 <div x-data="{ 
     showViewModal: false, 
     selectedItem: {},
-    search: '',
+    search: '{{ request('search') }}',
     openViewModal(item) {
         this.selectedItem = item;
         this.showViewModal = true;
+    },
+    getEmbedUrl(url) {
+        if (!url) return null;
+        let videoId = null;
+        // YouTube Long URL
+        let match = url.match(/[?&]v=([^&]+)/);
+        if (match) videoId = match[1];
+        // YouTube Short URL
+        if (!videoId) {
+            match = url.match(/youtu\.be\/([^?]+)/);
+            if (match) videoId = match[1];
+        }
+        // YouTube Embed URL
+        if (!videoId) {
+            match = url.match(/youtube\.com\/embed\/([^?]+)/);
+            if (match) videoId = match[1];
+        }
+        if (videoId) return 'https://www.youtube-nocookie.com/embed/' + videoId;
+        return null;
     }
-}">
-    <div class="sm:flex sm:items-center justify-between gap-4">
-        <div class="sm:flex-auto">
-            <p class="mt-2 text-sm text-gray-600">A list of all tutorial video in your catalog.</p>
+}" class="mx-auto max-w-7xl">
+    
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+             <h2 class="text-lg font-semibold text-gray-900">Tutorial Videos</h2>
+             <p class="text-sm text-gray-500">Manage video-based tutorials.</p>
         </div>
-
-        <!-- Search Bar -->
-        <div class="mt-4 sm:mt-0 flex-1 max-w-md">
-            <form action="{{ route('admin.tutorial-video.index') }}" method="GET" class="relative" id="searchFormTutorialVideo">
+        <div class="flex flex-col sm:flex-row gap-3">
+             <form action="{{ route('admin.tutorial-video.index') }}" method="GET" class="relative">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -29,131 +48,121 @@
                 <input type="text" 
                        name="search"
                        value="{{ request('search') }}"
-                       @input="document.getElementById('searchFormTutorialVideo').submit()"
-                       class="block w-full rounded-xl border-0 py-2.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all" 
-                       placeholder="Search videos by link or category...">
+                       class="block w-full sm:w-64 rounded-xl border-0 py-2.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all" 
+                       placeholder="Search videos...">
             </form>
-        </div>
-
-        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-            <a href="{{ route('admin.tutorial-video.create') }}" 
-               class="flex items-center justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] transition-colors duration-200">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            <a href="{{ route('admin.tutorial-video.create') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
                 </svg>
-                Add Tutorial Video
+                Add Tutorial
             </a>
         </div>
     </div>
 
-    <div class="mt-8 flow-root">
-        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                <div class="overflow-hidden shadow-sm ring-1 ring-gray-200 rounded-xl bg-white">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50/50">
-                            <tr>
-                                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ID</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Kategori</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Link</th>
-                                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                                    <span class="sr-only">Actions</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 bg-white">
-                            @forelse($tutorial_videos as $tv)
-                            <tr class="hover:bg-gray-50/50 transition-colors">
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                    {{ $tv->id }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-600">
-                                    {{ $tv->kategori->nama_kategori ?? '-' }}
-                                </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-blue-500 hover:text-blue-600">
-                                    <a href="{{ $tv->link }}" target="_blank" class="flex items-center gap-1">
-                                        {{ Str::limit($tv->link, 50) }}
-                                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                        </svg>
-                                    </a>
-                                </td>
-                                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button @click="openViewModal({
-                                            'id': '{{ $tv->id }}',
-                                            'kategori': '{{ $tv->kategori->nama_kategori ?? '-' }}',
-                                            'link': '{{ $tv->link }}'
-                                        })"
-                                        class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-50 px-2.5 py-1.5 text-sm font-semibold text-gray-600 shadow-sm hover:bg-gray-100 transition-colors">
-                                            <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            View
-                                        </button>
-                                        <a href="{{ route('admin.tutorial-video.edit', $tv) }}" 
-                                           class="inline-flex items-center gap-x-1.5 rounded-md bg-[#8b9b7e]/10 px-2.5 py-1.5 text-sm font-semibold text-[#8b9b7e] shadow-sm hover:bg-[#8b9b7e]/20 transition-colors group">
-                                            <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                            </svg>
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('admin.tutorial-video.destroy', $tv) }}" 
-                                              method="POST" 
-                                              id="delete-form-{{ $tv->id }}"
-                                              class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" 
-                                                    @click="$dispatch('confirm-delete', { 
-                                                        title: 'Delete Video?', 
-                                                        message: 'Are you sure you want to delete this tutorial video? This action cannot be undone.',
-                                                        formId: 'delete-form-{{ $tv->id }}' 
-                                                    })"
-                                                    class="inline-flex items-center gap-x-1.5 rounded-md bg-red-50 px-2.5 py-1.5 text-sm font-semibold text-red-600 shadow-sm hover:bg-red-100 transition-colors">
-                                                <svg class="-ml-0.5 h-4 w-4 bg-transparent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                                </svg>
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="px-3 py-12 text-center text-sm text-gray-500">
-                                    <div class="flex flex-col items-center">
-                                        <svg class="h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-                                        </svg>
-                                        <p class="text-gray-900 font-medium mb-1">No tutorial video found</p>
-                                        <p class="text-gray-500 mb-4">Get started by creating a new tutorial video.</p>
-                                        <a href="{{ route('admin.tutorial-video.create') }}" class="text-[#8b9b7e] hover:text-[#7a8a6f] font-medium">Create tutorial →</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    @if($tutorial_videos->isEmpty())
+    <!-- Empty State -->
+    <div class="relative block w-full rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center hover:border-[#8b9b7e] focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:ring-offset-2 transition-all duration-300 group bg-white/50 max-w-3xl mx-auto">
+        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-50 group-hover:bg-[#8b9b7e]/10 transition-colors duration-300">
+            <svg class="h-10 w-10 text-gray-400 group-hover:text-[#8b9b7e] transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-gray-900">No Videos Found</h3>
+        <p class="mt-2 text-sm text-gray-500 max-w-sm mx-auto">Get started by creating a new video tutorial.</p>
+        <div class="mt-8">
+            <a href="{{ route('admin.tutorial-video.create') }}" class="inline-flex items-center gap-2 rounded-xl bg-[#8b9b7e] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b9b7e] transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                Create First Video
+            </a>
         </div>
     </div>
 
-    @if($tutorial_videos->hasPages())
-    <div class="mt-6">
+    @else
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($tutorial_videos as $tv)
+        <!-- Content Card -->
+        <div @click="openViewModal({
+            'id': '{{ $tv->id }}',
+            'kategori': '{{ $tv->kategori->nama_kategori ?? '-' }}',
+            'link': '{{ $tv->link }}'
+        })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
+             <!-- Media -->
+            <div class="aspect-video bg-black relative overflow-hidden group-hover:opacity-90 transition-opacity flex items-center justify-center">
+                <svg class="h-12 w-12 text-white opacity-50 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                </svg>
+                <div class="absolute top-2 right-2">
+                    <span class="inline-flex items-center rounded-lg bg-white/90 backdrop-blur-sm px-2 py-1 text-xs font-medium text-gray-800 shadow-sm border border-gray-100">
+                        {{ $tv->kategori->nama_kategori ?? 'Unknown' }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-1 px-6 py-6">
+                <div class="flex items-center gap-1 mb-2 text-xs text-blue-600">
+                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                    </svg>
+                    <span class="font-bold uppercase tracking-wider text-gray-400">Video Link</span>
+                </div>
+                
+                <a href="{{ $tv->link }}" target="_blank" @click.stop class="text-sm font-medium text-gray-900 hover:text-blue-600 hover:underline break-all line-clamp-2">
+                    {{ $tv->link }}
+                </a>
+            </div>
+
+            <!-- Actions -->
+            <div class="bg-gray-50 px-5 py-3 flex items-center justify-end gap-2 border-t border-gray-100 mt-auto" @click.stop>
+
+                 <a href="{{ route('admin.tutorial-video.edit', $tv) }}" 
+                   class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 hover:text-[#8b9b7e] hover:ring-[#8b9b7e]/30 transition-all duration-200" title="Edit">
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                </a>
+                
+                <button type="button" 
+                        @click="$dispatch('confirm-delete', { 
+                            title: 'Delete Video?', 
+                            message: 'Are you sure you want to delete this tutorial video? This action cannot be undone.',
+                            formId: 'delete-form-{{ $tv->id }}' 
+                        })"
+                        class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-500 hover:ring-red-200 transition-all duration-200" title="Delete">
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                </button>
+                
+                <form action="{{ route('admin.tutorial-video.destroy', $tv) }}" 
+                      method="POST" 
+                      id="delete-form-{{ $tv->id }}"
+                      class="hidden">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    <div class="mt-8">
         {{ $tutorial_videos->links() }}
     </div>
+
     @endif
 
     <!-- View Modal -->
     <template x-teleport="body">
         <div x-show="showViewModal" 
              class="fixed inset-0 z-[100] overflow-y-auto" 
-             x-cloak>
+             style="display: none;"
+             x-show="showViewModal">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div x-show="showViewModal"
                      x-transition:enter="transition ease-out duration-300"
@@ -195,12 +204,16 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Preview</label>
-                                    <div class="rounded-xl overflow-hidden border border-gray-100 bg-black aspect-video flex items-center justify-center">
-                                        <template x-if="selectedItem.link">
-                                            <div class="w-full h-full flex items-center justify-center text-white">
+                                    <div class="rounded-xl overflow-hidden border border-gray-100 bg-black aspect-video flex items-center justify-center relative">
+                                        <template x-if="getEmbedUrl(selectedItem.link)">
+                                            <iframe :src="getEmbedUrl(selectedItem.link)" class="w-full h-full absolute inset-0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                        </template>
+                                        <template x-if="!getEmbedUrl(selectedItem.link)">
+                                            <div class="w-full h-full flex flex-col gap-2 items-center justify-center text-white p-4 text-center">
                                                 <svg class="h-12 w-12 opacity-50" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M8 5v14l11-7z" />
                                                 </svg>
+                                                <p class="text-xs text-gray-400">Preview not available for this link format.<br>Click the link above to view.</p>
                                             </div>
                                         </template>
                                     </div>

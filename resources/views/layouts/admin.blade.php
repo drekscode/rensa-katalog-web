@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('RENSA_ID_R_PUTIH.png') }}" media="(prefers-color-scheme: dark)" type="image/png">
+    <link rel="icon" href="{{ asset('RENSA_ID_R_HITAM.png') }}" media="(prefers-color-scheme: light)" type="image/png">
     <title>@yield('title', 'Admin Panel') - Rensa Katalog</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -124,57 +126,7 @@
             <!-- Main content -->
             <main class="py-10">
                 <div class="px-4 sm:px-6 lg:px-8">
-                    @if(session('success'))
-                        <div x-data="{ show: true }" 
-                             x-show="show"
-                             x-init="setTimeout(() => show = false, 4000)"
-                             x-transition:enter="transition ease-out duration-300"
-                             x-transition:enter-start="opacity-0 transform scale-90"
-                             x-transition:enter-end="opacity-100 transform scale-100"
-                             class="mb-6 rounded-xl bg-green-50 border border-green-200 p-4 shadow-sm">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
-                                </div>
-                                <button @click="show = false" class="ml-3 flex-shrink-0">
-                                    <svg class="h-5 w-5 text-green-600 hover:text-green-800" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    @endif
 
-                    @if(session('error'))
-                        <div x-data="{ show: true }" 
-                             x-show="show"
-                             x-init="setTimeout(() => show = false, 4000)"
-                             x-transition:enter="transition ease-out duration-300"
-                             x-transition:enter-start="opacity-0 transform scale-90"
-                             x-transition:enter-end="opacity-100 transform scale-100"
-                             class="mb-6 rounded-xl bg-red-50 border border-red-200 p-4 shadow-sm">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6 text-red-600" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
-                                </div>
-                                <button @click="show = false" class="ml-3 flex-shrink-0">
-                                    <svg class="h-5 w-5 text-red-600 hover:text-red-800" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    @endif
 
                     @yield('content')
                 </div>
@@ -313,6 +265,77 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Toast Notifications (Bottom Right) -->
+    <div class="fixed bottom-6 right-6 z-[400] flex flex-col gap-3 pointer-events-none">
+        @if(session('success'))
+            <div x-data="{ show: true }" 
+                 x-show="show"
+                 x-init="setTimeout(() => show = false, 5000)"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0 translate-x-4"
+                 class="pointer-events-auto w-full max-w-sm overflow-hidden bg-white/90 backdrop-blur-md rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 border-l-4 border-[#8b9b7e] flex items-stretch cursor-pointer hover:bg-white transition-colors"
+                 @click="show = false">
+                <div class="flex-shrink-0 flex items-center justify-center w-12 bg-green-50">
+                    <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="p-4 flex-1">
+                    <div class="flex items-start">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-semibold text-gray-900">Success!</h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ session('success') }}</p>
+                        </div>
+                        <button class="ml-4 inline-flex flex-shrink-0 text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div x-data="{ show: true }" 
+                 x-show="show"
+                 x-init="setTimeout(() => show = false, 5000)"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0 translate-x-4"
+                 class="pointer-events-auto w-full max-w-sm overflow-hidden bg-white/90 backdrop-blur-md rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 border-l-4 border-red-500 flex items-stretch cursor-pointer hover:bg-white transition-colors"
+                 @click="show = false">
+                <div class="flex-shrink-0 flex items-center justify-center w-12 bg-red-50">
+                    <svg class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <div class="p-4 flex-1">
+                    <div class="flex items-start">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-semibold text-gray-900">Error</h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ session('error') }}</p>
+                        </div>
+                        <button class="ml-4 inline-flex flex-shrink-0 text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </body>
 </html>

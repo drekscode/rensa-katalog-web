@@ -1,8 +1,8 @@
 <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-[#2d2d2d] px-6 pt-6 pb-4 shadow-xl">
     <div class="flex h-16 shrink-0 items-center border-b border-gray-700/30 pb-3">
         <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-lg bg-white p-1 flex items-center justify-center overflow-hidden">
-                <img src="{{ Vite::asset('resources/img/RENSA_ID_R_HITAM.png') }}" alt="Rensa Logo" class="h-full w-full object-contain">
+            <div class="h-10 w-10 rounded-lg flex items-center justify-center overflow-hidden">
+                <img src="{{ asset('RENSA_ID_R_PUTIH.png') }}" alt="Rensa Logo" class="h-full w-full object-contain">
             </div>
             <div>
                 <h2 class="text-xl font-bold text-white">Rensa</h2>
@@ -24,6 +24,16 @@
                         </a>
                     </li>
                     
+                    <li>
+                        <a href="{{ route('admin.welcome-text.index') }}" 
+                           class="group flex gap-x-3 rounded-lg p-2.5 text-sm leading-6 font-medium transition-all duration-200 {{ request()->routeIs('admin.welcome-text.*') ? 'bg-[#8b9b7e] text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700/50' }}">
+                            <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                            </svg>
+                            Welcome Text
+                        </a>
+                    </li>
+
                     <li>
                         <a href="{{ route('admin.kategori.index') }}" 
                            class="group flex gap-x-3 rounded-lg p-2.5 text-sm leading-6 font-medium transition-all duration-200 {{ request()->routeIs('admin.kategori.*') ? 'bg-[#8b9b7e] text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700/50' }}">
@@ -115,6 +125,8 @@
                             Tutorial Video
                         </a>
                     </li>
+
+
                 </ul>
             </li>
         </ul>

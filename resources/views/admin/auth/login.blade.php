@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('RENSA_ID_R_PUTIH.png') }}" media="(prefers-color-scheme: dark)" type="image/png">
+    <link rel="icon" href="{{ asset('RENSA_ID_R_HITAM.png') }}" media="(prefers-color-scheme: light)" type="image/png">
     <title>Login - Rensa Katalog Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -13,8 +15,8 @@
             <!-- Logo and Header -->
             <div class="text-center">
                 <div class="flex justify-center mb-6">
-                    <div class="h-24 w-24 rounded-2xl bg-white shadow-lg flex items-center justify-center transform hover:scale-105 transition-transform duration-300 overflow-hidden p-2">
-                        <img src="{{ Vite::asset('resources/img/RENSA_ID_R_HITAM.png') }}" alt="Rensa Logo" class="h-full w-full object-contain">
+                    <div class="h-24 w-24 rounded-2xl bg-[#8b9b7e] shadow-lg flex items-center justify-center transform hover:scale-105 transition-transform duration-300 overflow-hidden p-2">
+                        <img src="{{ asset('RENSA_ID_R_PUTIH.png') }}" alt="Rensa Logo" class="h-full w-full object-contain">
                     </div>
                 </div>
                 <h2 class="text-4xl font-bold text-[#2d2d2d]">

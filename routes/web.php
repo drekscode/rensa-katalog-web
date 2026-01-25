@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminTutorialGambarController;
 use App\Http\Controllers\Admin\AdminTutorialVideoController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminWelcomeTextController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,5 +35,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('artikel', AdminArtikelController::class);
         Route::resource('tutorial-gambar', AdminTutorialGambarController::class);
         Route::resource('tutorial-video', AdminTutorialVideoController::class);
+        Route::patch('welcome-text/{welcome_text}/toggle-status', [AdminWelcomeTextController::class, 'toggleStatus'])->name('welcome-text.toggle-status');
+        Route::resource('welcome-text', AdminWelcomeTextController::class);
     });
 });
