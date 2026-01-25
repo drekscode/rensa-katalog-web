@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-[#faf9f6]">
+<html lang="en" class="h-full bg-gradient-to-br from-[#faf9f6] via-[#f5f4f1] to-[#ebe9e4]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,39 +76,46 @@
         </div>
 
         <div class="lg:pl-72">
-            <!-- Top bar -->
-            <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 bg-white border-b border-gray-200 shadow-sm px-4 sm:gap-x-6 sm:px-6 lg:px-8">
-                <button @click="sidebarOpen = true" type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden hover:text-[#8b9b7e] transition-colors">
+            <!-- Enhanced Top bar with Glassmorphism -->
+            <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 bg-white/80 backdrop-blur-xl border-b border-gray-200/60 shadow-sm px-4 sm:gap-x-6 sm:px-6 lg:px-8">
+                <!-- Mobile Menu Button with Enhanced Design -->
+                <button @click="sidebarOpen = true" type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden hover:text-[#8b9b7e] hover:bg-[#8b9b7e]/10 rounded-lg transition-all duration-200 group">
                     <span class="sr-only">Open sidebar</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <svg class="h-6 w-6 group-hover:scale-110 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
 
-                <div class="h-6 w-px bg-gray-200 lg:hidden"></div>
+                <div class="h-6 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent lg:hidden"></div>
 
-                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 items-center">
+                    <!-- Page Title with Gradient Border -->
                     <div class="flex flex-1 items-center">
-                        <h1 class="text-xl font-bold text-gray-800">
-                            @yield('page-title', 'Dashboard')
-                        </h1>
+                        <div class="relative">
+                            <h1 class="text-lg sm:text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                                @yield('page-title', 'Dashboard')
+                            </h1>
+                            <div class="absolute -bottom-1 left-0 h-0.5 w-12 bg-gradient-to-r from-[#8b9b7e] to-transparent rounded-full"></div>
+                        </div>
                     </div>
+                    
                     <div class="flex items-center gap-x-4 lg:gap-x-6">
-                        <!-- User menu -->
+                        <!-- User menu with Enhanced Design -->
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" type="button" class="-m-1.5 flex items-center p-1.5 hover:bg-gray-50 rounded-lg transition-all duration-200">
+                            <button @click="open = !open" type="button" class="-m-1.5 flex items-center p-1.5 hover:bg-gray-50/80 rounded-xl transition-all duration-200 group">
                                 <span class="sr-only">Open user menu</span>
-                                <div class="h-9 w-9 rounded-lg bg-[#8b9b7e] flex items-center justify-center shadow-md">
+                                <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-br from-[#8b9b7e] to-[#7a8a6f] flex items-center justify-center shadow-md shadow-[#8b9b7e]/30 ring-2 ring-white group-hover:scale-105 transition-transform duration-200">
                                     <span class="text-sm font-bold text-white">{{ substr(auth()->user()->name ?? 'A', 0, 1) }}</span>
                                 </div>
                                 <span class="hidden lg:flex lg:items-center">
                                     <span class="ml-3 text-sm font-semibold leading-6 text-gray-900">{{ auth()->user()->name ?? 'Admin' }}</span>
-                                    <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <svg class="ml-2 h-5 w-5 text-gray-400 group-hover:text-[#8b9b7e] transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
                                     </svg>
                                 </span>
                             </button>
 
+                            <!-- Enhanced Dropdown Menu with Glassmorphism -->
                             <div x-show="open" 
                                  @click.away="open = false"
                                  x-transition:enter="transition ease-out duration-200"
@@ -117,9 +124,9 @@
                                  x-transition:leave="transition ease-in duration-150"
                                  x-transition:leave-start="transform opacity-100 scale-100 translate-y-0"
                                  x-transition:leave-end="transform opacity-0 scale-95 -translate-y-2"
-                                 class="absolute right-0 z-10 mt-2.5 w-56 origin-top-right rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 divide-y divide-gray-100 focus:outline-none"
+                                 class="absolute right-0 z-10 mt-2.5 w-56 origin-top-right rounded-2xl bg-white/95 backdrop-blur-xl shadow-[0_16px_32px_rgba(0,0,0,0.12)] ring-1 ring-black/5 divide-y divide-gray-100 focus:outline-none overflow-hidden"
                                  x-cloak>
-                                <div class="px-4 py-3">
+                                <div class="px-4 py-3 bg-gradient-to-br from-gray-50 to-white">
                                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Signed in as</p>
                                     <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name ?? 'Admin' }}</p>
                                     <p class="text-xs text-gray-500 truncate mt-0.5">{{ auth()->user()->email ?? '' }}</p>
@@ -127,9 +134,9 @@
                                 <div class="py-1">
                                     <form method="POST" action="{{ route('admin.logout') }}">
                                         @csrf
-                                        <button type="submit" class="group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all">
-                                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-red-100 transition-colors">
-                                                 <svg class="h-4 w-4 text-gray-400 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <button type="submit" class="group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-50/50 hover:text-red-600 transition-all duration-200">
+                                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-red-100 transition-colors duration-200">
+                                                 <svg class="h-4 w-4 text-gray-400 group-hover:text-red-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                                                 </svg>
                                             </div>
@@ -144,7 +151,7 @@
             </div>
 
             <!-- Main content -->
-            <main class="py-10">
+            <main class="py-6 sm:py-10">
                 <div class="px-4 sm:px-6 lg:px-8 animate-fade-in-up">
 
 

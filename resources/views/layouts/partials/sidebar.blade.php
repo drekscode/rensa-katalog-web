@@ -1,19 +1,25 @@
-<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-[#2d2d2d]/95 backdrop-blur-xl px-6 pt-6 pb-4 shadow-xl border-r border-white/5">
-    <div class="flex h-16 shrink-0 items-center border-b border-gray-700/30 pb-3">
-        <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-lg flex items-center justify-center overflow-hidden">
-                <img src="{{ asset('RENSA_ID_R_PUTIH.png') }}" alt="Rensa Logo" class="h-full w-full object-contain">
+<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gradient-to-b from-[#2d2d2d] to-[#252525] backdrop-blur-xl px-6 pt-6 pb-4 shadow-[4px_0_24px_rgba(0,0,0,0.3)] border-r border-white/5 relative">
+    <!-- Subtle Pattern Overlay -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.02)_1px,transparent_0)] bg-[size:20px_20px] pointer-events-none"></div>
+    
+    <!-- Logo Section with Enhanced Design -->
+    <div class="flex h-16 shrink-0 items-center border-b border-gray-700/30 pb-3 mb-2 relative z-10">
+        <div class="flex items-center gap-3 w-full group">
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-[#8b9b7e] to-[#7a8a6f] flex items-center justify-center overflow-hidden shadow-lg group-hover:scale-105 transition-transform duration-300 p-2 ring-2 ring-[#8b9b7e]/20">
+                <img src="{{ asset('RENSA_ID_R_PUTIH.png') }}" alt="Rensa Logo" class="h-full w-full object-contain filter drop-shadow-md">
             </div>
-            <div>
-                <h2 class="text-xl font-bold text-white">Rensa</h2>
-                <p class="text-xs text-gray-400">Admin Panel</p>
+            <div class="flex-1">
+                <h2 class="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Rensa</h2>
+                <p class="text-xs text-gray-400 font-medium">Admin Panel</p>
             </div>
         </div>
     </div>
-    <nav class="flex flex-1 flex-col">
+    
+    <!-- Navigation -->
+    <nav class="flex flex-1 flex-col relative z-10">
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
             <li>
-                <ul role="list" class="-mx-2 space-y-1">
+                <ul role="list" class="-mx-2 space-y-1.5">
                     @foreach([
                         ['route' => 'admin.dashboard', 'label' => 'Dashboard', 'icon' => 'M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25'],
                         ['route' => 'admin.welcome-text.index', 'label' => 'Welcome Text', 'active_prefix' => 'admin.welcome-text.*', 'icon' => 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z'],
@@ -32,21 +38,31 @@
                     @endphp
                     <li>
                         <a href="{{ route($item['route']) }}" 
-                           class="group flex items-center gap-x-3 rounded-lg p-2.5 text-sm leading-6 font-medium transition-all duration-300 relative overflow-hidden
-                                  {{ $isActive ? 'bg-[#8b9b7e] text-white shadow-lg shadow-[#8b9b7e]/30' : 'text-gray-300 hover:text-white hover:bg-white/10' }}">
+                           class="group flex items-center gap-x-3 rounded-xl p-2.5 text-sm leading-6 font-medium transition-all duration-300 relative overflow-hidden
+                                  {{ $isActive ? 'bg-gradient-to-r from-[#8b9b7e] to-[#7a8a6f] text-white shadow-lg shadow-[#8b9b7e]/40' : 'text-gray-300 hover:text-white hover:bg-white/10' }}">
                             
+                            <!-- Active Indicator with Glow -->
                             @if($isActive)
-                            <div class="absolute inset-y-0 left-0 w-1 bg-white/20 rounded-r-lg"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-50 rounded-xl"></div>
+                            <div class="absolute inset-y-0 left-0 w-1 bg-white rounded-r-full shadow-[0_0_8px_rgba(255,255,255,0.5)]"></div>
                             @endif
                             
-                            <svg class="h-5 w-5 shrink-0 transition-transform duration-300 group-hover:scale-110 {{ $isActive ? 'text-white' : 'text-gray-400 group-hover:text-white' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <!-- Hover Glow Effect -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#8b9b7e]/0 via-[#8b9b7e]/10 to-[#8b9b7e]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
+                            
+                            <svg class="h-5 w-5 shrink-0 transition-all duration-300 relative z-10
+                                        {{ $isActive ? 'text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]' : 'text-gray-400 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_4px_rgba(139,155,126,0.4)]' }}" 
+                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 @if(isset($item['icon_path']))
                                     {!! $item['icon_path'] !!}
                                 @else
                                     <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}" />
                                 @endif
                             </svg>
-                            <span class="transition-transform duration-300 group-hover:translate-x-1">{{ $item['label'] }}</span>
+                            <span class="transition-all duration-300 relative z-10 group-hover:translate-x-1 {{ $isActive ? 'font-semibold' : '' }}">{{ $item['label'] }}</span>
+                            
+                            <!-- Shine Effect on Hover -->
+                            <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
                         </a>
                     </li>
                     @endforeach
