@@ -4,7 +4,7 @@
 @section('page-title', 'Create Product')
 
 @section('content')
-<div class="mx-auto max-w-3xl">
+<div class="mx-auto max-w-3xl" x-data="filePreview">
     <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
@@ -79,9 +79,18 @@
                         <label for="thumbnail" class="block text-sm font-medium leading-6 text-gray-900">
                             Thumbnail
                         </label>
-                        <div class="mt-2">
-                            <input type="file" name="thumbnail" id="thumbnail"
-                                   class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('thumbnail') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                        <div class="mt-2 flex items-center gap-x-6">
+                            <div class="relative flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                <img x-show="thumbnailPreview" :src="thumbnailPreview" class="h-full w-full object-cover" style="display: none;">
+                                <svg x-show="!thumbnailPreview" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" name="thumbnail" id="thumbnail" @change="updatePreview($event, 'thumbnailPreview')"
+                                       class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('thumbnail') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF up to 2MB</p>
+                            </div>
                         </div>
                         @error('thumbnail')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
@@ -98,9 +107,18 @@
                         <label for="big_pic" class="block text-sm font-medium leading-6 text-gray-900">
                             Big Picture
                         </label>
-                        <div class="mt-2">
-                            <input type="file" name="big_pic" id="big_pic"
-                                   class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('big_pic') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                        <div class="mt-2 flex items-center gap-x-6">
+                            <div class="relative flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                <img x-show="bigPicPreview" :src="bigPicPreview" class="h-full w-full object-cover" style="display: none;">
+                                <svg x-show="!bigPicPreview" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <input type="file" name="big_pic" id="big_pic" @change="updatePreview($event, 'bigPicPreview')"
+                                       class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('big_pic') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                            </div>
                         </div>
                         @error('big_pic')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
@@ -130,4 +148,25 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('filePreview', () => ({
+            thumbnailPreview: null,
+            bigPicPreview: null,
+            updatePreview(event, previewVar) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this[previewVar] = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    this[previewVar] = null;
+                }
+            }
+        }))
+    })
+</script>
 @endsection

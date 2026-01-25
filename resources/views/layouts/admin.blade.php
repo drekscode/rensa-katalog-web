@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('RENSA_ID_R_PUTIH.png') }}" media="(prefers-color-scheme: dark)" type="image/png">
+    <link rel="icon" href="{{ asset('RENSA_ID_R_HITAM.png') }}" media="(prefers-color-scheme: light)" type="image/png">
     <title>@yield('title', 'Admin Panel') - Rensa Katalog</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -18,8 +20,23 @@
         }
     </style>
 </head>
-<body class="h-full">
-    <div x-data="{ sidebarOpen: false }" class="min-h-full">
+<body class="h-full" x-data="{ sidebarOpen: false }">
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.group.cursor-pointer');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                   card.style.setProperty('--x', x + 'px');
+                   card.style.setProperty('--y', y + 'px');
+                }
+            });
+        });
+    </script>
+    <div class="min-h-full">
         <!-- Mobile sidebar -->
         <div x-show="sidebarOpen" class="relative z-50 lg:hidden" x-cloak>
             <div x-show="sidebarOpen" 
@@ -94,27 +111,32 @@
 
                             <div x-show="open" 
                                  @click.away="open = false"
-                                 x-transition:enter="transition ease-out duration-100"
-                                 x-transition:enter-start="transform opacity-0 scale-95"
-                                 x-transition:enter-end="transform opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="transform opacity-100 scale-100"
-                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                 class="absolute right-0 z-10 mt-2.5 w-48 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-gray-900/5 py-2"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="transform opacity-0 scale-95 -translate-y-2"
+                                 x-transition:enter-end="transform opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="transform opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave-end="transform opacity-0 scale-95 -translate-y-2"
+                                 class="absolute right-0 z-10 mt-2.5 w-56 origin-top-right rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 divide-y divide-gray-100 focus:outline-none"
                                  x-cloak>
-                                <div class="px-3 py-2 border-b border-gray-200">
-                                    <p class="text-sm font-medium text-gray-900">{{ auth()->user()->name ?? 'Admin' }}</p>
-                                    <p class="text-xs text-gray-500">{{ auth()->user()->email ?? '' }}</p>
+                                <div class="px-4 py-3">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Signed in as</p>
+                                    <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name ?? 'Admin' }}</p>
+                                    <p class="text-xs text-gray-500 truncate mt-0.5">{{ auth()->user()->email ?? '' }}</p>
                                 </div>
-                                <form method="POST" action="{{ route('admin.logout') }}" class="mt-1">
-                                    @csrf
-                                    <button type="submit" class="w-full text-left px-3 py-2 text-sm leading-6 text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2">
-                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                                        </svg>
-                                        Logout
-                                    </button>
-                                </form>
+                                <div class="py-1">
+                                    <form method="POST" action="{{ route('admin.logout') }}">
+                                        @csrf
+                                        <button type="submit" class="group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all">
+                                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-red-100 transition-colors">
+                                                 <svg class="h-4 w-4 text-gray-400 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                                </svg>
+                                            </div>
+                                            <span class="font-medium">Sign out</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -124,57 +146,7 @@
             <!-- Main content -->
             <main class="py-10">
                 <div class="px-4 sm:px-6 lg:px-8">
-                    @if(session('success'))
-                        <div x-data="{ show: true }" 
-                             x-show="show"
-                             x-init="setTimeout(() => show = false, 4000)"
-                             x-transition:enter="transition ease-out duration-300"
-                             x-transition:enter-start="opacity-0 transform scale-90"
-                             x-transition:enter-end="opacity-100 transform scale-100"
-                             class="mb-6 rounded-xl bg-green-50 border border-green-200 p-4 shadow-sm">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
-                                </div>
-                                <button @click="show = false" class="ml-3 flex-shrink-0">
-                                    <svg class="h-5 w-5 text-green-600 hover:text-green-800" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    @endif
 
-                    @if(session('error'))
-                        <div x-data="{ show: true }" 
-                             x-show="show"
-                             x-init="setTimeout(() => show = false, 4000)"
-                             x-transition:enter="transition ease-out duration-300"
-                             x-transition:enter-start="opacity-0 transform scale-90"
-                             x-transition:enter-end="opacity-100 transform scale-100"
-                             class="mb-6 rounded-xl bg-red-50 border border-red-200 p-4 shadow-sm">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6 text-red-600" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <div class="ml-3 flex-1">
-                                    <p class="text-sm font-medium text-red-800">{{ session('error') }}</p>
-                                </div>
-                                <button @click="show = false" class="ml-3 flex-shrink-0">
-                                    <svg class="h-5 w-5 text-red-600 hover:text-red-800" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    @endif
 
                     @yield('content')
                 </div>
@@ -313,6 +285,77 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Toast Notifications (Bottom Right) -->
+    <div class="fixed bottom-6 right-6 z-[400] flex flex-col gap-3 pointer-events-none">
+        @if(session('success'))
+            <div x-data="{ show: true }" 
+                 x-show="show"
+                 x-init="setTimeout(() => show = false, 5000)"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0 translate-x-4"
+                 class="pointer-events-auto w-full max-w-sm overflow-hidden bg-white/90 backdrop-blur-md rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 border-l-4 border-[#8b9b7e] flex items-stretch cursor-pointer hover:bg-white transition-colors"
+                 @click="show = false">
+                <div class="flex-shrink-0 flex items-center justify-center w-12 bg-green-50">
+                    <svg class="h-6 w-6 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="p-4 flex-1">
+                    <div class="flex items-start">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-semibold text-gray-900">Success!</h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ session('success') }}</p>
+                        </div>
+                        <button class="ml-4 inline-flex flex-shrink-0 text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div x-data="{ show: true }" 
+                 x-show="show"
+                 x-init="setTimeout(() => show = false, 5000)"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0 translate-x-4"
+                 class="pointer-events-auto w-full max-w-sm overflow-hidden bg-white/90 backdrop-blur-md rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-black/5 border-l-4 border-red-500 flex items-stretch cursor-pointer hover:bg-white transition-colors"
+                 @click="show = false">
+                <div class="flex-shrink-0 flex items-center justify-center w-12 bg-red-50">
+                    <svg class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <div class="p-4 flex-1">
+                    <div class="flex items-start">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-semibold text-gray-900">Error</h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ session('error') }}</p>
+                        </div>
+                        <button class="ml-4 inline-flex flex-shrink-0 text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </body>
 </html>
