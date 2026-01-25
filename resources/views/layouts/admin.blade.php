@@ -20,8 +20,23 @@
         }
     </style>
 </head>
-<body class="h-full">
-    <div x-data="{ sidebarOpen: false }" class="min-h-full">
+<body class="h-full" x-data="{ sidebarOpen: false }">
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.group.cursor-pointer');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                   card.style.setProperty('--x', x + 'px');
+                   card.style.setProperty('--y', y + 'px');
+                }
+            });
+        });
+    </script>
+    <div class="min-h-full">
         <!-- Mobile sidebar -->
         <div x-show="sidebarOpen" class="relative z-50 lg:hidden" x-cloak>
             <div x-show="sidebarOpen" 
@@ -96,27 +111,32 @@
 
                             <div x-show="open" 
                                  @click.away="open = false"
-                                 x-transition:enter="transition ease-out duration-100"
-                                 x-transition:enter-start="transform opacity-0 scale-95"
-                                 x-transition:enter-end="transform opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="transform opacity-100 scale-100"
-                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                 class="absolute right-0 z-10 mt-2.5 w-48 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-gray-900/5 py-2"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="transform opacity-0 scale-95 -translate-y-2"
+                                 x-transition:enter-end="transform opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="transform opacity-100 scale-100 translate-y-0"
+                                 x-transition:leave-end="transform opacity-0 scale-95 -translate-y-2"
+                                 class="absolute right-0 z-10 mt-2.5 w-56 origin-top-right rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 divide-y divide-gray-100 focus:outline-none"
                                  x-cloak>
-                                <div class="px-3 py-2 border-b border-gray-200">
-                                    <p class="text-sm font-medium text-gray-900">{{ auth()->user()->name ?? 'Admin' }}</p>
-                                    <p class="text-xs text-gray-500">{{ auth()->user()->email ?? '' }}</p>
+                                <div class="px-4 py-3">
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Signed in as</p>
+                                    <p class="text-sm font-semibold text-gray-900 truncate">{{ auth()->user()->name ?? 'Admin' }}</p>
+                                    <p class="text-xs text-gray-500 truncate mt-0.5">{{ auth()->user()->email ?? '' }}</p>
                                 </div>
-                                <form method="POST" action="{{ route('admin.logout') }}" class="mt-1">
-                                    @csrf
-                                    <button type="submit" class="w-full text-left px-3 py-2 text-sm leading-6 text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2">
-                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                                        </svg>
-                                        Logout
-                                    </button>
-                                </form>
+                                <div class="py-1">
+                                    <form method="POST" action="{{ route('admin.logout') }}">
+                                        @csrf
+                                        <button type="submit" class="group flex w-full items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all">
+                                            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-50 group-hover:bg-red-100 transition-colors">
+                                                 <svg class="h-4 w-4 text-gray-400 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                                </svg>
+                                            </div>
+                                            <span class="font-medium">Sign out</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
