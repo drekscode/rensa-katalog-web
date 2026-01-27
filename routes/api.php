@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminWelcomeTextController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\KategoriController;
@@ -45,4 +46,8 @@ Route::prefix('products')->group(function () {
 
 Route::prefix('stores')->group(function () {
     Route::get('/', [TokoController::class, 'getAllToko']);
+});
+
+Route::prefix('welcomes')->group(function () {
+    Route::get('/', [AdminWelcomeTextController::class, 'getWelcomeTextsJson']);
 });

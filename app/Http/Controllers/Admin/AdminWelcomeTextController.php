@@ -81,4 +81,10 @@ class AdminWelcomeTextController extends Controller
 
         return redirect()->back()->with('success', 'Status updated successfully.');
     }
+
+    public function getWelcomeTextsJson()
+    {
+        $welcomeTexts = WelcomeText::get();
+        return response()->json($welcomeTexts);
+    }
 }
