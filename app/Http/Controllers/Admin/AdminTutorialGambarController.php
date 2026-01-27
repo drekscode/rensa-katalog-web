@@ -39,7 +39,7 @@ class AdminTutorialGambarController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'urutan' => 'nullable|integer',
         ]);
 
@@ -73,7 +73,7 @@ class AdminTutorialGambarController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'urutan' => 'nullable|integer',
         ]);
 
