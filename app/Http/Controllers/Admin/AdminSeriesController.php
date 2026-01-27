@@ -37,7 +37,7 @@ class AdminSeriesController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'nama_series' => 'required|string|max:255',
             'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cover_area' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_area' => 'nullable|string',
             'material' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
         ]);
@@ -48,11 +48,7 @@ class AdminSeriesController extends Controller
             $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
-        if ($request->hasFile('cover_area')) {
-            $file = $request->file('cover_area');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['cover_area'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
-        }
+
 
         Series::create($validated);
 
@@ -77,7 +73,7 @@ class AdminSeriesController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'nama_series' => 'required|string|max:255',
             'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cover_area' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_area' => 'nullable|string',
             'material' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
         ]);
@@ -88,11 +84,7 @@ class AdminSeriesController extends Controller
             $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
-        if ($request->hasFile('cover_area')) {
-            $file = $request->file('cover_area');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['cover_area'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
-        }
+
 
         $series->update($validated);
 

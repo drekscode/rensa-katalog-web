@@ -114,11 +114,11 @@
 
                     <div class="col-span-full">
                         <label for="cover_area" class="block text-sm font-medium leading-6 text-gray-900">
-                            Cover Area Image
+                            Cover Area
                         </label>
                         <div class="mt-2">
-                            <input type="file" name="cover_area" id="cover_area"
-                                   class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('cover_area') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                            <input type="text" name="cover_area" id="cover_area" value="{{ old('cover_area') }}"
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('cover_area') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
                         </div>
                         @error('cover_area')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
