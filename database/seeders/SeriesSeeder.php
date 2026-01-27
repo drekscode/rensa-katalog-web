@@ -17,6 +17,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/4F46E5/ffffff?text=Metal+Roof+Structure',
                 'cover_area' => '1.62m2 per lembar',
                 'material' => 'Zinc-Aluminium coating steel',
+                'ketebalan' => '0.25mm - 0.45mm',
+                'ukuran' => '800mm x 1800mm',
                 'deskripsi_produk' => 'Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.',
             ],
             [
@@ -25,6 +27,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/7C3AED/ffffff?text=Spandek+Structure',
                 'cover_area' => '0.75mm - 1.00mm BMT',
                 'material' => 'Galvalume steel',
+                'ketebalan' => '0.30mm - 0.50mm',
+                'ukuran' => '1000mm x Custom Length',
                 'deskripsi_produk' => 'Atap spandek berkualitas tinggi dengan ketahanan korosi superior. Cocok untuk bangunan industri dan komersial.',
             ],
             
@@ -35,6 +39,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/EC4899/ffffff?text=Bitumen+Shield',
                 'cover_area' => '3m2 per bundle',
                 'material' => 'Modified bitumen membrane',
+                'ketebalan' => '3mm',
+                'ukuran' => '1000mm x 333mm',
                 'deskripsi_produk' => 'Membran bitumen modified dengan daya rekat tinggi. Solusi waterproofing terbaik untuk atap datar.',
             ],
             
@@ -45,6 +51,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/F59E0B/ffffff?text=Ceramic+Tile',
                 'cover_area' => '14.5 pcs / m2',
                 'material' => 'High quality ceramic',
+                'ketebalan' => '12mm',
+                'ukuran' => '315mm x 315mm',
                 'deskripsi_produk' => 'Genteng keramik dengan finishing glazur. Tahan lama, tidak pudar, dan memberikan kesan mewah.',
             ],
             [
@@ -53,6 +61,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/10B981/ffffff?text=Concrete+Tile',
                 'cover_area' => '10 pcs / m2',
                 'material' => 'High strength concrete',
+                'ketebalan' => '15mm',
+                'ukuran' => '420mm x 330mm',
                 'deskripsi_produk' => 'Genteng beton dengan kekuatan tinggi. Ekonomis dan tahan terhadap perubahan cuaca ekstrem.',
             ],
             
@@ -63,6 +73,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/3B82F6/ffffff?text=Gypsum+Board',
                 'cover_area' => '2.88m2 per lembar',
                 'material' => 'Gypsum core with paper liner',
+                'ketebalan' => '9mm',
+                'ukuran' => '1200mm x 2400mm',
                 'deskripsi_produk' => 'Plafon gypsum berkualitas tinggi untuk interior modern. Permukaan halus dan mudah finishing.',
             ],
             [
@@ -71,6 +83,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/8B5CF6/ffffff?text=PVC+Ceiling',
                 'cover_area' => '0.8m2 per lembar',
                 'material' => 'UV resistant PVC',
+                'ketebalan' => '8mm',
+                'ukuran' => '200mm x 4000mm',
                 'deskripsi_produk' => 'Plafon PVC anti air dan mudah dibersihkan. Ideal untuk kamar mandi dan area basah.',
             ],
             
@@ -81,6 +95,8 @@ class SeriesSeeder extends Seeder
                 'struktur_img' => 'https://via.placeholder.com/800x600/EF4444/ffffff?text=Wall+Panel',
                 'cover_area' => '2.97m2 per lembar',
                 'material' => 'Composite sandwich panel',
+                'ketebalan' => '50mm',
+                'ukuran' => '1000mm x 2970mm',
                 'deskripsi_produk' => 'Panel dinding sandwich dengan insulasi thermal. Ringan, kuat, dan cepat dipasang.',
             ],
         ];

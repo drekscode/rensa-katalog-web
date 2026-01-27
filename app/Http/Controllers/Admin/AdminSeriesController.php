@@ -39,6 +39,8 @@ class AdminSeriesController extends Controller
             'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'cover_area' => 'nullable|string',
             'material' => 'nullable|string',
+            'ketebalan' => 'nullable|string',
+            'ukuran' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
         ]);
 
@@ -75,6 +77,8 @@ class AdminSeriesController extends Controller
             'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'cover_area' => 'nullable|string',
             'material' => 'nullable|string',
+            'ketebalan' => 'nullable|string',
+            'ukuran' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
         ]);
 

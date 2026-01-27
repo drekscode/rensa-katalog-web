@@ -73,7 +73,9 @@
             'material': '{{ addslashes($s->material) }}',
             'deskripsi': '{{ addslashes($s->deskripsi_produk) }}',
             'struktur': '{{ $s->struktur_img ? $s->struktur_img : '' }}',
-            'cover': '{{ $s->cover_area ? $s->cover_area : '' }}'
+            'cover': '{{ $s->cover_area ? $s->cover_area : '' }}',
+            'ketebalan': '{{ $s->ketebalan ? $s->ketebalan : '' }}',
+            'ukuran': '{{ $s->ukuran ? $s->ukuran : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
             <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
@@ -222,6 +224,14 @@
                                     <div>
                                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Cover Area</label>
                                         <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.cover"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ketebalan</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.ketebalan"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ukuran</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.ukuran"></p>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">

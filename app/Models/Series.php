@@ -14,6 +14,8 @@ class Series extends Model
         'struktur_img',
         'cover_area',
         'material',
+        'ketebalan',
+        'ukuran',
         'deskripsi_produk',
     ];
 
