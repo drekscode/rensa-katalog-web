@@ -28,4 +28,9 @@ class Series extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function hasilPasang()
+    {
+        return $this->hasMany(HasilPasang::class, 'id_series');
+    }
 }

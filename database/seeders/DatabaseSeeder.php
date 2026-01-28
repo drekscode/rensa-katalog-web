@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             TutorialGambarSeeder::class,
             TutorialVideoSeeder::class,
             WelcomeTextSeeder::class,
+            HasilPasangSeeder::class,
         ]);
     }
 }
