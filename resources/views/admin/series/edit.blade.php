@@ -94,6 +94,43 @@
                         @enderror
                     </div>
 
+                    <!-- Ketebalan -->
+                    <div class="col-span-full">
+                        <label for="ketebalan" class="block text-sm font-medium leading-6 text-gray-900">
+                            Ketebalan
+                        </label>
+                        <div class="mt-2">
+                            <input type="text" name="ketebalan" id="ketebalan" value="{{ old('ketebalan', $series->ketebalan) }}"
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('ketebalan') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
+                        </div>
+                        @error('ketebalan')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Ukuran -->
+                    <div class="col-span-full">
+                        <label for="ukuran" class="block text-sm font-medium leading-6 text-gray-900">
+                            Ukuran
+                        </label>
+                        <div class="mt-2">
+                            <input type="text" name="ukuran" id="ukuran" value="{{ old('ukuran', $series->ukuran) }}"
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('ukuran') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
+                        </div>
+                        @error('ukuran')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+
                     <!-- Files -->
                     <div class="col-span-full">
                         <label for="struktur_img" class="block text-sm font-medium leading-6 text-gray-900">
@@ -120,17 +157,13 @@
 
                     <div class="col-span-full">
                         <label for="cover_area" class="block text-sm font-medium leading-6 text-gray-900">
-                            Cover Area Image
+                            Cover Area
                         </label>
-                        <div class="mt-2 flex items-center gap-x-4">
-                             @if($series->cover_area)
-                                <img src="{{ $series->cover_area }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
-                            @endif
-                            <div class="relative flex-grow">
-                                <input type="file" name="cover_area" id="cover_area"
-                                       class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('cover_area') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
-                            </div>
+                        <div class="mt-2">
+                            <input type="text" name="cover_area" id="cover_area" value="{{ old('cover_area', $series->cover_area) }}"
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('cover_area') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
                         </div>
+                    </div>
                         @error('cover_area')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

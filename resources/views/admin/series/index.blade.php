@@ -73,7 +73,9 @@
             'material': '{{ addslashes($s->material) }}',
             'deskripsi': '{{ addslashes($s->deskripsi_produk) }}',
             'struktur': '{{ $s->struktur_img ? $s->struktur_img : '' }}',
-            'cover': '{{ $s->cover_area ? $s->cover_area : '' }}'
+            'cover': '{{ $s->cover_area ? $s->cover_area : '' }}',
+            'ketebalan': '{{ $s->ketebalan ? $s->ketebalan : '' }}',
+            'ukuran': '{{ $s->ukuran ? $s->ukuran : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
             <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
@@ -93,19 +95,14 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 mb-4">
-                    @if($s->cover_area)
-                    <div class="aspect-video rounded-lg bg-gray-100 overflow-hidden relative">
-                         <img src="{{ $s->cover_area }}" class="w-full h-full object-cover" @click.stop="$dispatch('open-lightbox', { url: '{{ $s->cover_area }}' })">
-                         <div class="absolute inset-0 flex items-center justify-center bg-black/20 text-white text-[10px] font-bold">COVER</div>
-                    </div>
-                    @endif
+
                     @if($s->struktur_img)
                     <div class="aspect-video rounded-lg bg-gray-100 overflow-hidden relative">
                          <img src="{{ $s->struktur_img }}" class="w-full h-full object-cover" @click.stop="$dispatch('open-lightbox', { url: '{{ $s->struktur_img }}' })">
                          <div class="absolute inset-0 flex items-center justify-center bg-black/20 text-white text-[10px] font-bold">STRUCT</div>
                     </div>
                     @endif
-                     @if(!$s->cover_area && !$s->struktur_img)
+                     @if(!$s->struktur_img)
                         <div class="col-span-2 aspect-video rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100 border-dashed">
                              <span class="text-xs text-gray-400 italic">No images</span>
                         </div>
@@ -113,10 +110,16 @@
                 </div>
                 
                 <div class="space-y-2">
-                     @if($s->material)
+                    @if($s->material)
                     <div class="flex items-start gap-2">
                         <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[60px]">Material</span>
                         <p class="text-xs text-gray-600 line-clamp-1">{{ $s->material }}</p>
+                    </div>
+                    @endif
+                    @if($s->cover_area)
+                    <div class="flex items-start gap-2">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[60px]">Cover</span>
+                        <p class="text-xs text-gray-600 line-clamp-1">{{ $s->cover_area }}</p>
                     </div>
                     @endif
                     @if($s->deskripsi_produk)
@@ -218,6 +221,18 @@
                                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Material</label>
                                         <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.material"></p>
                                     </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Cover Area</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.cover"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ketebalan</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.ketebalan"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ukuran</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.ukuran"></p>
+                                    </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -233,19 +248,7 @@
                                             </template>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Cover</label>
-                                        <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-square flex items-center justify-center">
-                                            <template x-if="selectedItem.cover">
-                                                <img :src="selectedItem.cover" 
-                                                     @click="$dispatch('open-lightbox', { url: selectedItem.cover })"
-                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
-                                            </template>
-                                            <template x-if="!selectedItem.cover">
-                                                <span class="text-gray-400 text-xs text-center px-2">No Image</span>
-                                            </template>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="col-span-full">
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Deskripsi Produk</label>

@@ -11,22 +11,22 @@ class BannerSeeder extends Seeder
     {
         $banners = [
             [
-                'banner_image' => 'https://via.placeholder.com/1200x400/4F46E5/ffffff?text=Promo+Atap+Metal',
+                'banner_image' => 'https://images.unsplash.com/photo-1448630360428-65456885c650?q=80&w=1200&h=400&auto=format&fit=crop', // Modern Architecture
                 'link' => null,
                 'urutan' => 1,
             ],
             [
-                'banner_image' => 'https://via.placeholder.com/1200x400/EC4899/ffffff?text=New+Bitumen+Series',
+                'banner_image' => 'https://images.unsplash.com/photo-1631641042533-5c798e2110c7?q=80&w=1200&h=400&auto=format&fit=crop', // Bitumen Texture
                 'link' => null,
                 'urutan' => 2,
             ],
             [
-                'banner_image' => 'https://via.placeholder.com/1200x400/10B981/ffffff?text=Genteng+Berkualitas',
+                'banner_image' => 'https://images.unsplash.com/photo-1555519846-95333f2c525f?q=80&w=1200&h=400&auto=format&fit=crop', // Clay Tile Pattern
                 'link' => null,
                 'urutan' => 3,
             ],
             [
-                'banner_image' => 'https://via.placeholder.com/1200x400/F59E0B/ffffff?text=Konsultasi+Gratis',
+                'banner_image' => 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&h=400&auto=format&fit=crop', // Construction Site/Planning
                 'link' => null,
                 'urutan' => 4,
             ],

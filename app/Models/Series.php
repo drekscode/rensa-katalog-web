@@ -14,6 +14,8 @@ class Series extends Model
         'struktur_img',
         'cover_area',
         'material',
+        'ketebalan',
+        'ukuran',
         'deskripsi_produk',
     ];
 
@@ -25,5 +27,10 @@ class Series extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function hasilPasang()
+    {
+        return $this->hasMany(HasilPasang::class, 'id_series');
     }
 }
