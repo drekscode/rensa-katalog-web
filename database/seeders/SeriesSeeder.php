@@ -14,7 +14,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 1,
                 'nama_series' => 'Rensa Metal Roof Premium',
-                'struktur_img' => 'https://via.placeholder.com/800x600/4F46E5/ffffff?text=Metal+Roof+Structure',
+                'struktur_img' => 'https://images.unsplash.com/photo-1533038590840-1cde6e668a91?q=80&w=800&h=600&auto=format&fit=crop', // Metal texture fallback
                 'cover_area' => '1.62m2 per lembar',
                 'material' => 'Zinc-Aluminium coating steel',
                 'ketebalan' => '0.25mm - 0.45mm',
@@ -24,7 +24,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 1,
                 'nama_series' => 'Rensa Spandek Pro',
-                'struktur_img' => 'https://via.placeholder.com/800x600/7C3AED/ffffff?text=Spandek+Structure',
+                'struktur_img' => 'https://images.unsplash.com/photo-1533038590840-1cde6e668a91?q=80&w=800&h=600&auto=format&fit=crop', // Silver/Grey Metal
                 'cover_area' => '0.75mm - 1.00mm BMT',
                 'material' => 'Galvalume steel',
                 'ketebalan' => '0.30mm - 0.50mm',
@@ -36,7 +36,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 2,
                 'nama_series' => 'Rensa Bitumen Shield',
-                'struktur_img' => 'https://via.placeholder.com/800x600/EC4899/ffffff?text=Bitumen+Shield',
+                'struktur_img' => 'https://images.unsplash.com/photo-1631641042533-5c798e2110c7?q=80&w=800&h=600&auto=format&fit=crop', // Bitumen
                 'cover_area' => '3m2 per bundle',
                 'material' => 'Modified bitumen membrane',
                 'ketebalan' => '3mm',
@@ -48,7 +48,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 3,
                 'nama_series' => 'Rensa Genteng Keramik',
-                'struktur_img' => 'https://via.placeholder.com/800x600/F59E0B/ffffff?text=Ceramic+Tile',
+                'struktur_img' => 'https://images.unsplash.com/photo-1555519846-95333f2c525f?q=80&w=800&h=600&auto=format&fit=crop', // Ceramic
                 'cover_area' => '14.5 pcs / m2',
                 'material' => 'High quality ceramic',
                 'ketebalan' => '12mm',
@@ -58,7 +58,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 3,
                 'nama_series' => 'Rensa Genteng Beton',
-                'struktur_img' => 'https://via.placeholder.com/800x600/10B981/ffffff?text=Concrete+Tile',
+                'struktur_img' => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&h=600&auto=format&fit=crop', // Concrete fallback
                 'cover_area' => '10 pcs / m2',
                 'material' => 'High strength concrete',
                 'ketebalan' => '15mm',
@@ -70,7 +70,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 4,
                 'nama_series' => 'Rensa Gypsum Board',
-                'struktur_img' => 'https://via.placeholder.com/800x600/3B82F6/ffffff?text=Gypsum+Board',
+                'struktur_img' => 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800&h=600&auto=format&fit=crop', // Gypsum
                 'cover_area' => '2.88m2 per lembar',
                 'material' => 'Gypsum core with paper liner',
                 'ketebalan' => '9mm',
@@ -80,7 +80,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 4,
                 'nama_series' => 'Rensa PVC Ceiling',
-                'struktur_img' => 'https://via.placeholder.com/800x600/8B5CF6/ffffff?text=PVC+Ceiling',
+                'struktur_img' => 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800&h=600&auto=format&fit=crop', // PVC Wood fallback (using gypsum white for now to work)
                 'cover_area' => '0.8m2 per lembar',
                 'material' => 'UV resistant PVC',
                 'ketebalan' => '8mm',
@@ -92,7 +92,7 @@ class SeriesSeeder extends Seeder
             [
                 'kategori_id' => 5,
                 'nama_series' => 'Rensa Wall Panel',
-                'struktur_img' => 'https://via.placeholder.com/800x600/EF4444/ffffff?text=Wall+Panel',
+                'struktur_img' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&h=600&auto=format&fit=crop', // Wall Panel fallback
                 'cover_area' => '2.97m2 per lembar',
                 'material' => 'Composite sandwich panel',
                 'ketebalan' => '50mm',

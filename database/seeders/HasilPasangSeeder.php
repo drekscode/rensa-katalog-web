@@ -26,7 +26,7 @@ class HasilPasangSeeder extends Seeder
                 'nama_project' => 'Rumah Mewah Pondok Indah',
                 'id_project' => 'HP001',
                 'tanggal' => Carbon::now()->subDays(10)->format('Y-m-d'),
-                'foto' => 'https://images.unsplash.com/photo-1600596542815-2250657d2fc5?q=80&w=2000&auto=format&fit=crop', // Placeholder URL
+                'foto' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop', // House 1
             ],
             [
                 'nama_project' => 'Apartemen Sudirman Suite',
@@ -44,7 +44,7 @@ class HasilPasangSeeder extends Seeder
                 'nama_project' => 'Kantor Pusat Rensa',
                 'id_project' => 'HP004',
                 'tanggal' => Carbon::now()->subMonths(2)->format('Y-m-d'),
-                'foto' => 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000&auto=format&fit=crop',
+                'foto' => 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2000&auto=format&fit=crop', // Modern White House
             ],
         ];
 
