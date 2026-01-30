@@ -17,9 +17,9 @@
         this.expandedCategories[categoryId] = !this.expandedCategories[categoryId];
     },
     isCategoryExpanded(categoryId) {
-        // Auto-expand all categories by default
+        // Default to collapsed
         if (this.expandedCategories[categoryId] === undefined) {
-            return true;
+            return false;
         }
         return this.expandedCategories[categoryId] === true;
     },

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gradient-to-br from-[#faf9f6] via-[#f5f4f1] to-[#ebe9e4]">
+<html lang="en" class="h-full bg-fixed bg-gradient-to-br from-[#faf9f6] via-[#f5f4f1] to-[#ebe9e4]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
