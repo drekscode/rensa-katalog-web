@@ -7,17 +7,42 @@
 <div x-data="{ 
     showViewModal: false, 
     selectedItem: {},
-    search: '{{ request('search') }}',
+    search: '{{ $search ?? '' }}',
+    expandedCategories: {},
     openViewModal(item) {
         this.selectedItem = item;
         this.showViewModal = true;
+    },
+    toggleCategory(categoryId) {
+        this.expandedCategories[categoryId] = !this.expandedCategories[categoryId];
+    },
+    isCategoryExpanded(categoryId) {
+        // Auto-expand all categories by default
+        if (this.expandedCategories[categoryId] === undefined) {
+            return true;
+        }
+        return this.expandedCategories[categoryId] === true;
+    },
+    expandAll() {
+        @foreach($kategoris as $kategori)
+            @if($kategori->tutorial_gambars->count() > 0)
+                this.expandedCategories[{{ $kategori->id }}] = true;
+            @endif
+        @endforeach
+    },
+    collapseAll() {
+        @foreach($kategoris as $kategori)
+            @if($kategori->tutorial_gambars->count() > 0)
+                this.expandedCategories[{{ $kategori->id }}] = false;
+            @endif
+        @endforeach
     }
 }" class="mx-auto max-w-7xl">
     
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
              <h2 class="text-lg font-semibold text-gray-900">Tutorial Images</h2>
-             <p class="text-sm text-gray-500">Manage image-based tutorials.</p>
+             <p class="text-sm text-gray-500">Manage image-based tutorials organized by categories.</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
              <form action="{{ route('admin.tutorial-gambar.index') }}" method="GET" class="relative">
@@ -28,7 +53,7 @@
                 </div>
                 <input type="text" 
                        name="search"
-                       value="{{ request('search') }}"
+                       value="{{ $search ?? '' }}"
                        class="block w-full sm:w-64 rounded-xl border-0 py-2.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all" 
                        placeholder="Search tutorials...">
             </form>
@@ -41,7 +66,13 @@
         </div>
     </div>
 
-    @if($tutorial_gambars->isEmpty())
+    @php
+        $hasAnyTutorials = $kategoris->sum(function($kategori) {
+            return $kategori->tutorial_gambars->count();
+        }) > 0;
+    @endphp
+
+    @if(!$hasAnyTutorials)
     <!-- Empty State -->
     <div class="relative block w-full rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center hover:border-[#8b9b7e] focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:ring-offset-2 transition-all duration-300 group bg-white/50 max-w-3xl mx-auto">
         <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-50 group-hover:bg-[#8b9b7e]/10 transition-colors duration-300">
@@ -63,83 +94,152 @@
 
     @else
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach($tutorial_gambars as $tg)
-        <!-- Content Card -->
-        <div @click="openViewModal({
-            'id': '{{ $tg->id }}',
-            'judul': '{{ $tg->judul }}',
-            'kategori': '{{ $tg->kategori->nama_kategori ?? '-' }}',
-            'urutan': '{{ $tg->urutan ?? '-' }}',
-            'deskripsi': '{{ addslashes($tg->deskripsi) }}',
-            'gambar': '{{ $tg->gambar ? $tg->gambar : '' }}'
-        })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
-             <!-- Media -->
-            <div class="aspect-video bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
-                @if($tg->gambar)
-                    <img src="{{ $tg->gambar }}" class="w-full h-full object-cover cursor-pointer" @click.stop="$dispatch('open-lightbox', { url: '{{ $tg->gambar }}' })">
-                @else
-                    <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
-                        <span class="text-xs text-gray-400 italic">No Image</span>
-                    </div>
-                @endif
-                <div class="absolute top-2 right-2">
-                    <span class="inline-flex items-center rounded-lg bg-white/90 backdrop-blur-sm px-2 py-1 text-xs font-medium text-gray-800 shadow-sm border border-gray-100">
-                        {{ $tg->kategori->nama_kategori ?? 'Unknown' }}
-                    </span>
-                </div>
-            </div>
-
-            <!-- Body -->
-            <div class="flex-1 px-6 py-6">
-                <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors">
-                    {{ $tg->judul }}
-                </h3>
-                
-                <p class="text-sm text-gray-600 line-clamp-3">
-                    {{ $tg->deskripsi }}
-                </p>
-                @if($tg->urutan)
-                <p class="mt-2 text-xs text-gray-400">Order: {{ $tg->urutan }}</p>
-                @endif
-            </div>
-
-            <!-- Actions -->
-            <div class="bg-gray-50 px-5 py-3 flex items-center justify-end gap-2 border-t border-gray-100 mt-auto" @click.stop>
-
-                 <a href="{{ route('admin.tutorial-gambar.edit', $tg) }}" 
-                   class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 hover:text-[#8b9b7e] hover:ring-[#8b9b7e]/30 transition-all duration-200" title="Edit">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                    </svg>
-                </a>
-                
-                <button type="button" 
-                        @click="$dispatch('confirm-delete', { 
-                            title: 'Delete Tutorial?', 
-                            message: 'Are you sure you want to delete \'{{ addslashes($tg->judul) }}\'? This will permanently remove it.',
-                            formId: 'delete-form-{{ $tg->id }}' 
-                        })"
-                        class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-500 hover:ring-red-200 transition-all duration-200" title="Delete">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                    </svg>
-                </button>
-                
-                <form action="{{ route('admin.tutorial-gambar.destroy', $tg) }}" 
-                      method="POST" 
-                      id="delete-form-{{ $tg->id }}"
-                      class="hidden">
-                    @csrf
-                    @method('DELETE')
-                </form>
-            </div>
+    <!-- Expand/Collapse All Controls -->
+    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+        <div class="text-sm text-gray-600">
+            <span class="font-medium">{{ $kategoris->where('tutorial_gambars', '!=', '[]')->count() }}</span> categories with 
+            <span class="font-medium">{{ $hasAnyTutorials }}</span> tutorials total
         </div>
-        @endforeach
+        <div class="flex gap-2">
+            <button @click="expandAll()" 
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-[#8b9b7e] hover:text-[#8b9b7e] transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                </svg>
+                Expand All
+            </button>
+            <button @click="collapseAll()" 
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                </svg>
+                Collapse All
+            </button>
+        </div>
     </div>
 
-    <div class="mt-8">
-        {{ $tutorial_gambars->links() }}
+    <!-- Category-based containers -->
+    <div class="space-y-4">
+        @foreach($kategoris as $kategori)
+            @if($kategori->tutorial_gambars->count() > 0)
+            <div class="bg-white rounded-xl shadow-sm shadow-gray-200/50 ring-1 ring-gray-200 overflow-hidden transition-all hover:shadow-md hover:shadow-gray-200/60">
+                <!-- Category Header (Clickable) -->
+                <div @click="toggleCategory({{ $kategori->id }})" 
+                     class="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-gray-50 transition-all group">
+                    <div class="flex items-center gap-3 flex-1">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-[#8b9b7e]/10 group-hover:bg-[#8b9b7e]/20 transition-colors flex-shrink-0">
+                            <svg class="w-5 h-5 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-base font-bold text-gray-900 group-hover:text-[#8b9b7e] transition-colors truncate">
+                                {{ $kategori->nama_kategori }}
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-0.5">
+                                {{ $kategori->tutorial_gambars->count() }} {{ Str::plural('tutorial', $kategori->tutorial_gambars->count()) }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0 ml-4">
+                        <span class="inline-flex items-center justify-center min-w-[28px] h-7 rounded-lg bg-[#8b9b7e]/10 px-2 text-sm font-semibold text-[#8b9b7e]">
+                            {{ $kategori->tutorial_gambars->count() }}
+                        </span>
+                        <svg class="h-5 w-5 text-gray-400 transition-transform duration-200"
+                             :class="{ 'rotate-180': isCategoryExpanded({{ $kategori->id }}) }"
+                             fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Tutorial Cards (Expandable) -->
+                <div x-show="isCategoryExpanded({{ $kategori->id }})"
+                     x-collapse.duration.300ms
+                     class="border-t border-gray-100">
+                    <div class="p-5 bg-gray-50/30">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach($kategori->tutorial_gambars as $tg)
+                            <!-- Content Card -->
+                            <div @click="openViewModal({
+                                'id': '{{ $tg->id }}',
+                                'judul': '{{ $tg->judul }}',
+                                'kategori': '{{ $kategori->nama_kategori }}',
+                                'urutan': '{{ $tg->urutan ?? '-' }}',
+                                'deskripsi': '{{ addslashes($tg->deskripsi) }}',
+                                'gambar': '{{ $tg->gambar ? $tg->gambar : '' }}'
+                            })" class="flex flex-col h-full overflow-hidden bg-white shadow-sm ring-1 ring-gray-200 rounded-xl transition-all hover:shadow-md hover:ring-[#8b9b7e]/30 hover:-translate-y-0.5 group cursor-pointer">
+                                 <!-- Media -->
+                                <div class="aspect-video bg-gray-100 relative overflow-hidden">
+                                    @if($tg->gambar)
+                                        <img src="{{ $tg->gambar }}" class="w-full h-full object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300" @click.stop="$dispatch('open-lightbox', { url: '{{ $tg->gambar }}' })">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+                                            <div class="text-center">
+                                                <svg class="w-12 h-12 text-gray-300 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                                </svg>
+                                                <span class="text-xs text-gray-400 font-medium">No Image</span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($tg->urutan)
+                                    <div class="absolute top-2 left-2">
+                                        <span class="inline-flex items-center rounded-lg bg-white/95 backdrop-blur-sm px-2.5 py-1 text-xs font-bold text-gray-700 shadow-sm border border-gray-200">
+                                            #{{ $tg->urutan }}
+                                        </span>
+                                    </div>
+                                    @endif
+                                </div>
+
+                                <!-- Body -->
+                                <div class="flex-1 px-4 py-3.5">
+                                    <h3 class="text-sm font-bold text-gray-900 leading-snug mb-1.5 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
+                                        {{ $tg->judul }}
+                                    </h3>
+                                    
+                                    <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                                        {{ $tg->deskripsi }}
+                                    </p>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="bg-gray-50/80 px-3 py-2.5 flex items-center justify-end gap-2 border-t border-gray-100 mt-auto" @click.stop>
+                                     <a href="{{ route('admin.tutorial-gambar.edit', $tg) }}" 
+                                       class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-500 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-[#8b9b7e] hover:text-white hover:ring-[#8b9b7e] transition-all duration-200 group/btn" title="Edit">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                        </svg>
+                                    </a>
+                                    
+                                    <button type="button" 
+                                            @click="$dispatch('confirm-delete', { 
+                                                title: 'Delete Tutorial?', 
+                                                message: 'Are you sure you want to delete \'{{ addslashes($tg->judul) }}\'? This will permanently remove it.',
+                                                formId: 'delete-form-{{ $tg->id }}' 
+                                            })"
+                                            class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-500 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-500 hover:text-white hover:ring-red-500 transition-all duration-200" title="Delete">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                        </svg>
+                                    </button>
+                                    
+                                    <form action="{{ route('admin.tutorial-gambar.destroy', $tg) }}" 
+                                          method="POST" 
+                                          id="delete-form-{{ $tg->id }}"
+                                          class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+        @endforeach
     </div>
 
     @endif
@@ -158,7 +258,7 @@
                      x-transition:leave="transition ease-in duration-200"
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
-                     class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity" 
+                     class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" 
                      @click="showViewModal = false"></div>
 
                 <div x-show="showViewModal"
@@ -168,58 +268,63 @@
                      x-transition:leave="transition ease-in duration-200"
                      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
+                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-3xl">
                     
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div class="w-full text-left">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-                                <h3 class="text-lg font-bold leading-6 text-gray-900" x-text="'Tutorial Details #' + selectedItem.id"></h3>
-                                <button @click="showViewModal = false" class="text-gray-400 hover:text-gray-500 transition-colors">
-                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <div>
+                                    <h3 class="text-lg font-bold leading-6 text-gray-900" x-text="selectedItem.judul"></h3>
+                                    <p class="text-sm text-gray-500 mt-1" x-text="'Category: ' + selectedItem.kategori"></p>
+                                </div>
+                                <button @click="showViewModal = false" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-1.5 transition-colors">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                                <div class="md:col-span-3 space-y-4">
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Judul</label>
-                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.judul"></p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Kategori</label>
-                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.kategori"></p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Order</label>
-                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.urutan"></p>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Preview Image</label>
+                                        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-video flex items-center justify-center">
+                                            <template x-if="selectedItem.gambar">
+                                                <img :src="selectedItem.gambar" 
+                                                     @click="$dispatch('open-lightbox', { url: selectedItem.gambar })"
+                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                            </template>
+                                            <template x-if="!selectedItem.gambar">
+                                                <span class="text-gray-400 text-sm">No Image Available</span>
+                                            </template>
+                                        </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Gambar</label>
-                                    <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-video flex items-center justify-center">
-                                        <template x-if="selectedItem.gambar">
-                                            <img :src="selectedItem.gambar" 
-                                                 @click="$dispatch('open-lightbox', { url: selectedItem.gambar })"
-                                                 class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
-                                        </template>
-                                        <template x-if="!selectedItem.gambar">
-                                            <span class="text-gray-400 text-sm">No Image</span>
-                                        </template>
+                                <div class="md:col-span-2 space-y-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Tutorial ID</label>
+                                        <p class="text-sm text-gray-900 font-mono bg-gray-50 px-3 py-2 rounded-lg" x-text="'#' + selectedItem.id"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Order Position</label>
+                                        <p class="text-sm text-gray-900 font-medium bg-gray-50 px-3 py-2 rounded-lg" x-text="selectedItem.urutan"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Category</label>
+                                        <p class="text-sm text-gray-900 font-medium bg-[#8b9b7e]/10 text-[#8b9b7e] px-3 py-2 rounded-lg" x-text="selectedItem.kategori"></p>
                                     </div>
                                 </div>
                                 <div class="col-span-full">
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Deskripsi</label>
-                                    <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 min-h-[100px] whitespace-pre-wrap" x-text="selectedItem.deskripsi"></div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Description</label>
+                                    <div class="text-sm text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-200 min-h-[100px] max-h-[200px] overflow-y-auto whitespace-pre-wrap" x-text="selectedItem.deskripsi || 'No description available'"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50/50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-200 gap-3">
                         <button type="button" 
-                                class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:ml-3 sm:w-auto transition-all transform active:scale-95" 
+                                class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:w-auto transition-all transform active:scale-95" 
                                 @click="showViewModal = false">
-                            Close
+                            Close Preview
                         </button>
                     </div>
                 </div>
