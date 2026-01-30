@@ -98,8 +98,8 @@
 
                     @if($s->struktur_img)
                     <div class="aspect-video rounded-lg bg-gray-100 overflow-hidden relative">
-                         <img src="{{ $s->struktur_img }}" class="w-full h-full object-cover" @click.stop="$dispatch('open-lightbox', { url: '{{ $s->struktur_img }}' })">
-                         <div class="absolute inset-0 flex items-center justify-center bg-black/20 text-white text-[10px] font-bold">STRUCT</div>
+                         <img src="{{ $s->struktur_img }}" class="w-full h-full object-cover">
+
                     </div>
                     @endif
                      @if(!$s->struktur_img)
@@ -112,19 +112,19 @@
                 <div class="space-y-2">
                     @if($s->material)
                     <div class="flex items-start gap-2">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[60px]">Material</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">Material</span>
                         <p class="text-xs text-gray-600 line-clamp-1">{{ $s->material }}</p>
                     </div>
                     @endif
                     @if($s->cover_area)
                     <div class="flex items-start gap-2">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[60px]">Cover</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">Cover</span>
                         <p class="text-xs text-gray-600 line-clamp-1">{{ $s->cover_area }}</p>
                     </div>
                     @endif
                     @if($s->deskripsi_produk)
                      <div class="flex items-start gap-2">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[60px]">Desc</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">Desc</span>
                         <p class="text-xs text-gray-600 line-clamp-2">{{ $s->deskripsi_produk }}</p>
                     </div>
                     @endif

@@ -176,7 +176,7 @@
                                  <!-- Media -->
                                 <div class="aspect-video bg-gray-100 relative overflow-hidden">
                                     @if($tg->gambar)
-                                        <img src="{{ $tg->gambar }}" class="w-full h-full object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300" @click.stop="$dispatch('open-lightbox', { url: '{{ $tg->gambar }}' })">
+                                        <img src="{{ $tg->gambar }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                                             <div class="text-center">

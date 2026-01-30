@@ -78,7 +78,7 @@
             <!-- Media -->
             <div class="aspect-video bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
                 @if($artikel->foto)
-                    <img src="{{ $artikel->foto }}" class="w-full h-full object-cover cursor-pointer" @click.stop="$dispatch('open-lightbox', { url: '{{ $artikel->foto }}' })">
+                    <img src="{{ $artikel->foto }}" class="w-full h-full object-cover">
                 @else
                     <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
                         <span class="text-xs text-gray-400 italic">No Image</span>

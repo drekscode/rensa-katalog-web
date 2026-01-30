@@ -233,7 +233,7 @@
         <div class="w-full h-full overflow-auto flex items-center justify-center p-10 cursor-zoom-out" @click.self="isOpen = false">
             <img :src="imageUrl" 
                  :style="`transform: scale(${scale}); transition: transform 0.2s ease-out; cursor: ${scale === 1 ? 'zoom-in' : 'zoom-out'}`"
-                 class="max-w-none shadow-2xl rounded-lg origin-center"
+                 class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-lg origin-center"
                  @click.stop="toggleZoom()">
         </div>
     </div>
