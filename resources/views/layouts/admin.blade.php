@@ -19,6 +19,7 @@
             box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
         }
     </style>
+    @stack('styles')
 </head>
 <body class="h-full" x-data="{ sidebarOpen: false }">
     <script>
@@ -380,5 +381,7 @@
             </div>
         @endif
     </div>
+
+    @stack('scripts')
 </body>
 </html>

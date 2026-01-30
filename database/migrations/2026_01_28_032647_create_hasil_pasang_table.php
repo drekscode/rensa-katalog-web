@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hasil_pasang', function (Blueprint $table) {
             $table->id();
-            $table->string('foto');
+            $table->longText('foto');
             $table->string('nama_project');
             $table->date('tanggal');
             $table->string('id_project');

@@ -12,19 +12,34 @@ class AdminTutorialGambarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = TutorialGambar::with('kategori')->orderBy('urutan', 'asc')->latest();
+        $search = $request->get('search');
+        
+        // Get all categories with their tutorial gambar
+        $query = Kategori::with(['tutorial_gambars' => function($q) use ($search) {
+            $q->orderBy('urutan', 'asc')->orderBy('created_at', 'desc');
+            
+            if ($search) {
+                $q->where(function($query) use ($search) {
+                    $query->where('judul', 'like', "%{$search}%")
+                          ->orWhere('deskripsi', 'like', "%{$search}%");
+                });
+            }
+        }])->orderBy('nama_kategori', 'asc');
 
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where('judul', 'like', "%{$search}%")
-                  ->orWhere('deskripsi', 'like', "%{$search}%")
-                  ->orWhereHas('kategori', function($q) use ($search) {
-                      $q->where('nama_kategori', 'like', "%{$search}%");
+        // If search is active, also filter categories by name
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nama_kategori', 'like', "%{$search}%")
+                  ->orWhereHas('tutorial_gambars', function($query) use ($search) {
+                      $query->where('judul', 'like', "%{$search}%")
+                            ->orWhere('deskripsi', 'like', "%{$search}%");
                   });
+            });
         }
 
-        $tutorial_gambars = $query->paginate(10);
-        return view('admin.tutorial-gambar.index', compact('tutorial_gambars'));
+        $kategoris = $query->get();
+        
+        return view('admin.tutorial-gambar.index', compact('kategoris', 'search'));
     }
 
     public function create()
@@ -47,6 +62,13 @@ class AdminTutorialGambarController extends Controller
             $file = $request->file('gambar');
             $base64 = base64_encode(file_get_contents($file));
             $validated['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+        }
+
+        // Auto-assign order if not provided
+        if (empty($validated['urutan'])) {
+            $maxUrutan = TutorialGambar::where('kategori_id', $validated['kategori_id'])
+                ->max('urutan');
+            $validated['urutan'] = $maxUrutan ? $maxUrutan + 1 : 1;
         }
 
         TutorialGambar::create($validated);
@@ -81,6 +103,14 @@ class AdminTutorialGambarController extends Controller
             $file = $request->file('gambar');
             $base64 = base64_encode(file_get_contents($file));
             $validated['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+        }
+
+        // Auto-assign order if not provided and category changed or order is empty
+        if (empty($validated['urutan'])) {
+            $maxUrutan = TutorialGambar::where('kategori_id', $validated['kategori_id'])
+                ->where('id', '!=', $tutorialGambar->id)
+                ->max('urutan');
+            $validated['urutan'] = $maxUrutan ? $maxUrutan + 1 : 1;
         }
 
         $tutorialGambar->update($validated);

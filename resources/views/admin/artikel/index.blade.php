@@ -68,10 +68,10 @@
         <!-- Content Card -->
         <div @click="openViewModal({
             'id': '{{ $artikel->id }}',
-            'judul': '{{ $artikel->judul }}',
+            'judul': {{ json_encode($artikel->judul) }},
             'kategori': '{{ $artikel->kategori->nama_kategori ?? '-' }}',
             'hastag': '{{ $artikel->hastag_kategori }}',
-            'deskripsi': '{{ addslashes($artikel->deskripsi) }}',
+            'deskripsi': {{ json_encode($artikel->deskripsi) }},
             'date': '{{ $artikel->date ? \Carbon\Carbon::parse($artikel->date)->format('d M Y') : '-' }}',
             'foto': '{{ $artikel->foto ? $artikel->foto : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
@@ -104,9 +104,9 @@
                     {{ $artikel->judul }}
                 </h3>
 
-                <p class="text-sm text-gray-600 line-clamp-3 mb-3">
-                    {{ $artikel->deskripsi }}
-                </p>
+                <div class="text-sm text-gray-600 line-clamp-3 mb-3 prose prose-sm max-w-none">
+                    {!! Str::limit(strip_tags($artikel->deskripsi), 150) !!}
+                </div>
                 
                 @if($artikel->hastag_kategori)
                 <div class="flex flex-wrap gap-1">
@@ -226,8 +226,8 @@
                                     </div>
                                 </div>
                                 <div class="col-span-full">
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Deskripsi</label>
-                                    <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 min-h-[100px] whitespace-pre-wrap" x-text="selectedItem.deskripsi"></div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Deskripsi</label>
+                                    <div class="text-sm text-gray-700 bg-gray-50 p-3 rounded-xl border border-gray-100 quill-content" x-html="selectedItem.deskripsi"></div>
                                 </div>
                             </div>
                         </div>
@@ -244,4 +244,122 @@
         </div>
     </template>
 </div>
+
+@push('styles')
+<style>
+    /* Quill Content Styling - Natural and Compact */
+    .quill-content {
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: #374151;
+    }
+    
+    .quill-content > *:first-child {
+        margin-top: 0 !important;
+    }
+    
+    .quill-content > *:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    .quill-content p {
+        margin: 0 0 0 0;
+    }
+    
+    .quill-content h1, .quill-content h2, .quill-content h3, 
+    .quill-content h4, .quill-content h5, .quill-content h6 {
+        font-weight: 600;
+        margin: 0.75em 0 0.5em 0;
+        line-height: 1.3;
+        color: #111827;
+    }
+    
+    .quill-content h1 { font-size: 1.5rem; }
+    .quill-content h2 { font-size: 1.25rem; }
+    .quill-content h3 { font-size: 1.125rem; }
+    .quill-content h4 { font-size: 1rem; }
+    .quill-content h5 { font-size: 0.875rem; }
+    .quill-content h6 { font-size: 0.75rem; }
+    
+    .quill-content ul, .quill-content ol {
+        margin: 0.5em 0;
+        padding-left: 1.5em;
+    }
+    
+    .quill-content li {
+        margin-bottom: 0.25em;
+    }
+    
+    .quill-content strong {
+        font-weight: 600;
+    }
+    
+    .quill-content em {
+        font-style: italic;
+    }
+    
+    .quill-content u {
+        text-decoration: underline;
+    }
+    
+    .quill-content s {
+        text-decoration: line-through;
+    }
+    
+    .quill-content a {
+        color: #8b9b7e;
+        text-decoration: underline;
+        transition: color 0.2s;
+    }
+    
+    .quill-content a:hover {
+        color: #7a8a6f;
+    }
+    
+    .quill-content blockquote {
+        border-left: 3px solid #8b9b7e;
+        padding-left: 0.75em;
+        margin: 0.75em 0;
+        font-style: italic;
+        color: #6b7280;
+    }
+    
+    .quill-content code {
+        background-color: #f3f4f6;
+        padding: 0.125em 0.375em;
+        border-radius: 0.25rem;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875em;
+        color: #ef4444;
+    }
+    
+    .quill-content pre {
+        background-color: #1f2937;
+        color: #f9fafb;
+        padding: 0.75em;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 0.75em 0;
+    }
+    
+    .quill-content pre code {
+        background-color: transparent;
+        padding: 0;
+        color: inherit;
+    }
+    
+    .quill-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        margin: 0.75em 0;
+    }
+    
+    .quill-content video {
+        max-width: 100%;
+        border-radius: 0.5rem;
+        margin: 0.75em 0;
+    }
+</style>
+@endpush
 @endsection
