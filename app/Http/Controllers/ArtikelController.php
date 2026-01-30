@@ -12,20 +12,39 @@ class ArtikelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getArtikel()
+    public function getArtikel(Request $request)
     {
-        return ArtikelResource::collection(Artikel::with('kategori')->orderBy('date', 'desc')->paginate(4));
+        $search = $request->query('search');
+
+        $artikels = Artikel::with('kategori')
+            ->when($search, function ($query) use ($search) {
+                $query->where('judul', 'like', "%{$search}%");
+            })
+            ->orderBy('date', 'desc')
+            ->get();
+
+        return ArtikelResource::collection($artikels);
     }
 
-    public function getArtikelPaginateByKategori($kategoriId)
+    public function getArtikelPaginateByKategori(Request $request, $kategoriId)
     {
-        $artikels = Artikel::where('kategori_id', $kategoriId)
-            ->with('kategori')
+        $search = $request->query('search');
+
+        $artikels = Artikel::with('kategori')
+            ->where('kategori_id', $kategoriId)
+            ->when($search, function ($query) use ($search) {
+                $query->where('judul', 'like', "%{$search}%");
+            })
             ->orderBy('date', 'desc')
             ->paginate(6);
 
         return response()->json([
             'data' => ArtikelResource::collection($artikels->items()),
+            'meta' => [
+                'current_page' => $artikels->currentPage(),
+                'per_page' => $artikels->perPage(),
+                'total' => $artikels->total(),
+            ],
         ]);
     }
 
