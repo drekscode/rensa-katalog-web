@@ -143,8 +143,12 @@
                             Deskripsi
                         </label>
                         <div class="mt-2 relative">
-                            <textarea name="deskripsi" id="deskripsi" rows="5"
-                                      class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('deskripsi') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">{{ old('deskripsi', $artikel->deskripsi) }}</textarea>
+                            <div id="quill-editor" 
+                                 class="block w-full rounded-lg border-0 bg-white shadow-sm ring-1 ring-inset {{ $errors->has('deskripsi') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#8b9b7e] transition-all duration-200"
+                                 style="min-height: 200px;">
+                                {!! old('deskripsi', $artikel->deskripsi) !!}
+                            </div>
+                            <input type="hidden" name="deskripsi" id="deskripsi">
                         </div>
                         @error('deskripsi')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
@@ -174,4 +178,79 @@
         </div>
     </form>
 </div>
+
+@push('styles')
+<!-- Quill CSS -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<style>
+    .ql-toolbar {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background-color: #f9fafb;
+        border-color: #e5e7eb !important;
+    }
+    
+    .ql-container {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-color: #e5e7eb !important;
+        font-size: 0.875rem;
+        min-height: 200px;
+    }
+    
+    .ql-editor {
+        min-height: 200px;
+        padding: 0.75rem;
+    }
+    
+    .ql-editor.ql-blank::before {
+        color: #9ca3af;
+        font-style: normal;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<!-- Quill JS -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quill = new Quill('#quill-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Write your article content here...'
+        });
+
+        // Update hidden input on text change
+        quill.on('text-change', function() {
+            document.getElementById('deskripsi').value = quill.root.innerHTML;
+        });
+
+        // Initialize hidden input with initial content
+        document.getElementById('deskripsi').value = quill.root.innerHTML;
+
+        // Ensure content is synced before form submission
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function() {
+            document.getElementById('deskripsi').value = quill.root.innerHTML;
+        });
+    });
+</script>
+@endpush
 @endsection
