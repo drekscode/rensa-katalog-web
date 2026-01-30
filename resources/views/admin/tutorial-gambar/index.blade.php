@@ -67,9 +67,13 @@
     </div>
 
     @php
-        $hasAnyTutorials = $kategoris->sum(function($kategori) {
+        $totalTutorials = $kategoris->sum(function($kategori) {
             return $kategori->tutorial_gambars->count();
-        }) > 0;
+        });
+        $hasAnyTutorials = $totalTutorials > 0;
+        $activeCategoriesCount = $kategoris->filter(function($kategori) {
+            return $kategori->tutorial_gambars->count() > 0;
+        })->count();
     @endphp
 
     @if(!$hasAnyTutorials)
@@ -97,8 +101,8 @@
     <!-- Expand/Collapse All Controls -->
     <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
         <div class="text-sm text-gray-600">
-            <span class="font-medium">{{ $kategoris->where('tutorial_gambars', '!=', '[]')->count() }}</span> categories with 
-            <span class="font-medium">{{ $hasAnyTutorials }}</span> tutorials total
+            <span class="font-medium">{{ $activeCategoriesCount }}</span> categories with 
+            <span class="font-medium">{{ $totalTutorials }}</span> tutorials total
         </div>
         <div class="flex gap-2">
             <button @click="expandAll()" 
