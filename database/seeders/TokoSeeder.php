@@ -40,6 +40,66 @@ class TokoSeeder extends Seeder
                 'kontak' => '0411-3216789',
                 'link_maps' => 'https://maps.google.com/?q=-5.1477,119.4327',
             ],
+            [
+                'nama_toko' => 'Rensa Store Semarang',
+                'alamat' => 'Jl. Pandanaran No. 112, Semarang, Jawa Tengah 50134',
+                'kontak' => '024-8521456',
+                'link_maps' => 'https://maps.google.com/?q=-6.9932,110.4203',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Yogyakarta',
+                'alamat' => 'Jl. Malioboro No. 67, Yogyakarta, DIY 55213',
+                'kontak' => '0274-5678901',
+                'link_maps' => 'https://maps.google.com/?q=-7.7956,110.3695',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Bali',
+                'alamat' => 'Jl. Sunset Road No. 234, Denpasar, Bali 80361',
+                'kontak' => '0361-7894561',
+                'link_maps' => 'https://maps.google.com/?q=-8.6705,115.2126',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Palembang',
+                'alamat' => 'Jl. Sudirman No. 145, Palembang, Sumatera Selatan 30126',
+                'kontak' => '0711-3214567',
+                'link_maps' => 'https://maps.google.com/?q=-2.9761,104.7754',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Balikpapan',
+                'alamat' => 'Jl. Jenderal Sudirman No. 88, Balikpapan, Kalimantan Timur 76114',
+                'kontak' => '0542-7651234',
+                'link_maps' => 'https://maps.google.com/?q=-1.2379,116.8529',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Manado',
+                'alamat' => 'Jl. Sam Ratulangi No. 56, Manado, Sulawesi Utara 95115',
+                'kontak' => '0431-8523456',
+                'link_maps' => 'https://maps.google.com/?q=1.4748,124.8421',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Pontianak',
+                'alamat' => 'Jl. Gajah Mada No. 123, Pontianak, Kalimantan Barat 78121',
+                'kontak' => '0561-7412345',
+                'link_maps' => 'https://maps.google.com/?q=-0.0263,109.3425',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Banjarmasin',
+                'alamat' => 'Jl. A. Yani KM 5.5, Banjarmasin, Kalimantan Selatan 70249',
+                'kontak' => '0511-3698521',
+                'link_maps' => 'https://maps.google.com/?q=-3.3194,114.5906',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Pekanbaru',
+                'alamat' => 'Jl. Jenderal Sudirman No. 234, Pekanbaru, Riau 28116',
+                'kontak' => '0761-8529631',
+                'link_maps' => 'https://maps.google.com/?q=0.5071,101.4478',
+            ],
+            [
+                'nama_toko' => 'Rensa Store Batam',
+                'alamat' => 'Jl. Engku Putri No. 67, Batam, Kepulauan Riau 29444',
+                'kontak' => '0778-4567891',
+                'link_maps' => 'https://maps.google.com/?q=1.0456,104.0305',
+            ],
         ];
 
         foreach ($tokos as $toko) {

@@ -31,7 +31,7 @@ class AdminBannerController extends Controller
         $validated = $request->validate([
             'banner_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'link' => 'nullable|string',
-            'urutan' => 'nullable|integer',
+            'urutan' => 'nullable|integer|unique:banner,urutan',
         ]);
 
         if ($request->hasFile('banner_image')) {
@@ -61,7 +61,7 @@ class AdminBannerController extends Controller
         $validated = $request->validate([
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'link' => 'nullable|string',
-            'urutan' => 'nullable|integer',
+            'urutan' => 'nullable|integer|unique:banner,urutan,' . $banner->id,
         ]);
 
         if ($request->hasFile('banner_image')) {

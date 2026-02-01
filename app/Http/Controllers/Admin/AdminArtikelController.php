@@ -37,7 +37,7 @@ class AdminArtikelController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
+            'judul' => 'required|string|max:255|unique:artikel,judul',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'hastag_kategori' => 'nullable|string|max:255',
             'date' => 'nullable|date',
@@ -76,7 +76,7 @@ class AdminArtikelController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
+            'judul' => 'required|string|max:255|unique:artikel,judul,' . $artikel->id,
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'hastag_kategori' => 'nullable|string|max:255',
             'date' => 'nullable|date',

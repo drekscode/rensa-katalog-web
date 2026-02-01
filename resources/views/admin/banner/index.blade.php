@@ -63,7 +63,7 @@
 
     @else
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
         @foreach($banners as $banner)
         <!-- Content Card -->
         <div @click="openViewModal({
@@ -73,7 +73,7 @@
             'image': '{{ $banner->banner_image ? $banner->banner_image : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Media -->
-            <div class="aspect-[2.5/1] bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
+            <div class="aspect-[3/4] bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
                 @if($banner->banner_image)
                     <img src="{{ $banner->banner_image }}" class="w-full h-full object-cover">
                 @else
@@ -193,7 +193,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Image</label>
-                                    <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-[21/9] flex items-center justify-center">
+                                    <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-[3/4] flex items-center justify-center">
                                         <template x-if="selectedItem.image">
                                             <img :src="selectedItem.image" 
                                                  @click="$dispatch('open-lightbox', { url: selectedItem.image })"

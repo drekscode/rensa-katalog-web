@@ -36,7 +36,7 @@ class AdminTutorialVideoController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'link' => 'required|string',
+            'link' => 'required|string|unique:tutorial_video,link',
         ]);
 
         TutorialVideo::create($validated);
@@ -61,7 +61,7 @@ class AdminTutorialVideoController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'link' => 'required|string',
+            'link' => 'required|string|unique:tutorial_video,link,' . $tutorialVideo->id,
         ]);
 
         $tutorialVideo->update($validated);

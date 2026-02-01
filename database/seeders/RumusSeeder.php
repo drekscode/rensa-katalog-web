@@ -64,6 +64,48 @@ class RumusSeeder extends Seeder
                 'ukuran' => 'Tinggi × Keliling',
                 'rumus' => '(Tinggi × Keliling) / 2.4',
             ],
+            
+            // Rangka Atap (kategori_id: 6)
+            [
+                'kategori_id' => 6,
+                'ukuran' => 'Luas Atap (m²)',
+                'rumus' => 'Luas Atap × 4.5 (kg/m²)',
+            ],
+            
+            // Insulasi (kategori_id: 7)
+            [
+                'kategori_id' => 7,
+                'ukuran' => 'Luas Area (m²)',
+                'rumus' => '(Luas Area × 1.10) / 10',
+            ],
+            
+            // Talang Air (kategori_id: 8)
+            [
+                'kategori_id' => 8,
+                'ukuran' => 'Keliling Atap (m)',
+                'rumus' => 'Keliling Atap / 3',
+            ],
+            
+            // Fasad (kategori_id: 9)
+            [
+                'kategori_id' => 9,
+                'ukuran' => 'Luas Fasad (m²)',
+                'rumus' => 'Luas Fasad / 2.4',
+            ],
+            
+            // Kanopi (kategori_id: 10)
+            [
+                'kategori_id' => 10,
+                'ukuran' => 'Luas Kanopi (m²)',
+                'rumus' => '(Luas Kanopi × 1.05) / 2.1',
+            ],
+            
+            // Flooring (kategori_id: 11)
+            [
+                'kategori_id' => 11,
+                'ukuran' => 'Luas Lantai (m²)',
+                'rumus' => '(Luas Lantai × 1.10) / 0.48',
+            ],
         ];
 
         foreach ($rumus as $item) {

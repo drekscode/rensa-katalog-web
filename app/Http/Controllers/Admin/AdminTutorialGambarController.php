@@ -7,6 +7,7 @@ use App\Models\TutorialGambar;
 use Illuminate\Http\Request;
 
 use App\Models\Kategori;
+use Illuminate\Validation\Rule;
 
 class AdminTutorialGambarController extends Controller
 {
@@ -56,7 +57,14 @@ class AdminTutorialGambarController extends Controller
             'items.*.judul' => 'required|string|max:255',
             'items.*.deskripsi' => 'nullable|string',
             'items.*.gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'items.*.urutan' => 'nullable|integer',
+            'items.*.urutan' => [
+                'nullable',
+                'integer',
+                'distinct',
+                Rule::unique('tutorial_gambar')->where(function ($query) use ($request) {
+                    return $query->where('kategori_id', $request->kategori_id);
+                }),
+            ],
         ]);
 
         $kategori_id = $request->kategori_id;
@@ -110,7 +118,13 @@ class AdminTutorialGambarController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'urutan' => 'nullable|integer',
+            'urutan' => [
+                'nullable',
+                'integer',
+                Rule::unique('tutorial_gambar')->where(function ($query) use ($request) {
+                    return $query->where('kategori_id', $request->kategori_id);
+                })->ignore($tutorialGambar->id),
+            ],
         ]);
 
         if ($request->hasFile('gambar')) {

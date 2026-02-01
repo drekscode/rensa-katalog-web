@@ -35,7 +35,7 @@ class AdminProductController extends Controller
     {
         $validated = $request->validate([
             'series_id' => 'required|exists:series,id',
-            'nama_product' => 'required|string|max:255',
+            'nama_product' => 'required|string|max:255|unique:product,nama_product',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
@@ -73,7 +73,7 @@ class AdminProductController extends Controller
     {
         $validated = $request->validate([
             'series_id' => 'required|exists:series,id',
-            'nama_product' => 'required|string|max:255',
+            'nama_product' => 'required|string|max:255|unique:product,nama_product,' . $product->id,
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
