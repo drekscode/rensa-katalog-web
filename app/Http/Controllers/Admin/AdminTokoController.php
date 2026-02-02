@@ -31,7 +31,7 @@ class AdminTokoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_toko' => 'required|string|max:255',
+            'nama_toko' => 'required|string|max:255|unique:toko,nama_toko',
             'alamat' => 'nullable|string',
             'kontak' => 'nullable|string|max:50',
             'link_maps' => 'nullable|string',
@@ -56,7 +56,7 @@ class AdminTokoController extends Controller
     public function update(Request $request, Toko $toko)
     {
         $validated = $request->validate([
-            'nama_toko' => 'required|string|max:255',
+            'nama_toko' => 'required|string|max:255|unique:toko,nama_toko,' . $toko->id,
             'alamat' => 'nullable|string',
             'kontak' => 'nullable|string|max:50',
             'link_maps' => 'nullable|string',

@@ -63,7 +63,7 @@
 
     @else
     
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
         @foreach($products as $product)
         <!-- Content Card -->
         <div @click="openViewModal({

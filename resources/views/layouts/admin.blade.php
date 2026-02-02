@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gradient-to-br from-[#faf9f6] via-[#f5f4f1] to-[#ebe9e4]">
+<html lang="en" class="h-full bg-fixed bg-gradient-to-br from-[#faf9f6] via-[#f5f4f1] to-[#ebe9e4]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <link rel="icon" href="{{ asset('RENSA_ID_R_HITAM.png') }}" media="(prefers-color-scheme: light)" type="image/png">
     <title>@yield('title', 'Admin Panel') - Rensa Katalog</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         .card-hover {
@@ -232,7 +233,7 @@
         <div class="w-full h-full overflow-auto flex items-center justify-center p-10 cursor-zoom-out" @click.self="isOpen = false">
             <img :src="imageUrl" 
                  :style="`transform: scale(${scale}); transition: transform 0.2s ease-out; cursor: ${scale === 1 ? 'zoom-in' : 'zoom-out'}`"
-                 class="max-w-none shadow-2xl rounded-lg origin-center"
+                 class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-lg origin-center"
                  @click.stop="toggleZoom()">
         </div>
     </div>

@@ -30,7 +30,7 @@ class AdminKategoriController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255',
+            'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori',
             'keunggulan_produk' => 'nullable|string',
         ]);
 
@@ -53,7 +53,7 @@ class AdminKategoriController extends Controller
     public function update(Request $request, Kategori $kategori)
     {
         $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255',
+            'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori,' . $kategori->id,
             'keunggulan_produk' => 'nullable|string',
         ]);
 

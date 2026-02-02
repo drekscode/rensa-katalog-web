@@ -35,7 +35,7 @@ class AdminSeriesController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'nama_series' => 'required|string|max:255',
+            'nama_series' => 'required|string|max:255|unique:series,nama_series',
             'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'cover_area' => 'nullable|string',
             'material' => 'nullable|string',
@@ -73,7 +73,7 @@ class AdminSeriesController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'nama_series' => 'required|string|max:255',
+            'nama_series' => 'required|string|max:255|unique:series,nama_series,' . $series->id,
             'struktur_img' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'cover_area' => 'nullable|string',
             'material' => 'nullable|string',

@@ -17,9 +17,9 @@
         this.expandedCategories[categoryId] = !this.expandedCategories[categoryId];
     },
     isCategoryExpanded(categoryId) {
-        // Auto-expand all categories by default
+        // Default to collapsed
         if (this.expandedCategories[categoryId] === undefined) {
-            return true;
+            return false;
         }
         return this.expandedCategories[categoryId] === true;
     },
@@ -67,9 +67,13 @@
     </div>
 
     @php
-        $hasAnyTutorials = $kategoris->sum(function($kategori) {
+        $totalTutorials = $kategoris->sum(function($kategori) {
             return $kategori->tutorial_gambars->count();
-        }) > 0;
+        });
+        $hasAnyTutorials = $totalTutorials > 0;
+        $activeCategoriesCount = $kategoris->filter(function($kategori) {
+            return $kategori->tutorial_gambars->count() > 0;
+        })->count();
     @endphp
 
     @if(!$hasAnyTutorials)
@@ -97,8 +101,8 @@
     <!-- Expand/Collapse All Controls -->
     <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
         <div class="text-sm text-gray-600">
-            <span class="font-medium">{{ $kategoris->where('tutorial_gambars', '!=', '[]')->count() }}</span> categories with 
-            <span class="font-medium">{{ $hasAnyTutorials }}</span> tutorials total
+            <span class="font-medium">{{ $activeCategoriesCount }}</span> categories with 
+            <span class="font-medium">{{ $totalTutorials }}</span> tutorials total
         </div>
         <div class="flex gap-2">
             <button @click="expandAll()" 
@@ -172,7 +176,7 @@
                                  <!-- Media -->
                                 <div class="aspect-video bg-gray-100 relative overflow-hidden">
                                     @if($tg->gambar)
-                                        <img src="{{ $tg->gambar }}" class="w-full h-full object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300" @click.stop="$dispatch('open-lightbox', { url: '{{ $tg->gambar }}' })">
+                                        <img src="{{ $tg->gambar }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                                             <div class="text-center">

@@ -7,6 +7,7 @@ use App\Models\TutorialGambar;
 use Illuminate\Http\Request;
 
 use App\Models\Kategori;
+use Illuminate\Validation\Rule;
 
 class AdminTutorialGambarController extends Controller
 {
@@ -50,36 +51,57 @@ class AdminTutorialGambarController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'urutan' => 'nullable|integer',
+            'items' => 'required|array|min:1',
+            'items.*.judul' => 'required|string|max:255',
+            'items.*.deskripsi' => 'nullable|string',
+            'items.*.gambar' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'items.*.urutan' => [
+                'nullable',
+                'integer',
+                'distinct',
+                Rule::unique('tutorial_gambar')->where(function ($query) use ($request) {
+                    return $query->where('kategori_id', $request->kategori_id);
+                }),
+            ],
         ]);
 
-        if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
-        }
+        $kategori_id = $request->kategori_id;
+        $count = 0;
 
-        // Auto-assign order if not provided
-        if (empty($validated['urutan'])) {
-            $maxUrutan = TutorialGambar::where('kategori_id', $validated['kategori_id'])
-                ->max('urutan');
-            $validated['urutan'] = $maxUrutan ? $maxUrutan + 1 : 1;
-        }
+        foreach ($request->items as $item) {
+            $data = [
+                'kategori_id' => $kategori_id,
+                'judul' => $item['judul'],
+                'deskripsi' => $item['deskripsi'] ?? null,
+                'urutan' => $item['urutan'] ?? null,
+            ];
 
-        TutorialGambar::create($validated);
+            // Handle Image
+            if (isset($item['gambar']) && $item['gambar'] instanceof \Illuminate\Http\UploadedFile) {
+                $file = $item['gambar'];
+                $base64 = base64_encode(file_get_contents($file));
+                $data['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            }
+
+            // Auto-assign order if empty
+            if (empty($data['urutan'])) {
+                $maxUrutan = TutorialGambar::where('kategori_id', $kategori_id)->max('urutan');
+                $data['urutan'] = $maxUrutan ? $maxUrutan + 1 : 1;
+            }
+
+            TutorialGambar::create($data);
+            $count++;
+        }
 
         if ($request->input('action') === 'save_and_add_another') {
             return redirect()->route('admin.tutorial-gambar.create')
-                ->with('success', 'Tutorial Gambar created successfully. You can add another one below.');
+                ->with('success', "$count Tutorial Gambar(s) created successfully. You can add more below.");
         }
 
         return redirect()->route('admin.tutorial-gambar.index')
-            ->with('success', 'Tutorial Gambar created successfully.');
+            ->with('success', "$count Tutorial Gambar(s) created successfully.");
     }
 
     public function edit(TutorialGambar $tutorialGambar)
@@ -96,7 +118,13 @@ class AdminTutorialGambarController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'urutan' => 'nullable|integer',
+            'urutan' => [
+                'nullable',
+                'integer',
+                Rule::unique('tutorial_gambar')->where(function ($query) use ($request) {
+                    return $query->where('kategori_id', $request->kategori_id);
+                })->ignore($tutorialGambar->id),
+            ],
         ]);
 
         if ($request->hasFile('gambar')) {

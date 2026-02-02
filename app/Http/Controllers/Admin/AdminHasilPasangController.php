@@ -38,7 +38,7 @@ class AdminHasilPasangController extends Controller
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'nama_project' => 'required|string|max:255',
             'tanggal' => 'required|date',
-            'id_project' => 'required|string|max:255',
+            'id_project' => 'required|string|max:255|unique:hasil_pasang,id_project',
             'id_series' => 'required|exists:series,id',
         ]);
 
@@ -74,7 +74,7 @@ class AdminHasilPasangController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'nama_project' => 'required|string|max:255',
             'tanggal' => 'required|date',
-            'id_project' => 'required|string|max:255',
+            'id_project' => 'required|string|max:255|unique:hasil_pasang,id_project,' . $id,
             'id_series' => 'required|exists:series,id',
         ]);
 
