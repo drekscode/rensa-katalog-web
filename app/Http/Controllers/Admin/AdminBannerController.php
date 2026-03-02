@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class AdminBannerController extends Controller
 {
@@ -40,7 +44,40 @@ class AdminBannerController extends Controller
             $validated['banner_image'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
-        Banner::create($validated);
+        $banner = Banner::create($validated);
+
+        $topic = env('FCM_BANNER_TOPIC', 'banner');
+
+        try {
+            $message = CloudMessage::withTarget('topic', $topic)
+                ->withNotification(Notification::create('Informasi penting telah diperbarui di banner.', ' Lihat Sekarang'))
+                ->withData([
+                    'id' => (string) $banner->id,
+                    'link' => (string) ($banner->link ?? ''),
+                    'urutan' => (string) ($banner->urutan ?? ''),
+                    'type' => 'banner',
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                ])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'notification' => [
+                        'sound' => 'default',
+                        'channel_id' => 'banner_channel',
+                    ],
+                ]);
+
+            $result = Firebase::messaging()->send($message);
+
+            Log::info('FCM banner notification sent', [
+                'banner_id' => $banner->id,
+                'result' => $result,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::warning('FCM banner notification failed', [
+                'banner_id' => $banner->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
 
         if ($request->input('action') === 'save_and_add_another') {
             return redirect()->route('admin.banner.create')

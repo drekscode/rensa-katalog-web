@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use App\Models\Series;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class AdminSeriesController extends Controller
 {
@@ -52,7 +56,39 @@ class AdminSeriesController extends Controller
 
 
 
-        Series::create($validated);
+        $series = Series::create($validated);
+
+        $topic = env('FCM_SERIES_TOPIC', 'series');
+
+        try {
+            $message = CloudMessage::withTarget('topic', $topic)
+                ->withNotification(Notification::create($series->nama_series, 'Cek Sekarang'))
+                ->withData([
+                    'id' => (string) $series->id,
+                    'kategori_id' => (string) $series->kategori_id,
+                    'type' => 'series',
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                ])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'notification' => [
+                        'sound' => 'default',
+                        'channel_id' => 'series_channel',
+                    ],
+                ]);
+
+            $result = Firebase::messaging()->send($message);
+
+            Log::info('FCM series notification sent', [
+                'series_id' => $series->id,
+                'result' => $result,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::warning('FCM series notification failed', [
+                'series_id' => $series->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
 
         if ($request->input('action') === 'save_and_add_another') {
             return redirect()->route('admin.series.create')
