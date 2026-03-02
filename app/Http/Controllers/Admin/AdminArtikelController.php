@@ -65,7 +65,7 @@ class AdminArtikelController extends Controller
 
         try {
             $message = CloudMessage::withTarget('topic', $topic)
-                ->withNotification(Notification::create($artikel->judul, ', Cek Sekarang'))
+                ->withNotification(Notification::create($artikel->judul, 'Cek Sekarang'))
                 ->withData([
                     'id' => (string) $artikel->id,
                     'slug' => (string) $artikel->slug,
