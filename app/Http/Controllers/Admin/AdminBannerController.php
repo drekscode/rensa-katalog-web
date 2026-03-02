@@ -50,7 +50,7 @@ class AdminBannerController extends Controller
 
         try {
             $message = CloudMessage::withTarget('topic', $topic)
-                ->withNotification(Notification::create('Informasi penting telah diperbarui di banner.', ' Lihat Sekarang'))
+                ->withNotification(Notification::create('Informasi penting telah diperbarui di banner.', 'Lihat Sekarang'))
                 ->withData([
                     'id' => (string) $banner->id,
                     'link' => (string) ($banner->link ?? ''),
