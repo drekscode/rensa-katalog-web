@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 use App\Models\Kategori;
 
@@ -55,7 +59,40 @@ class AdminArtikelController extends Controller
             $validated['date'] = now()->format('Y-m-d');
         }
 
-        Artikel::create($validated);
+        $artikel = Artikel::create($validated);
+
+        $topic = env('FCM_ARTIKEL_TOPIC', 'artikel');
+
+        try {
+            $message = CloudMessage::withTarget('topic', $topic)
+                ->withNotification(Notification::create($artikel->judul, ', Cek Sekarang'))
+                ->withData([
+                    'id' => (string) $artikel->id,
+                    'slug' => (string) $artikel->slug,
+                    'kategori_id' => (string) $artikel->kategori_id,
+                    'type' => 'artikel',
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                ])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'notification' => [
+                        'sound' => 'default',
+                        'channel_id' => 'artikel_channel',
+                    ],
+                ]);
+
+            $result = Firebase::messaging()->send($message);
+
+            Log::info('FCM artikel notification sent', [
+                'artikel_id' => $artikel->id,
+                'result' => $result,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::warning('FCM artikel notification failed', [
+                'artikel_id' => $artikel->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
 
         if ($request->input('action') === 'save_and_add_another') {
             return redirect()->route('admin.artikel.create')
