@@ -32,6 +32,7 @@ class AdminKategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori',
             'keunggulan_produk' => 'nullable|string',
+            'icon' => 'nullable|string',
         ]);
 
         Kategori::create($validated);
@@ -55,6 +56,7 @@ class AdminKategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori,' . $kategori->id,
             'keunggulan_produk' => 'nullable|string',
+            'icon' => 'nullable|string',
         ]);
 
         $kategori->update($validated);

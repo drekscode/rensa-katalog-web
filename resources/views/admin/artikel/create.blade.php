@@ -131,6 +131,44 @@
                         @enderror
                     </div>
 
+                    <!-- Foto 2 -->
+                    <div class="col-span-full">
+                        <label for="foto2" class="block text-sm font-medium leading-6 text-gray-900">
+                            Foto 2
+                        </label>
+                        <div class="mt-2 relative">
+                            <input type="file" name="foto2" id="foto2"
+                                   class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('foto2') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                        </div>
+                        @error('foto2')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Foto 3 -->
+                    <div class="col-span-full">
+                        <label for="foto3" class="block text-sm font-medium leading-6 text-gray-900">
+                            Foto 3
+                        </label>
+                        <div class="mt-2 relative">
+                            <input type="file" name="foto3" id="foto3"
+                                   class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('foto3') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                        </div>
+                        @error('foto3')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
                     <!-- Deskripsi -->
                     <div class="col-span-full">
                         <label for="deskripsi" class="block text-sm font-medium leading-6 text-gray-900">

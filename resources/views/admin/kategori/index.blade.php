@@ -68,8 +68,9 @@
         <!-- Content Card -->
         <div @click="openViewModal({
             'id': '{{ $kategori->id }}',
-            'name': '{{ $kategori->nama_kategori }}',
+            'name': '{{ addslashes($kategori->nama_kategori) }}',
             'keunggulan': '{{ addslashes($kategori->keunggulan_produk) }}',
+            'icon': '{{ addslashes($kategori->icon) }}',
             'created_at': '{{ $kategori->created_at->format('d M Y H:i') }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
@@ -83,6 +84,14 @@
 
             <!-- Body -->
             <div class="flex-1 px-6 py-6">
+                @if($kategori->icon)
+                <div class="flex justify-center mb-4">
+                    <div class="h-16 w-16 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-2 group-hover:border-[#8b9b7e] transition-colors">
+                        <img src="{{ $kategori->icon }}" alt="{{ $kategori->nama_kategori }}" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>
+                @endif
+                
                 <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors">
                     {{ $kategori->nama_kategori }}
                 </h3>
@@ -178,6 +187,14 @@
                                 </button>
                             </div>
                             <div class="space-y-4 text-left">
+                                <div x-show="selectedItem.icon">
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Icon</label>
+                                    <div class="flex justify-start">
+                                        <div class="h-20 w-20 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-3">
+                                            <img :src="selectedItem.icon" :alt="selectedItem.name" class="max-h-full max-w-full object-contain">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Nama Kategori</label>
                                     <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.name"></p>

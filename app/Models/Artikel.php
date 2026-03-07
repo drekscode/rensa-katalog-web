@@ -12,6 +12,8 @@ class Artikel extends Model
         'kategori_id',
         'judul',
         'foto',
+        'foto2',
+        'foto3',
         'deskripsi',
         'hastag_kategori',
         'date',

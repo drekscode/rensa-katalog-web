@@ -68,9 +68,10 @@
         <!-- Content Card -->
         <div @click="openViewModal({
             'id': '{{ $t->id }}',
-            'name': '{{ $t->nama_toko }}',
+            'name': '{{ addslashes($t->nama_toko) }}',
             'kontak': '{{ $t->kontak ?? '-' }}',
-            'alamat': '{{ addslashes($t->alamat) }}'
+            'alamat': '{{ addslashes($t->alamat) }}',
+            'image': '{{ addslashes($t->image) }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
             <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
@@ -87,6 +88,14 @@
 
             <!-- Body -->
             <div class="flex-1 px-6 py-6">
+                @if($t->image)
+                <div class="flex justify-center mb-4">
+                    <div class="h-20 w-20 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-2 group-hover:border-[#8b9b7e] transition-colors">
+                        <img src="{{ $t->image }}" alt="{{ $t->nama_toko }}" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>
+                @endif
+                
                 <h3 class="text-lg font-bold text-gray-900 leading-snug mb-4 group-hover:text-[#8b9b7e] transition-colors">
                     {{ $t->nama_toko }}
                 </h3>
@@ -188,6 +197,14 @@
                                 </button>
                             </div>
                             <div class="space-y-4">
+                                <div x-show="selectedItem.image">
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Image</label>
+                                    <div class="flex justify-start">
+                                        <div class="h-24 w-24 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-3">
+                                            <img :src="selectedItem.image" :alt="selectedItem.name" class="max-h-full max-w-full object-contain">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Nama Toko</label>
                                     <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.name"></p>
