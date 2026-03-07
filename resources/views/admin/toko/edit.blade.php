@@ -98,6 +98,45 @@
                             </p>
                         @enderror
                     </div>
+
+                    <!-- Image -->
+                    <div class="col-span-full">
+                        <label for="image_file" class="block text-sm font-medium leading-6 text-gray-900">
+                            Image
+                        </label>
+                        @if($toko->image)
+                            <div class="mt-2 mb-3">
+                                <p class="text-sm font-medium text-gray-700 mb-2">Current Image:</p>
+                                <img src="{{ $toko->image }}" alt="Current image" class="h-32 w-auto max-w-md object-contain border-2 border-gray-200 rounded-lg bg-gray-50 p-2">
+                            </div>
+                        @endif
+                        <div class="mt-2">
+                            <input type="file" 
+                                   id="image_file" 
+                                   accept="image/*"
+                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:border-transparent file:mr-4 file:py-2.5 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-[#8b9b7e] file:text-white hover:file:bg-[#7a8a6f] file:cursor-pointer transition-all duration-200">
+                            <input type="hidden" name="image" id="image_base64" value="{{ old('image', $toko->image) }}">
+                        </div>
+                        <div id="image_preview" class="mt-4 hidden">
+                            <p class="text-sm font-medium text-gray-700 mb-2">New Preview:</p>
+                            <div class="relative inline-block">
+                                <img id="preview_image" src="" alt="Image preview" class="h-32 w-auto max-w-md object-contain border-2 border-gray-200 rounded-lg bg-gray-50 p-2">
+                                <button type="button" onclick="clearImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        @error('image')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                 </div>
             </div>
              <div class="flex items-center justify-end gap-x-4 border-t border-gray-100 bg-gray-50/50 px-4 py-4 sm:px-6">
@@ -117,4 +156,34 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('image_file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 5120000) { // 5MB limit
+                alert('File size should not exceed 5MB');
+                clearImage();
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64String = event.target.result;
+                document.getElementById('image_base64').value = base64String;
+                document.getElementById('preview_image').src = base64String;
+                document.getElementById('image_preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function clearImage() {
+        document.getElementById('image_file').value = '';
+        const existingImage = '{{ $toko->image }}';
+        document.getElementById('image_base64').value = existingImage;
+        document.getElementById('preview_image').src = '';
+        document.getElementById('image_preview').classList.add('hidden');
+    }
+</script>
 @endsection

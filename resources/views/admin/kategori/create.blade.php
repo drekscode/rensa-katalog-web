@@ -63,6 +63,38 @@
                             </p>
                         @enderror
                     </div>
+
+                    <div class="col-span-full">
+                        <label for="icon_file" class="block text-sm font-medium leading-6 text-gray-900">
+                            Icon
+                        </label>
+                        <div class="mt-2">
+                            <input type="file" 
+                                   id="icon_file" 
+                                   accept="image/*"
+                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:border-transparent file:mr-4 file:py-2.5 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-[#8b9b7e] file:text-white hover:file:bg-[#7a8a6f] file:cursor-pointer transition-all duration-200">
+                            <input type="hidden" name="icon" id="icon_base64">
+                        </div>
+                        <div id="icon_preview" class="mt-4 hidden">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+                            <div class="relative inline-block">
+                                <img id="preview_image" src="" alt="Icon preview" class="h-24 w-24 object-contain border-2 border-gray-200 rounded-lg bg-gray-50 p-2">
+                                <button type="button" onclick="clearIcon()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        @error('icon')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="flex items-center justify-end gap-x-4 border-t border-gray-100 bg-gray-50/50 px-4 py-4 sm:px-6">
@@ -82,4 +114,33 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('icon_file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 2048000) { // 2MB limit
+                alert('File size should not exceed 2MB');
+                clearIcon();
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64String = event.target.result;
+                document.getElementById('icon_base64').value = base64String;
+                document.getElementById('preview_image').src = base64String;
+                document.getElementById('icon_preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function clearIcon() {
+        document.getElementById('icon_file').value = '';
+        document.getElementById('icon_base64').value = '';
+        document.getElementById('preview_image').src = '';
+        document.getElementById('icon_preview').classList.add('hidden');
+    }
+</script>
 @endsection

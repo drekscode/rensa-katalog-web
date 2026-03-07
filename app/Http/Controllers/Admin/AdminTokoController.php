@@ -35,6 +35,7 @@ class AdminTokoController extends Controller
             'alamat' => 'nullable|string',
             'kontak' => 'nullable|string|max:50',
             'link_maps' => 'nullable|string',
+            'image' => 'nullable|string',
         ]);
 
         Toko::create($validated);
@@ -60,6 +61,7 @@ class AdminTokoController extends Controller
             'alamat' => 'nullable|string',
             'kontak' => 'nullable|string|max:50',
             'link_maps' => 'nullable|string',
+            'image' => 'nullable|string',
         ]);
 
         $toko->update($validated);

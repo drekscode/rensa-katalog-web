@@ -43,6 +43,8 @@ class AdminArtikelController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255|unique:artikel,judul',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto3' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'hastag_kategori' => 'nullable|string|max:255',
             'date' => 'nullable|date',
             'deskripsi' => 'nullable|string',
@@ -52,6 +54,18 @@ class AdminArtikelController extends Controller
             $file = $request->file('foto');
             $base64 = base64_encode(file_get_contents($file));
             $validated['foto'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+        }
+
+        if ($request->hasFile('foto2')) {
+            $file = $request->file('foto2');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['foto2'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+        }
+
+        if ($request->hasFile('foto3')) {
+            $file = $request->file('foto3');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['foto3'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         // Set date to today if not provided
@@ -115,6 +129,8 @@ class AdminArtikelController extends Controller
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|max:255|unique:artikel,judul,' . $artikel->id,
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto2' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto3' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'hastag_kategori' => 'nullable|string|max:255',
             'date' => 'nullable|date',
             'deskripsi' => 'nullable|string',
@@ -124,6 +140,18 @@ class AdminArtikelController extends Controller
             $file = $request->file('foto');
             $base64 = base64_encode(file_get_contents($file));
             $validated['foto'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+        }
+
+        if ($request->hasFile('foto2')) {
+            $file = $request->file('foto2');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['foto2'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+        }
+
+        if ($request->hasFile('foto3')) {
+            $file = $request->file('foto3');
+            $base64 = base64_encode(file_get_contents($file));
+            $validated['foto3'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
         }
 
         // Set date to today if not provided

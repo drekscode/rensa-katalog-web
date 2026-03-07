@@ -73,7 +73,9 @@
             'hastag': '{{ $artikel->hastag_kategori }}',
             'deskripsi': {{ json_encode($artikel->deskripsi) }},
             'date': '{{ $artikel->date ? \Carbon\Carbon::parse($artikel->date)->format('d M Y') : '-' }}',
-            'foto': '{{ $artikel->foto ? $artikel->foto : '' }}'
+            'foto': '{{ $artikel->foto ? $artikel->foto : '' }}',
+            'foto2': '{{ $artikel->foto2 ? $artikel->foto2 : '' }}',
+            'foto3': '{{ $artikel->foto3 ? $artikel->foto3 : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Media -->
             <div class="aspect-video bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
@@ -214,14 +216,32 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Foto</label>
-                                    <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-video flex items-center justify-center">
+                                    <div class="grid grid-cols-1 gap-3">
                                         <template x-if="selectedItem.foto">
-                                            <img :src="selectedItem.foto" 
-                                                 @click="$dispatch('open-lightbox', { url: selectedItem.foto })"
-                                                 class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                            <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-video flex items-center justify-center">
+                                                <img :src="selectedItem.foto" 
+                                                     @click="$dispatch('open-lightbox', { url: selectedItem.foto })"
+                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                            </div>
                                         </template>
-                                        <template x-if="!selectedItem.foto">
-                                            <span class="text-gray-400 text-sm">No Image</span>
+                                        <template x-if="selectedItem.foto2">
+                                            <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-video flex items-center justify-center">
+                                                <img :src="selectedItem.foto2" 
+                                                     @click="$dispatch('open-lightbox', { url: selectedItem.foto2 })"
+                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                            </div>
+                                        </template>
+                                        <template x-if="selectedItem.foto3">
+                                            <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-video flex items-center justify-center">
+                                                <img :src="selectedItem.foto3" 
+                                                     @click="$dispatch('open-lightbox', { url: selectedItem.foto3 })"
+                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                            </div>
+                                        </template>
+                                        <template x-if="!selectedItem.foto && !selectedItem.foto2 && !selectedItem.foto3">
+                                            <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-video flex items-center justify-center">
+                                                <span class="text-gray-400 text-sm">No Images</span>
+                                            </div>
                                         </template>
                                     </div>
                                 </div>

@@ -13,5 +13,6 @@ class Toko extends Model
         'alamat',
         'link_maps',
         'kontak',
+        'image',
     ];
 }
