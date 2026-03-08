@@ -18,6 +18,7 @@ class KategoriResource extends JsonResource
             'id' => $this->id,
             'nama_kategori' => $this->nama_kategori,
             'keunggulan_produk' => $this->keunggulan_produk,
+            'icon' => $this->icon && (str_starts_with($this->icon, 'http') || str_starts_with($this->icon, 'data:')) ? $this->icon : ($this->icon ? asset('storage/' . $this->icon) : null),
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
             'series' => SeriesResource::collection($this->whenLoaded('series')),
