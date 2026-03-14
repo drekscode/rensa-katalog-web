@@ -60,6 +60,17 @@ class ArtikelController extends Controller
     //     ]);
     // }
 
+    public function getArtikelById($id)
+    {
+        $artikel = Artikel::with('kategori')->find($id);
+
+        if (!$artikel) {
+            return response()->json(['message' => 'Artikel tidak ditemukan'], 404);
+        }
+
+        return new ArtikelResource($artikel);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -32,6 +32,7 @@ Route::prefix('series')->group(function () {
 
 Route::prefix('articles')->group(function () {
     Route::get('/', [ArtikelController::class, 'getArtikel']);
+    Route::get('{id}', [ArtikelController::class, 'getArtikelById']);
     Route::get('by-category/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateByKategori']);
     // Route::get('by-category/tab/{kategoriId}', [ArtikelController::class, 'getArtikelPaginateTabByKategori']);
 });
