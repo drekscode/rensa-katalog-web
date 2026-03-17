@@ -29,6 +29,11 @@ class Series extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function productOldest()
+    {
+        return $this->hasOne(Product::class)->oldestOfMany('created_at');
+    }
+
     public function hasilPasang()
     {
         return $this->hasMany(HasilPasang::class, 'id_series');
