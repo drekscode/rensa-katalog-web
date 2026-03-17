@@ -8,9 +8,43 @@
     showViewModal: false, 
     selectedItem: {},
     search: '{{ request('search') }}',
+    expandedSeries: {},
     openViewModal(item) {
         this.selectedItem = item;
         this.showViewModal = true;
+    },
+    toggleSeries(seriesKey) {
+        this.expandedSeries[seriesKey] = !this.expandedSeries[seriesKey];
+    },
+    isSeriesExpanded(seriesKey) {
+        if (this.expandedSeries[seriesKey] === undefined) {
+            return false;
+        }
+        return this.expandedSeries[seriesKey] === true;
+    },
+    expandAll() {
+        @if(!$products->isEmpty())
+            @php
+                $seriesKeysForExpand = $products->getCollection()->groupBy(function($product) {
+                    return $product->series_id ?? 'unknown';
+                })->keys();
+            @endphp
+            @foreach($seriesKeysForExpand as $seriesKey)
+                this.expandedSeries['{{ $seriesKey }}'] = true;
+            @endforeach
+        @endif
+    },
+    collapseAll() {
+        @if(!$products->isEmpty())
+            @php
+                $seriesKeysForCollapse = $products->getCollection()->groupBy(function($product) {
+                    return $product->series_id ?? 'unknown';
+                })->keys();
+            @endphp
+            @foreach($seriesKeysForCollapse as $seriesKey)
+                this.expandedSeries['{{ $seriesKey }}'] = false;
+            @endforeach
+        @endif
     }
 }" class="mx-auto max-w-7xl">
     
@@ -63,77 +97,143 @@
 
     @else
     
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
-        @foreach($products as $product)
-        <!-- Content Card -->
-        <div @click="openViewModal({
-            'id': '{{ $product->id }}',
-            'series': '{{ $product->series->nama_series ?? '-' }}',
-            'name': '{{ $product->nama_product }}',
-            'thumbnail': '{{ $product->thumbnail ? $product->thumbnail : '' }}',
-            'big_pic': '{{ $product->big_pic ? $product->big_pic : '' }}'
-        })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
-             <!-- Media -->
-             <div class="aspect-square bg-gray-100 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
-                @if($product->thumbnail)
-                    <img src="{{ $product->thumbnail }}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                @else
-                    <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
-                        <span class="text-xs text-gray-400 italic">No Thumbnail</span>
+    @php
+        $groupedProducts = $products->getCollection()->groupBy(function($product) {
+            return $product->series_id ?? 'unknown';
+        });
+        $totalProducts = $groupedProducts->sum(function($seriesProducts) {
+            return $seriesProducts->count();
+        });
+        $activeSeriesCount = $groupedProducts->count();
+    @endphp
+
+    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+        <div class="text-sm text-gray-600">
+            <span class="font-medium">{{ $activeSeriesCount }}</span> series with
+            <span class="font-medium">{{ $totalProducts }}</span> products on this page
+        </div>
+        <div class="flex gap-2">
+            <button @click="expandAll()"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-[#8b9b7e] hover:text-[#8b9b7e] transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                </svg>
+                Expand All
+            </button>
+            <button @click="collapseAll()"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                </svg>
+                Collapse All
+            </button>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        @foreach($groupedProducts as $seriesKey => $seriesProducts)
+        @php
+            $firstProduct = $seriesProducts->first();
+            $seriesName = $firstProduct?->series?->nama_series ?? 'Unknown Series';
+        @endphp
+        <div class="bg-white rounded-xl shadow-sm shadow-gray-200/50 ring-1 ring-gray-200 overflow-hidden transition-all hover:shadow-md hover:shadow-gray-200/60">
+            <div @click="toggleSeries('{{ $seriesKey }}')"
+                 class="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-gray-50 transition-all group">
+                <div class="flex items-center gap-3 flex-1">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-[#8b9b7e]/10 group-hover:bg-[#8b9b7e]/20 transition-colors flex-shrink-0">
+                        <svg class="w-5 h-5 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                        </svg>
                     </div>
-                @endif
-
-                 <div class="absolute top-2 right-2">
-                    <span class="inline-flex items-center rounded-lg bg-white/90 backdrop-blur-sm px-2 py-1 text-xs font-medium text-gray-800 shadow-sm border border-gray-100">
-                        {{ $product->series->nama_series ?? 'Unknown Series' }}
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-base font-bold text-gray-900 group-hover:text-[#8b9b7e] transition-colors truncate">
+                            {{ $seriesName }}
+                        </h3>
+                        <p class="text-sm text-gray-500 mt-0.5">
+                            {{ $seriesProducts->count() }} {{ Str::plural('product', $seriesProducts->count()) }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0 ml-4">
+                    <span class="inline-flex items-center justify-center min-w-[28px] h-7 rounded-lg bg-[#8b9b7e]/10 px-2 text-sm font-semibold text-[#8b9b7e]">
+                        {{ $seriesProducts->count() }}
                     </span>
-                 </div>
-                 
-
+                    <svg class="h-5 w-5 text-gray-400 transition-transform duration-200"
+                         :class="{ 'rotate-180': isSeriesExpanded('{{ $seriesKey }}') }"
+                         fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
             </div>
 
-            <!-- Body -->
-            <div class="p-4 flex-1 flex flex-col">
-                <div class="mb-1">
-                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Product Name</span>
-                </div>
-                <h3 class="text-base font-bold text-gray-900 leading-snug group-hover:text-[#8b9b7e] transition-colors mb-4 line-clamp-2">
-                    {{ $product->nama_product }}
-                </h3>
-                
-                <!-- Actions Footer -->
-                <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2" @click.stop>
-                     <span class="text-xs font-medium text-gray-400">#{{ $product->id }}</span>
-                     
-                     <div class="flex items-center gap-1">
-                         <a href="{{ route('admin.product.edit', $product) }}" 
-                           class="inline-flex justify-center items-center p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-[#8b9b7e] hover:text-white transition-all duration-200" title="Edit">
-                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                        </a>
-                        
-                        <button type="button" 
-                                @click="$dispatch('confirm-delete', { 
-                                    title: 'Delete Product?', 
-                                    message: 'Are you sure you want to delete \'{{ addslashes($product->nama_product) }}\'? This will permanently remove it.',
-                                    formId: 'delete-form-{{ $product->id }}' 
-                                })"
-                                class="inline-flex justify-center items-center p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all duration-200" title="Delete">
-                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                        </button>
-                        
-                        <form action="{{ route('admin.product.destroy', $product) }}" 
-                              method="POST" 
-                              id="delete-form-{{ $product->id }}"
-                              class="hidden">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                     </div>
+            <div x-show="isSeriesExpanded('{{ $seriesKey }}')"
+                 x-collapse.duration.300ms
+                 class="border-t border-gray-100">
+                <div class="p-5 bg-gray-50/30">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
+                        @foreach($seriesProducts as $product)
+                        <div @click="openViewModal({
+                            'id': '{{ $product->id }}',
+                            'series': '{{ addslashes($product->series->nama_series ?? '-') }}',
+                            'name': '{{ addslashes($product->nama_product) }}',
+                            'thumbnail': '{{ $product->thumbnail ? $product->thumbnail : '' }}',
+                            'big_pic': '{{ $product->big_pic ? $product->big_pic : '' }}'
+                        })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
+                            <div class="aspect-square bg-gray-100 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
+                                @if($product->thumbnail)
+                                    <img src="{{ $product->thumbnail }}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
+                                        <span class="text-xs text-gray-400 italic">No Thumbnail</span>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="p-4 flex-1 flex flex-col">
+                                <div class="mb-1">
+                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Product Name</span>
+                                </div>
+                                <h3 class="text-base font-bold text-gray-900 leading-snug group-hover:text-[#8b9b7e] transition-colors mb-4 line-clamp-2">
+                                    {{ $product->nama_product }}
+                                </h3>
+
+                                <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2" @click.stop>
+                                    <span class="text-xs font-medium text-gray-400">#{{ $product->id }}</span>
+
+                                    <div class="flex items-center gap-1">
+                                        <a href="{{ route('admin.product.edit', $product) }}"
+                                        class="inline-flex justify-center items-center p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-[#8b9b7e] hover:text-white transition-all duration-200" title="Edit">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            </svg>
+                                        </a>
+
+                                        <button type="button"
+                                                @click="$dispatch('confirm-delete', {
+                                                    title: 'Delete Product?',
+                                                    message: 'Are you sure you want to delete \'{{ addslashes($product->nama_product) }}\'? This will permanently remove it.',
+                                                    formId: 'delete-form-{{ $product->id }}'
+                                                })"
+                                                class="inline-flex justify-center items-center p-1.5 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all duration-200" title="Delete">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                            </svg>
+                                        </button>
+
+                                        <form action="{{ route('admin.product.destroy', $product) }}"
+                                            method="POST"
+                                            id="delete-form-{{ $product->id }}"
+                                            class="hidden">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

@@ -16,7 +16,7 @@ class SeriesController extends Controller
     {
         $search = $request->query('search');
 
-        $series = Series::with('kategori')
+        $series = Series::with(['kategori', 'productOldest'])
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_series', 'like', "%{$search}%");
             })
@@ -30,7 +30,7 @@ class SeriesController extends Controller
     {
         $search = $request->query('search');
 
-        $series = Series::with('kategori')
+        $series = Series::with(['kategori', 'productOldest'])
             ->where('kategori_id', $kategoriId)
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_series', 'like', "%{$search}%");
@@ -45,7 +45,7 @@ class SeriesController extends Controller
     {
         $search = $request->query('search');
 
-        $series = Series::with('kategori')
+        $series = Series::with(['kategori', 'productOldest'])
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_series', 'like', "%{$search}%");
             })
@@ -70,6 +70,7 @@ class SeriesController extends Controller
     {
         $series = Series::with([
             'products',
+            'productOldest',
             'kategori.tutorial_gambars',
             'kategori.tutorial_videos',
             'hasilPasang'

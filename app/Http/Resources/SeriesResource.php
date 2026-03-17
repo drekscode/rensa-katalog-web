@@ -28,6 +28,7 @@ class SeriesResource extends JsonResource
             'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
             'kategori' => new KategoriResource($this->whenLoaded('kategori')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
+            'product_oldest' => new ProductResource($this->whenLoaded('productOldest')),
             'hasil_pasang' => HasilPasangResource::collection($this->whenLoaded('hasilPasang')),
         ];
     }
