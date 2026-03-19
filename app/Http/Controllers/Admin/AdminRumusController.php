@@ -15,11 +15,15 @@ class AdminRumusController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where('ukuran', 'like', "%{$search}%")
-                  ->orWhere('rumus', 'like', "%{$search}%")
-                  ->orWhereHas('kategori', function($q) use ($search) {
-                      $q->where('nama_kategori', 'like', "%{$search}%");
-                  });
+            $query->where(function ($q) use ($search) {
+                $q->where('rumus', 'like', "%{$search}%")
+                    ->orWhere('panjang', 'like', "%{$search}%")
+                    ->orWhere('lebar', 'like', "%{$search}%")
+                    ->orWhere('lembar', 'like', "%{$search}%")
+                    ->orWhereHas('kategori', function ($subQuery) use ($search) {
+                        $subQuery->where('nama_kategori', 'like', "%{$search}%");
+                    });
+            });
         }
 
         $rumus = $query->paginate(10);
@@ -36,11 +40,13 @@ class AdminRumusController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'ukuran' => 'required|string|max:255',
             'rumus' => 'required|string',
+            'panjang' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
+            'lebar' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
+            'lembar' => 'required_if:rumus,Rumus Box|nullable|integer|min:1',
         ]);
 
-        Rumus::create($validated);
+        Rumus::create($this->normalizeRumusFields($validated));
 
         if ($request->input('action') === 'save_and_add_another') {
             return redirect()->route('admin.rumus.create')
@@ -61,11 +67,13 @@ class AdminRumusController extends Controller
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'ukuran' => 'required|string|max:255',
             'rumus' => 'required|string',
+            'panjang' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
+            'lebar' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
+            'lembar' => 'required_if:rumus,Rumus Box|nullable|integer|min:1',
         ]);
 
-        $rumus->update($validated);
+        $rumus->update($this->normalizeRumusFields($validated));
 
         if ($request->input('action') === 'save_and_add_another') {
             return redirect()->route('admin.rumus.create')
@@ -82,5 +90,23 @@ class AdminRumusController extends Controller
 
         return redirect()->route('admin.rumus.index')
             ->with('success', 'Rumus deleted successfully.');
+    }
+
+    private function normalizeRumusFields(array $validated): array
+    {
+        if ($validated['rumus'] === 'Rumus Batang') {
+            $validated['lembar'] = null;
+            return $validated;
+        }
+
+        if ($validated['rumus'] === 'Rumus Box') {
+            return $validated;
+        }
+
+        $validated['panjang'] = null;
+        $validated['lebar'] = null;
+        $validated['lembar'] = null;
+
+        return $validated;
     }
 }

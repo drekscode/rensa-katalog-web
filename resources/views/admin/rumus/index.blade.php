@@ -8,7 +8,24 @@
     showViewModal: false, 
     selectedItem: {},
     search: '{{ request('search') }}',
+    formatDimension(item) {
+        if (item.rumus === 'Rumus Batang') {
+            if (item.panjang && item.lebar) {
+                return `${item.panjang} x ${item.lebar} cm`;
+            }
+            return '-';
+        }
+
+        if (item.rumus === 'Rumus Box') {
+            const sizePart = item.panjang && item.lebar ? `${item.panjang} x ${item.lebar} cm` : '-';
+            const sheetPart = item.lembar ? `, ${item.lembar} pcs` : '';
+            return `${sizePart}${sheetPart}`;
+        }
+
+        return '-';
+    },
     openViewModal(item) {
+        item.dimension_text = this.formatDimension(item);
         this.selectedItem = item;
         this.showViewModal = true;
     }
@@ -65,11 +82,25 @@
     
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
         @foreach($rumus as $item)
+        @php
+            $dimensionText = '-';
+            if ($item->rumus === 'Rumus Batang' && $item->panjang !== null && $item->lebar !== null) {
+                $dimensionText = rtrim(rtrim((string) $item->panjang, '0'), '.') . ' x ' . rtrim(rtrim((string) $item->lebar, '0'), '.') . ' cm';
+            } elseif ($item->rumus === 'Rumus Box') {
+                $sizeText = ($item->panjang !== null && $item->lebar !== null)
+                    ? (rtrim(rtrim((string) $item->panjang, '0'), '.') . ' x ' . rtrim(rtrim((string) $item->lebar, '0'), '.') . ' cm')
+                    : '-';
+                $sheetText = $item->lembar !== null ? ', ' . $item->lembar . ' pcs' : '';
+                $dimensionText = $sizeText . $sheetText;
+            }
+        @endphp
         <!-- Content Card -->
         <div @click="openViewModal({
             'id': '{{ $item->id }}',
             'kategori': '{{ $item->kategori->nama_kategori ?? '-' }}',
-            'ukuran': '{{ $item->ukuran }}',
+            'panjang': '{{ $item->panjang }}',
+            'lebar': '{{ $item->lebar }}',
+            'lembar': '{{ $item->lembar }}',
             'rumus': '{{ addslashes($item->rumus) }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
@@ -83,7 +114,7 @@
             <!-- Body -->
             <div class="flex-1 px-6 py-6">
                 <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors">
-                    {{ $item->ukuran }}
+                    {{ $dimensionText }}
                 </h3>
                 
                 <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 font-mono text-sm text-gray-600 whitespace-pre-wrap overflow-x-auto relative group-hover:bg-white group-hover:shadow-inner transition-colors">
@@ -174,8 +205,8 @@
                                     <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.kategori"></p>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ukuran</label>
-                                    <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.ukuran"></p>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Dimensi</label>
+                                    <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.dimension_text"></p>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Rumus</label>
