@@ -10,7 +10,9 @@ class Rumus extends Model
     
     protected $fillable = [
         'kategori_id',
-        'ukuran',
+        'panjang',
+        'lebar',
+        'lembar',
         'rumus',
     ];
 

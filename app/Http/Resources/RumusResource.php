@@ -12,7 +12,9 @@ class RumusResource extends JsonResource
         return [
             'id' => $this->id,
             'kategori_id' => $this->kategori_id,
-            'ukuran' => $this->ukuran,
+            'panjang' => $this->panjang,
+            'lebar' => $this->lebar,
+            'lembar' => $this->lembar,
             'rumus' => $this->rumus,
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
