@@ -4,15 +4,41 @@
 @section('page-title', 'Hasil Pasang')
 
 @section('content')
+@php
+    $groupedHasilPasang = $hasilPasang->getCollection()->groupBy(function ($item) {
+        return $item->series_id ?? 'unknown';
+    });
+@endphp
 <div x-data="{ 
     showViewModal: false, 
     selectedItem: {},
     search: '{{ request('search') }}',
+    expandedSeries: {},
     openViewModal(item) {
         this.selectedItem = item;
         this.showViewModal = true;
+    },
+    toggleSeries(seriesKey) {
+        this.expandedSeries[seriesKey] = !this.expandedSeries[seriesKey];
+    },
+    isSeriesExpanded(seriesKey) {
+        if (this.expandedSeries[seriesKey] === undefined) {
+            return false;
+        }
+        return this.expandedSeries[seriesKey] === true;
+    },
+    expandAll() {
+        @foreach($groupedHasilPasang->keys() as $seriesKey)
+            this.expandedSeries['{{ $seriesKey }}'] = true;
+        @endforeach
+    },
+    collapseAll() {
+        @foreach($groupedHasilPasang->keys() as $seriesKey)
+            this.expandedSeries['{{ $seriesKey }}'] = false;
+        @endforeach
     }
-}" class="mx-auto max-w-7xl">
+}
+" class="mx-auto max-w-7xl">
     
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
@@ -62,80 +88,155 @@
     </div>
 
     @else
+
+    @php
+        $totalProjects = $groupedHasilPasang->sum(function ($seriesItems) {
+            return $seriesItems->count();
+        });
+        $activeSeriesCount = $groupedHasilPasang->count();
+    @endphp
+
+    <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+        <div class="text-sm text-gray-600">
+            <span class="font-medium">{{ $activeSeriesCount }}</span> series with
+            <span class="font-medium">{{ $totalProjects }}</span> projects on this page
+        </div>
+        <div class="flex gap-2">
+            <button @click="expandAll()"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-[#8b9b7e] hover:text-[#8b9b7e] transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+                </svg>
+                Expand All
+            </button>
+            <button @click="collapseAll()"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                </svg>
+                Collapse All
+            </button>
+        </div>
+    </div>
     
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
-        @foreach($hasilPasang as $item)
-        <!-- Content Card -->
-        <div @click="openViewModal({
-            'id': '{{ $item->id }}',
-            'project_name': '{{ addslashes($item->nama_project) }}',
-            'project_id': '{{ $item->id_project }}',
-            'series': '{{ $item->series->nama_series ?? 'Deleted Series' }}',
-            'date': '{{ $item->tanggal }}',
-            'image': '{{ $item->foto ? $item->foto : '' }}',
-        })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
-            <!-- Image Header -->
-             <div class="aspect-video w-full bg-gray-100 overflow-hidden relative">
-                @if($item->foto)
-                    <img src="{{ $item->foto }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                @else
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400">
-                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+    <div class="space-y-4">
+        @foreach($groupedHasilPasang as $seriesKey => $seriesItems)
+        @php
+            $firstItem = $seriesItems->first();
+            $seriesName = $firstItem?->series?->nama_series ?? 'Deleted Series';
+        @endphp
+        <div class="bg-white rounded-xl shadow-sm shadow-gray-200/50 ring-1 ring-gray-200 overflow-hidden transition-all hover:shadow-md hover:shadow-gray-200/60">
+            <div @click="toggleSeries('{{ $seriesKey }}')"
+                 class="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-gray-50 transition-all group">
+                <div class="flex items-center gap-3 flex-1">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-[#8b9b7e]/10 group-hover:bg-[#8b9b7e]/20 transition-colors flex-shrink-0">
+                        <svg class="w-5 h-5 text-[#8b9b7e]" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
                         </svg>
                     </div>
-                @endif
-                <div class="absolute top-2 right-2">
-                     <span class="inline-flex items-center rounded-lg bg-white/90 backdrop-blur-sm px-2 py-1 text-xs font-medium text-gray-700 shadow-sm">{{ $item->tanggal }}</span>
-                </div>
-            </div>
-
-            <!-- Body -->
-            <div class="flex-1 px-5 py-4 flex flex-col">
-                <div class="mb-2">
-                     <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-500 ring-1 ring-inset ring-gray-500/10 mb-2">{{ $item->id_project }}</span>
-                    <h3 class="text-lg font-bold text-gray-900 leading-snug group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
-                        {{ $item->nama_project }}
-                    </h3>
-                </div>
-                
-                 <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-gray-500">Series:</span>
-                        <span class="text-xs font-medium text-gray-700">{{ $item->series->nama_series ?? 'Deleted Series' }}</span>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-base font-bold text-gray-900 group-hover:text-[#8b9b7e] transition-colors truncate">
+                            {{ $seriesName }}
+                        </h3>
+                        <p class="text-sm text-gray-500 mt-0.5">
+                            {{ $seriesItems->count() }} {{ Str::plural('project', $seriesItems->count()) }}
+                        </p>
                     </div>
                 </div>
+                <div class="flex items-center gap-2 flex-shrink-0 ml-4">
+                    <span class="inline-flex items-center justify-center min-w-[28px] h-7 rounded-lg bg-[#8b9b7e]/10 px-2 text-sm font-semibold text-[#8b9b7e]">
+                        {{ $seriesItems->count() }}
+                    </span>
+                    <svg class="h-5 w-5 text-gray-400 transition-transform duration-200"
+                         :class="{ 'rotate-180': isSeriesExpanded('{{ $seriesKey }}') }"
+                         fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
             </div>
 
-            <!-- Actions -->
-            <div class="bg-gray-50 px-5 py-3 flex items-center justify-end gap-2 border-t border-gray-100" @click.stop>
+            <div x-show="isSeriesExpanded('{{ $seriesKey }}')"
+                 x-collapse.duration.300ms
+                 class="border-t border-gray-100">
+                <div class="p-5 bg-gray-50/30">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
+                        @foreach($seriesItems as $item)
+                        <!-- Content Card -->
+                        <div @click="openViewModal({
+                            'id': '{{ $item->id }}',
+                            'project_name': '{{ addslashes($item->nama_project) }}',
+                            'project_id': '{{ $item->id_project }}',
+                            'series': '{{ $item->series->nama_series ?? 'Deleted Series' }}',
+                            'date': '{{ $item->tanggal }}',
+                            'image': '{{ $item->foto ? $item->foto : '' }}',
+                        })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
+                            <!-- Image Header -->
+                             <div class="aspect-video w-full bg-gray-100 overflow-hidden relative">
+                                @if($item->foto)
+                                    <img src="{{ $item->foto }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                @else
+                                    <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                        </svg>
+                                    </div>
+                                @endif
+                                <div class="absolute top-2 right-2">
+                                     <span class="inline-flex items-center rounded-lg bg-white/90 backdrop-blur-sm px-2 py-1 text-xs font-medium text-gray-700 shadow-sm">{{ $item->tanggal }}</span>
+                                </div>
+                            </div>
 
-                 <a href="{{ route('admin.hasil-pasang.edit', $item->id) }}" 
-                   class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 hover:text-[#8b9b7e] hover:ring-[#8b9b7e]/30 transition-all duration-200" title="Edit">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                    </svg>
-                </a>
-                
-                <button type="button" 
-                        @click="$dispatch('confirm-delete', { 
-                            title: 'Delete Project?', 
-                            message: 'Are you sure you want to delete \'{{ addslashes($item->nama_project) }}\'? This will permanently remove it.',
-                            formId: 'delete-form-{{ $item->id }}' 
-                        })"
-                        class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-500 hover:ring-red-200 transition-all duration-200" title="Delete">
-                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                    </svg>
-                </button>
-                
-                <form action="{{ route('admin.hasil-pasang.destroy', $item->id) }}" 
-                      method="POST" 
-                      id="delete-form-{{ $item->id }}"
-                      class="hidden">
-                    @csrf
-                    @method('DELETE')
-                </form>
+                            <!-- Body -->
+                            <div class="flex-1 px-5 py-4 flex flex-col">
+                                <div class="mb-2">
+                                     <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-500 ring-1 ring-inset ring-gray-500/10 mb-2">{{ $item->id_project }}</span>
+                                    <h3 class="text-lg font-bold text-gray-900 leading-snug group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
+                                        {{ $item->nama_project }}
+                                    </h3>
+                                </div>
+
+                                 <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-gray-500">Series:</span>
+                                        <span class="text-xs font-medium text-gray-700">{{ $item->series->nama_series ?? 'Deleted Series' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="bg-gray-50 px-5 py-3 flex items-center justify-end gap-2 border-t border-gray-100" @click.stop>
+
+                                 <a href="{{ route('admin.hasil-pasang.edit', $item->id) }}"
+                                   class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 hover:text-[#8b9b7e] hover:ring-[#8b9b7e]/30 transition-all duration-200" title="Edit">
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                    </svg>
+                                </a>
+
+                                <button type="button"
+                                        @click="$dispatch('confirm-delete', {
+                                            title: 'Delete Project?',
+                                            message: 'Are you sure you want to delete \'{{ addslashes($item->nama_project) }}\'? This will permanently remove it.',
+                                            formId: 'delete-form-{{ $item->id }}'
+                                        })"
+                                        class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-500 hover:ring-red-200 transition-all duration-200" title="Delete">
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+
+                                <form action="{{ route('admin.hasil-pasang.destroy', $item->id) }}"
+                                      method="POST"
+                                      id="delete-form-{{ $item->id }}"
+                                      class="hidden">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
         @endforeach
