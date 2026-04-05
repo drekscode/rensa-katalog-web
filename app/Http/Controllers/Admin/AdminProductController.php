@@ -11,17 +11,44 @@ class AdminProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('series')->latest();
+        $search = $request->search;
 
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where('nama_product', 'like', "%{$search}%")
-                  ->orWhereHas('series', function($q) use ($search) {
-                      $q->where('nama_series', 'like', "%{$search}%");
+        $seriesQuery = Series::has('products')->latest();
+        if ($request->has('search') && $search) {
+            $seriesQuery->where(function($q) use ($search) {
+                $q->where('nama_series', 'like', "%{$search}%")
+                  ->orWhereHas('products', function($sq) use ($search) {
+                      $sq->where('nama_product', 'like', "%{$search}%");
                   });
+            });
         }
 
-        $products = $query->paginate(10);
+        $paginatedSeries = $seriesQuery->paginate(5);
+        $seriesIds = $paginatedSeries->pluck('id');
+
+        $productsQuery = Product::with('series')
+            ->whereIn('series_id', $seriesIds)
+            ->latest();
+
+        if ($request->has('search') && $search) {
+            $productsQuery->where(function($q) use ($search) {
+                $q->where('nama_product', 'like', "%{$search}%")
+                  ->orWhereHas('series', function($sq) use ($search) {
+                      $sq->where('nama_series', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $productsCollection = $productsQuery->get();
+
+        $products = new \Illuminate\Pagination\LengthAwarePaginator(
+            $productsCollection,
+            $paginatedSeries->total(),
+            5,
+            $paginatedSeries->currentPage(),
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
         return view('admin.product.index', compact('products'));
     }
 
