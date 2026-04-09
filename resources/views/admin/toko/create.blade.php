@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="mx-auto max-w-3xl">
-    <form action="{{ route('admin.toko.store') }}" method="POST" class="space-y-6">
+    <form action="{{ route('admin.toko.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
         <div class="overflow-hidden bg-white shadow-sm ring-1 ring-gray-200 rounded-xl">
@@ -105,10 +105,11 @@
                         </label>
                         <div class="mt-2">
                             <input type="file" 
+                                   name="image"
                                    id="image_file" 
                                    accept="image/*"
                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:border-transparent file:mr-4 file:py-2.5 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-[#8b9b7e] file:text-white hover:file:bg-[#7a8a6f] file:cursor-pointer transition-all duration-200">
-                            <input type="hidden" name="image" id="image_base64">
+                            <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                         </div>
                         <div id="image_preview" class="mt-4 hidden">
                             <p class="text-sm font-medium text-gray-700 mb-2">Preview:</p>
@@ -162,9 +163,7 @@
             
             const reader = new FileReader();
             reader.onload = function(event) {
-                const base64String = event.target.result;
-                document.getElementById('image_base64').value = base64String;
-                document.getElementById('preview_image').src = base64String;
+                document.getElementById('preview_image').src = event.target.result;
                 document.getElementById('image_preview').classList.remove('hidden');
             };
             reader.readAsDataURL(file);
@@ -173,7 +172,6 @@
 
     function clearImage() {
         document.getElementById('image_file').value = '';
-        document.getElementById('image_base64').value = '';
         document.getElementById('preview_image').src = '';
         document.getElementById('image_preview').classList.add('hidden');
     }

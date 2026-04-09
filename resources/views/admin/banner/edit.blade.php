@@ -23,11 +23,12 @@
                         </label>
                         <div class="mt-2 flex items-center gap-x-4">
                             @if($banner->banner_image)
-                                <img src="{{ $banner->banner_image }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Banner">
+                                <img src="{{ str_starts_with($banner->banner_image, 'data:') || str_starts_with($banner->banner_image, 'http') ? $banner->banner_image : asset('storage/' . $banner->banner_image) }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Banner">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="banner_image" id="banner_image"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('banner_image') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                             </div>
                         </div>
                         @error('banner_image')

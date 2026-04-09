@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -33,15 +34,13 @@ class AdminBannerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'banner_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'banner_image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'link' => 'nullable|string',
             'urutan' => 'nullable|integer|unique:banner,urutan',
         ]);
 
         if ($request->hasFile('banner_image')) {
-            $file = $request->file('banner_image');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['banner_image'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            $validated['banner_image'] = $request->file('banner_image')->store('banners', 'public');
         }
 
         $banner = Banner::create($validated);
@@ -96,15 +95,16 @@ class AdminBannerController extends Controller
     public function update(Request $request, Banner $banner)
     {
         $validated = $request->validate([
-            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'link' => 'nullable|string',
             'urutan' => 'nullable|integer|unique:banner,urutan,' . $banner->id,
         ]);
 
         if ($request->hasFile('banner_image')) {
-            $file = $request->file('banner_image');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['banner_image'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($banner->banner_image && !str_starts_with($banner->banner_image, 'data:')) {
+                Storage::disk('public')->delete($banner->banner_image);
+            }
+            $validated['banner_image'] = $request->file('banner_image')->store('banners', 'public');
         }
 
         $banner->update($validated);
@@ -120,6 +120,10 @@ class AdminBannerController extends Controller
 
     public function destroy(Banner $banner)
     {
+        if ($banner->banner_image && !str_starts_with($banner->banner_image, 'data:')) {
+            Storage::disk('public')->delete($banner->banner_image);
+        }
+
         $banner->delete();
 
         return redirect()->route('admin.banner.index')

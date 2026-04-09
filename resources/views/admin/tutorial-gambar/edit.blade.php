@@ -82,11 +82,12 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($tutorial_gambar->gambar)
-                                <img src="{{ $tutorial_gambar->gambar }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Gambar">
+                                <img src="{{ str_starts_with($tutorial_gambar->gambar, 'data:') || str_starts_with($tutorial_gambar->gambar, 'http') ? $tutorial_gambar->gambar : asset('storage/' . $tutorial_gambar->gambar) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Gambar">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="gambar" id="gambar"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('gambar') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 2MB</p>
                             </div>
                         </div>
                         @error('gambar')

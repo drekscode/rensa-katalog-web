@@ -60,7 +60,7 @@ class SeriesController extends Controller
                 'total' => $series->total(),
                 'sisa_item' => max(
                     0,
-                    $series->total() - ($series->currentPage() * $series->perPage())
+                    $series->total() - (($series->currentPage() - 1) * $series->perPage() + count($series->items()))
                 ),
             ]
         ]);

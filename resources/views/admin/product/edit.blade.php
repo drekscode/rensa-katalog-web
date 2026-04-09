@@ -82,11 +82,12 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($product->thumbnail)
-                                <img src="{{ $product->thumbnail }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Thumbnail">
+                                <img src="{{ str_starts_with($product->thumbnail, 'data:') || str_starts_with($product->thumbnail, 'http') ? $product->thumbnail : asset('storage/' . $product->thumbnail) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Thumbnail">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="thumbnail" id="thumbnail"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('thumbnail') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 2MB</p>
                             </div>
                         </div>
                         @error('thumbnail')
@@ -106,11 +107,12 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($product->big_pic)
-                                <img src="{{ $product->big_pic }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
+                                <img src="{{ str_starts_with($product->big_pic, 'data:') || str_starts_with($product->big_pic, 'http') ? $product->big_pic : asset('storage/' . $product->big_pic) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="big_pic" id="big_pic"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('big_pic') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                             </div>
                         </div>
                         @error('big_pic')
