@@ -23,6 +23,7 @@
                         <div class="mt-2 relative">
                             <input type="file" name="banner_image" id="banner_image" required
                                    class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('banner_image') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                            <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                         </div>
                         @error('banner_image')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">

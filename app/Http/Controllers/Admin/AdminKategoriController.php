@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminKategoriController extends Controller
 {
@@ -32,8 +33,12 @@ class AdminKategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori',
             'keunggulan_produk' => 'nullable|string',
-            'icon' => 'nullable|string',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
         ]);
+
+        if ($request->hasFile('icon')) {
+            $validated['icon'] = $request->file('icon')->store('kategori', 'public');
+        }
 
         Kategori::create($validated);
 
@@ -56,8 +61,15 @@ class AdminKategoriController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori,' . $kategori->id,
             'keunggulan_produk' => 'nullable|string',
-            'icon' => 'nullable|string',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
         ]);
+
+        if ($request->hasFile('icon')) {
+            if ($kategori->icon && !str_starts_with($kategori->icon, 'data:')) {
+                Storage::disk('public')->delete($kategori->icon);
+            }
+            $validated['icon'] = $request->file('icon')->store('kategori', 'public');
+        }
 
         $kategori->update($validated);
 
@@ -72,6 +84,9 @@ class AdminKategoriController extends Controller
 
     public function destroy(Kategori $kategori)
     {
+        if ($kategori->icon && !str_starts_with($kategori->icon, 'data:')) {
+            Storage::disk('public')->delete($kategori->icon);
+        }
         $kategori->delete();
 
         return redirect()->route('admin.kategori.index')

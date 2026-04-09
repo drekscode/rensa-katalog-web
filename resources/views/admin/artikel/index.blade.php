@@ -73,14 +73,14 @@
             'hastag': '{{ $artikel->hastag_kategori }}',
             'deskripsi': {{ json_encode($artikel->deskripsi) }},
             'date': '{{ $artikel->date ? \Carbon\Carbon::parse($artikel->date)->format('d M Y') : '-' }}',
-            'foto': '{{ $artikel->foto ? $artikel->foto : '' }}',
-            'foto2': '{{ $artikel->foto2 ? $artikel->foto2 : '' }}',
-            'foto3': '{{ $artikel->foto3 ? $artikel->foto3 : '' }}'
+            'foto': '{{ $artikel->foto ? (str_starts_with($artikel->foto, 'data:') || str_starts_with($artikel->foto, 'http') ? $artikel->foto : asset('storage/' . $artikel->foto)) : '' }}',
+            'foto2': '{{ $artikel->foto2 ? (str_starts_with($artikel->foto2, 'data:') || str_starts_with($artikel->foto2, 'http') ? $artikel->foto2 : asset('storage/' . $artikel->foto2)) : '' }}',
+            'foto3': '{{ $artikel->foto3 ? (str_starts_with($artikel->foto3, 'data:') || str_starts_with($artikel->foto3, 'http') ? $artikel->foto3 : asset('storage/' . $artikel->foto3)) : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Media -->
             <div class="aspect-video bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
                 @if($artikel->foto)
-                    <img src="{{ $artikel->foto }}" class="w-full h-full object-cover">
+                    <img src="{{ str_starts_with($artikel->foto, 'data:') || str_starts_with($artikel->foto, 'http') ? $artikel->foto : asset('storage/' . $artikel->foto) }}" class="w-full h-full object-cover">
                 @else
                     <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
                         <span class="text-xs text-gray-400 italic">No Image</span>

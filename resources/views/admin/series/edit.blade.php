@@ -138,11 +138,12 @@
                         </label>
                         <div class="mt-2 flex items-center gap-x-4">
                             @if($series->struktur_img)
-                                <img src="{{ $series->struktur_img }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
+                                <img src="{{ str_starts_with($series->struktur_img, 'data:') || str_starts_with($series->struktur_img, 'http') ? $series->struktur_img : asset('storage/' . $series->struktur_img) }}" class="h-16 w-16 rounded-lg object-cover ring-1 ring-gray-200" alt="Current Image">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="struktur_img" id="struktur_img"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('struktur_img') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 2MB</p>
                             </div>
                         </div>
                         @error('struktur_img')

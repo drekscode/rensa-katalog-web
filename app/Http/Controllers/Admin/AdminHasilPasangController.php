@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HasilPasang;
 use App\Models\Series;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminHasilPasangController extends Controller
 {
@@ -35,7 +36,7 @@ class AdminHasilPasangController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'nama_project' => 'required|string|max:255',
             'tanggal' => 'required|date',
             'id_project' => 'required|string|max:255|unique:hasil_pasang,id_project',
@@ -43,9 +44,7 @@ class AdminHasilPasangController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['foto'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            $validated['foto'] = $request->file('foto')->store('hasil-pasang', 'public');
         }
 
         HasilPasang::create($validated);
@@ -71,7 +70,7 @@ class AdminHasilPasangController extends Controller
         $hasilPasang = HasilPasang::findOrFail($id);
         
         $validated = $request->validate([
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'nama_project' => 'required|string|max:255',
             'tanggal' => 'required|date',
             'id_project' => 'required|string|max:255|unique:hasil_pasang,id_project,' . $id,
@@ -79,9 +78,10 @@ class AdminHasilPasangController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['foto'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($hasilPasang->foto && !str_starts_with($hasilPasang->foto, 'data:')) {
+                Storage::disk('public')->delete($hasilPasang->foto);
+            }
+            $validated['foto'] = $request->file('foto')->store('hasil-pasang', 'public');
         }
 
         $hasilPasang->update($validated);
@@ -98,6 +98,11 @@ class AdminHasilPasangController extends Controller
     public function destroy($id)
     {
         $hasilPasang = HasilPasang::findOrFail($id);
+        
+        if ($hasilPasang->foto && !str_starts_with($hasilPasang->foto, 'data:')) {
+            Storage::disk('public')->delete($hasilPasang->foto);
+        }
+
         $hasilPasang->delete();
 
         return redirect()->route('admin.hasil-pasang.index')

@@ -72,7 +72,7 @@
             'name': '{{ $s->nama_series }}',
             'material': '{{ addslashes($s->material) }}',
             'deskripsi': '{{ addslashes($s->deskripsi_produk) }}',
-            'struktur': '{{ $s->struktur_img ? $s->struktur_img : '' }}',
+            'struktur': '{{ $s->struktur_img ? (str_starts_with($s->struktur_img, 'data:') || str_starts_with($s->struktur_img, 'http') ? $s->struktur_img : asset('storage/' . $s->struktur_img)) : '' }}',
             'cover': '{{ $s->cover_area ? $s->cover_area : '' }}',
             'ketebalan': '{{ $s->ketebalan ? $s->ketebalan : '' }}',
             'ukuran': '{{ $s->ukuran ? $s->ukuran : '' }}'
@@ -98,7 +98,7 @@
 
                     @if($s->struktur_img)
                     <div class="aspect-video rounded-lg bg-gray-100 overflow-hidden relative">
-                         <img src="{{ $s->struktur_img }}" class="w-full h-full object-cover">
+                         <img src="{{ str_starts_with($s->struktur_img, 'data:') || str_starts_with($s->struktur_img, 'http') ? $s->struktur_img : asset('storage/' . $s->struktur_img) }}" class="w-full h-full object-cover">
 
                     </div>
                     @endif

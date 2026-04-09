@@ -168,12 +168,12 @@
                             'project_id': '{{ $item->id_project }}',
                             'series': '{{ $item->series->nama_series ?? 'Deleted Series' }}',
                             'date': '{{ $item->tanggal }}',
-                            'image': '{{ $item->foto ? $item->foto : '' }}',
+                            'image': '{{ $item->foto ? (str_starts_with($item->foto, 'data:') || str_starts_with($item->foto, 'http') ? $item->foto : asset('storage/' . $item->foto)) : '' }}',
                         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
                             <!-- Image Header -->
                              <div class="aspect-video w-full bg-gray-100 overflow-hidden relative">
                                 @if($item->foto)
-                                    <img src="{{ $item->foto }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                    <img src="{{ str_starts_with($item->foto, 'data:') || str_starts_with($item->foto, 'http') ? $item->foto : asset('storage/' . $item->foto) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                 @else
                                     <div class="absolute inset-0 flex items-center justify-center text-gray-400">
                                         <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

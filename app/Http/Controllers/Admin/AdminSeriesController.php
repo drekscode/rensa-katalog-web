@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use App\Models\Series;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -49,9 +50,7 @@ class AdminSeriesController extends Controller
         ]);
 
         if ($request->hasFile('struktur_img')) {
-            $file = $request->file('struktur_img');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            $validated['struktur_img'] = $request->file('struktur_img')->store('series', 'public');
         }
 
 
@@ -119,9 +118,10 @@ class AdminSeriesController extends Controller
         ]);
 
         if ($request->hasFile('struktur_img')) {
-            $file = $request->file('struktur_img');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($series->struktur_img && !str_starts_with($series->struktur_img, 'data:')) {
+                Storage::disk('public')->delete($series->struktur_img);
+            }
+            $validated['struktur_img'] = $request->file('struktur_img')->store('series', 'public');
         }
 
 
@@ -139,6 +139,10 @@ class AdminSeriesController extends Controller
 
     public function destroy(Series $series)
     {
+        if ($series->struktur_img && !str_starts_with($series->struktur_img, 'data:')) {
+            Storage::disk('public')->delete($series->struktur_img);
+        }
+
         $series->delete();
 
         return redirect()->route('admin.series.index')

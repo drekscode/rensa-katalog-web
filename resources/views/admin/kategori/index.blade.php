@@ -70,7 +70,7 @@
             'id': '{{ $kategori->id }}',
             'name': '{{ addslashes($kategori->nama_kategori) }}',
             'keunggulan': '{{ addslashes($kategori->keunggulan_produk) }}',
-            'icon': '{{ addslashes($kategori->icon) }}',
+            'icon': '{{ $kategori->icon ? (str_starts_with($kategori->icon, 'data:') || str_starts_with($kategori->icon, 'http') ? $kategori->icon : asset('storage/' . $kategori->icon)) : '' }}',
             'created_at': '{{ $kategori->created_at->format('d M Y H:i') }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
@@ -87,7 +87,7 @@
                 @if($kategori->icon)
                 <div class="flex justify-center mb-4">
                     <div class="h-16 w-16 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-2 group-hover:border-[#8b9b7e] transition-colors">
-                        <img src="{{ $kategori->icon }}" alt="{{ $kategori->nama_kategori }}" class="max-h-full max-w-full object-contain">
+                        <img src="{{ str_starts_with($kategori->icon, 'data:') || str_starts_with($kategori->icon, 'http') ? $kategori->icon : asset('storage/' . $kategori->icon) }}" alt="{{ $kategori->nama_kategori }}" class="max-h-full max-w-full object-contain">
                     </div>
                 </div>
                 @endif

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TutorialGambar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Kategori;
 use Illuminate\Validation\Rule;
@@ -80,9 +81,7 @@ class AdminTutorialGambarController extends Controller
 
             // Handle Image
             if (isset($item['gambar']) && $item['gambar'] instanceof \Illuminate\Http\UploadedFile) {
-                $file = $item['gambar'];
-                $base64 = base64_encode(file_get_contents($file));
-                $data['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+                $data['gambar'] = $item['gambar']->store('tutorial-gambar', 'public');
             }
 
             // Auto-assign order if empty
@@ -128,9 +127,10 @@ class AdminTutorialGambarController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['gambar'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($tutorialGambar->gambar && !str_starts_with($tutorialGambar->gambar, 'data:')) {
+                Storage::disk('public')->delete($tutorialGambar->gambar);
+            }
+            $validated['gambar'] = $request->file('gambar')->store('tutorial-gambar', 'public');
         }
 
         // Auto-assign order if not provided and category changed or order is empty
@@ -154,6 +154,10 @@ class AdminTutorialGambarController extends Controller
 
     public function destroy(TutorialGambar $tutorialGambar)
     {
+        if ($tutorialGambar->gambar && !str_starts_with($tutorialGambar->gambar, 'data:')) {
+            Storage::disk('public')->delete($tutorialGambar->gambar);
+        }
+
         $tutorialGambar->delete();
 
         return redirect()->route('admin.tutorial-gambar.index')
