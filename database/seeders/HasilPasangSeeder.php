@@ -36,14 +36,33 @@ class HasilPasangSeeder extends Seeder
             ['nama_project' => 'Rumah Skandinavia Makassar', 'id_project' => 'HP015', 'tanggal' => Carbon::now()->subMonths(7)->format('Y-m-d'), 'foto' => 'https://images.unsplash.com/photo-1600573472592-401b489a3cdc?q=80&w=2000&auto=format&fit=crop'],
         ];
 
+        $supportPhotos = [
+            'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1600607687644-c7171b42498b?q=80&w=1000&auto=format&fit=crop',
+        ];
+
         foreach ($projects as $project) {
-            HasilPasang::create([
+            $hp = HasilPasang::create([
                 'nama_project' => $project['nama_project'],
                 'id_project' => $project['id_project'],
                 'tanggal' => $project['tanggal'],
                 'foto' => $project['foto'],
                 'id_series' => $seriesIds[array_rand($seriesIds)],
             ]);
+
+            // Seed a random number of support collage photos (between 3 and 6)
+            $count = rand(3, 6);
+            $selectedPhotos = array_slice($supportPhotos, 0, $count);
+            shuffle($selectedPhotos);
+            foreach ($selectedPhotos as $photoUrl) {
+                $hp->images()->create([
+                    'foto' => $photoUrl,
+                ]);
+            }
         }
     }
 }

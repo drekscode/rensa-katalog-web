@@ -73,7 +73,7 @@ class SeriesController extends Controller
             'productOldest',
             'kategori.tutorial_gambars',
             'kategori.tutorial_videos',
-            'hasilPasang'
+            'hasilPasang.images'
             ])->findOrFail($seriesId);
 
         return SeriesResource::make($series);

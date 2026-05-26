@@ -39,5 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('welcome-text/{welcome_text}/toggle-status', [AdminWelcomeTextController::class, 'toggleStatus'])->name('welcome-text.toggle-status');
         Route::resource('welcome-text', AdminWelcomeTextController::class);
         Route::resource('hasil-pasang', AdminHasilPasangController::class);
+        Route::post('hasil-pasang/{id}/upload-image', [AdminHasilPasangController::class, 'uploadImage'])->name('hasil-pasang.upload-image');
+        Route::delete('hasil-pasang/images/{image_id}', [AdminHasilPasangController::class, 'deleteImage'])->name('hasil-pasang.delete-image');
     });
 });

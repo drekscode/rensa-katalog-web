@@ -17,6 +17,9 @@ class HasilPasangResource extends JsonResource
         return [
             'id' => $this->id,
             'foto' => $this->foto && (str_starts_with($this->foto, 'http') || str_starts_with($this->foto, 'data:')) ? $this->foto : ($this->foto ? asset('storage/' . $this->foto) : null),
+            'images' => $this->relationLoaded('images') ? $this->images->map(function ($img) {
+                return $img->foto && (str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:')) ? $img->foto : ($img->foto ? asset('storage/' . $img->foto) : null);
+            }) : [],
             'nama_project' => $this->nama_project,
             'tanggal' => $this->tanggal,
             'id_project' => $this->id_project,
