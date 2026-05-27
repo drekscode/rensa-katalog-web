@@ -17,6 +17,7 @@ class Series extends Model
         'ketebalan',
         'ukuran',
         'deskripsi_produk',
+        'keyword',
     ];
 
     public function kategori()

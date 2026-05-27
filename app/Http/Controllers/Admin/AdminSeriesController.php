@@ -20,10 +20,13 @@ class AdminSeriesController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where('nama_series', 'like', "%{$search}%")
-                  ->orWhereHas('kategori', function($q) use ($search) {
-                      $q->where('nama_kategori', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_series', 'like', "%{$search}%")
+                  ->orWhere('keyword', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function ($q2) use ($search) {
+                      $q2->where('nama_kategori', 'like', "%{$search}%");
                   });
+            });
         }
 
         $series = $query->paginate(10);
@@ -47,6 +50,7 @@ class AdminSeriesController extends Controller
             'ketebalan' => 'nullable|string',
             'ukuran' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
+            'keyword' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('struktur_img')) {
@@ -115,6 +119,7 @@ class AdminSeriesController extends Controller
             'ketebalan' => 'nullable|string',
             'ukuran' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
+            'keyword' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('struktur_img')) {

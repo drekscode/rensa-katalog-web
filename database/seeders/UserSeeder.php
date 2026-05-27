@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\User;
@@ -10,7 +12,6 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user
         User::firstOrCreate(
             ['email' => 'admin@rensa.id'],
             [

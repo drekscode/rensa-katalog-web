@@ -18,7 +18,10 @@ class SeriesController extends Controller
 
         $series = Series::with(['kategori', 'productOldest'])
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_series', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_series', 'like', "%{$search}%")
+                      ->orWhere('keyword', 'like', "%{$search}%");
+                });
             })
             ->orderBy('id', 'asc')
             ->get();
@@ -33,7 +36,10 @@ class SeriesController extends Controller
         $series = Series::with(['kategori', 'productOldest'])
             ->where('kategori_id', $kategoriId)
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_series', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_series', 'like', "%{$search}%")
+                      ->orWhere('keyword', 'like', "%{$search}%");
+                });
             })
             ->orderBy('id', 'asc')
             ->get();
@@ -47,7 +53,10 @@ class SeriesController extends Controller
 
         $series = Series::with(['kategori', 'productOldest'])
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_series', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_series', 'like', "%{$search}%")
+                      ->orWhere('keyword', 'like', "%{$search}%");
+                });
             })
             ->orderBy('id', 'asc')
             ->paginate(4);
