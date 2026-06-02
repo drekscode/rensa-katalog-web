@@ -504,7 +504,7 @@
                         <p class="text-xs text-gray-500 mt-0.5">
                             <span class="font-medium">{{ $tut->kategori->nama_kategori ?? 'Uncategorized' }}</span>
                             <span class="mx-1 text-gray-300">•</span>
-                            <span>{{ $tut->created_at->diffForHumans() }}</span>
+                            <span>{{ $tut->created_at ? $tut->created_at->diffForHumans() : '-' }}</span>
                         </p>
                     </div>
                     

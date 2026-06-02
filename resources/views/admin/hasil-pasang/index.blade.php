@@ -4,11 +4,6 @@
 @section('page-title', 'Hasil Pasang')
 
 @section('content')
-@php
-    $groupedHasilPasang = $hasilPasang->getCollection()->groupBy(function ($item) {
-        return $item->series_id ?? 'unknown';
-    });
-@endphp
 <div x-data="{ 
     showViewModal: false, 
     selectedItem: {},
@@ -67,7 +62,7 @@
         </div>
     </div>
 
-    @if($hasilPasang->isEmpty())
+    @if($groupedHasilPasang->isEmpty())
     <!-- Empty State -->
     <div class="relative block w-full rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center hover:border-[#8b9b7e] focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:ring-offset-2 transition-all duration-300 group bg-white/50 max-w-3xl mx-auto">
         <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-50 group-hover:bg-[#8b9b7e]/10 transition-colors duration-300">
@@ -242,10 +237,6 @@
         @endforeach
     </div>
 
-    <div class="mt-8">
-        {{ $hasilPasang->links() }}
-    </div>
-
     @endif
 
     <!-- View Modal -->
@@ -316,9 +307,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50/50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+                    <div class="bg-gray-50/50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100 gap-2">
+                        <a :href="'/admin/hasil-pasang/' + selectedItem.id" 
+                           class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:ml-3 sm:w-auto transition-all transform active:scale-95">
+                            View Details
+                        </a>
                         <button type="button" 
-                                class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:ml-3 sm:w-auto transition-all transform active:scale-95" 
+                                class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-all" 
                                 @click="showViewModal = false">
                             Close
                         </button>

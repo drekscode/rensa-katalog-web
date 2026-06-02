@@ -24,6 +24,7 @@ class SeriesResource extends JsonResource
             'ketebalan' => $this->ketebalan,
             'ukuran' => $this->ukuran,
             'deskripsi_produk' => $this->deskripsi_produk,
+            'keyword' => $this->keyword,
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : null,
             'updated_at' => $this->updated_at ? $this->updated_at->toIso8601String() : null,
             'kategori' => new KategoriResource($this->whenLoaded('kategori')),

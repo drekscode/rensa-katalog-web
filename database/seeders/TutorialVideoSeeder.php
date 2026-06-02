@@ -1,34 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use App\Models\TutorialVideo;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TutorialVideoSeeder extends Seeder
 {
     public function run(): void
     {
-        $tutorials = [
-            ['kategori_id' => 1, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 2, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 3, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 4, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 5, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 6, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 7, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 8, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 9, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 10, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 11, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 12, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 13, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 14, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-            ['kategori_id' => 15, 'link' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'],
-        ];
+        $placeholderUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+        $now = now();
 
-        foreach ($tutorials as $tutorial) {
-            TutorialVideo::create($tutorial);
-        }
+        $rows = array_map(
+            fn (int $id) => ['kategori_id' => $id, 'link' => $placeholderUrl, 'created_at' => $now, 'updated_at' => $now],
+            range(1, 15)
+        );
+
+        DB::table('tutorial_video')->insert($rows);
     }
 }

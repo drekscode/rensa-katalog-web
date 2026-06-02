@@ -1,115 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use App\Models\Rumus;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RumusSeeder extends Seeder
 {
     public function run(): void
     {
-        $rumus = [
-            // Atap Metal (kategori_id: 1)
-            [
-                'kategori_id' => 1,
-                'ukuran' => 'Luas Atap (m²)',
-                'rumus' => '(Luas Atap × 1.05) / 1.00',
-            ],
-            [
-                'kategori_id' => 1,
-                'ukuran' => 'Panjang × Lebar',
-                'rumus' => '((Panjang × Lebar) × 1.05) / Cover Area per Lembar',
-            ],
-            
-            // Atap Bitumen (kategori_id: 2)
-            [
-                'kategori_id' => 2,
-                'ukuran' => 'Luas Atap (m²)',
-                'rumus' => '(Luas Atap × 1.10) / 10',
-            ],
-            
-            // Atap Genteng (kategori_id: 3)
-            [
-                'kategori_id' => 3,
-                'ukuran' => 'Luas Atap (m²)',
-                'rumus' => 'Luas Atap × 10 × 1.05',
-            ],
-            [
-                'kategori_id' => 3,
-                'ukuran' => 'Panjang × Lebar',
-                'rumus' => '(Panjang × Lebar) × 10 × 1.05',
-            ],
-            
-            // Plafon (kategori_id: 4)
-            [
-                'kategori_id' => 4,
-                'ukuran' => 'Luas Plafon (m²)',
-                'rumus' => 'Luas Plafon / 2.88',
-            ],
-            [
-                'kategori_id' => 4,
-                'ukuran' => 'Ruangan (Panjang × Lebar)',
-                'rumus' => '(Panjang × Lebar) / 2.88',
-            ],
-            
-            // Dinding (kategori_id: 5)
-            [
-                'kategori_id' => 5,
-                'ukuran' => 'Luas Dinding (m²)',
-                'rumus' => 'Luas Dinding / 2.4',
-            ],
-            [
-                'kategori_id' => 5,
-                'ukuran' => 'Tinggi × Keliling',
-                'rumus' => '(Tinggi × Keliling) / 2.4',
-            ],
-            
-            // Rangka Atap (kategori_id: 6)
-            [
-                'kategori_id' => 6,
-                'ukuran' => 'Luas Atap (m²)',
-                'rumus' => 'Luas Atap × 4.5 (kg/m²)',
-            ],
-            
-            // Insulasi (kategori_id: 7)
-            [
-                'kategori_id' => 7,
-                'ukuran' => 'Luas Area (m²)',
-                'rumus' => '(Luas Area × 1.10) / 10',
-            ],
-            
-            // Talang Air (kategori_id: 8)
-            [
-                'kategori_id' => 8,
-                'ukuran' => 'Keliling Atap (m)',
-                'rumus' => 'Keliling Atap / 3',
-            ],
-            
-            // Fasad (kategori_id: 9)
-            [
-                'kategori_id' => 9,
-                'ukuran' => 'Luas Fasad (m²)',
-                'rumus' => 'Luas Fasad / 2.4',
-            ],
-            
-            // Kanopi (kategori_id: 10)
-            [
-                'kategori_id' => 10,
-                'ukuran' => 'Luas Kanopi (m²)',
-                'rumus' => '(Luas Kanopi × 1.05) / 2.1',
-            ],
-            
-            // Flooring (kategori_id: 11)
-            [
-                'kategori_id' => 11,
-                'ukuran' => 'Luas Lantai (m²)',
-                'rumus' => '(Luas Lantai × 1.10) / 0.48',
-            ],
-        ];
+        $now = now();
 
-        foreach ($rumus as $item) {
-            Rumus::create($item);
-        }
+        DB::table('rumus')->insert([
+            // Atap Metal — kategori_id: 1
+            ['kategori_id' => 1,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+            ['kategori_id' => 1,  'rumus' => 'Rumus Batang', 'panjang' => 300.00, 'lebar' => 8.00,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Atap Bitumen — kategori_id: 2
+            ['kategori_id' => 2,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Atap Genteng — kategori_id: 3
+            ['kategori_id' => 3,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+            ['kategori_id' => 3,  'rumus' => 'Rumus Batang', 'panjang' => 400.00, 'lebar' => 10.00, 'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Plafon — kategori_id: 4
+            ['kategori_id' => 4,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Dinding — kategori_id: 5
+            ['kategori_id' => 5,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Rangka Atap — kategori_id: 6
+            ['kategori_id' => 6,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Insulasi — kategori_id: 7
+            ['kategori_id' => 7,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Talang Air — kategori_id: 8
+            ['kategori_id' => 8,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Fasad — kategori_id: 9
+            ['kategori_id' => 9,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+
+            // Kanopi — kategori_id: 10
+            ['kategori_id' => 10, 'rumus' => 'Rumus Box',   'panjang' => 200.00, 'lebar' => 100.00, 'lembar' => 10, 'created_at' => $now, 'updated_at' => $now],
+
+            // Flooring — kategori_id: 11
+            ['kategori_id' => 11, 'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+        ]);
     }
 }

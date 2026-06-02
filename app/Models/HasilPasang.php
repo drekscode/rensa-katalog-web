@@ -13,4 +13,9 @@ class HasilPasang extends Model
     {
         return $this->belongsTo(Series::class, 'id_series');
     }
+
+    public function images()
+    {
+        return $this->hasMany(HasilPasangImage::class, 'hasil_pasang_id');
+    }
 }
