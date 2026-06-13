@@ -71,7 +71,7 @@
             'name': '{{ addslashes($t->nama_toko) }}',
             'kontak': '{{ $t->kontak ?? '-' }}',
             'alamat': '{{ addslashes($t->alamat) }}',
-            'image': '{{ addslashes($t->image) }}'
+            'image': '{{ $t->image ? (str_starts_with($t->image, 'data:') || str_starts_with($t->image, 'http') ? $t->image : asset('storage/' . $t->image)) : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
             <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
@@ -91,7 +91,7 @@
                 @if($t->image)
                 <div class="flex justify-center mb-4">
                     <div class="h-20 w-20 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-2 group-hover:border-[#8b9b7e] transition-colors">
-                        <img src="{{ $t->image }}" alt="{{ $t->nama_toko }}" class="max-h-full max-w-full object-contain">
+                        <img src="{{ str_starts_with($t->image, 'data:') || str_starts_with($t->image, 'http') ? $t->image : asset('storage/' . $t->image) }}" alt="{{ $t->nama_toko }}" class="max-h-full max-w-full object-contain">
                     </div>
                 </div>
                 @endif

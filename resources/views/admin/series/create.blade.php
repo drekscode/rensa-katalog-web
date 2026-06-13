@@ -138,6 +138,7 @@
                         <div class="mt-2">
                             <input type="file" name="struktur_img" id="struktur_img"
                                    class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('struktur_img') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                            <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 2MB</p>
                         </div>
                         @error('struktur_img')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
@@ -185,7 +186,27 @@
                             </p>
                         @enderror
                     </div>
-                </div>
+
+                    <!-- Keyword -->
+                    <div class="col-span-full">
+                        <label for="keyword" class="block text-sm font-medium leading-6 text-gray-900">
+                            Keyword
+                        </label>
+                        <div class="mt-2">
+                            <input type="text" name="keyword" id="keyword" value="{{ old('keyword') }}"
+                                   placeholder="contoh: keramik, lantai, outdoor"
+                                   class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('keyword') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
+                        </div>
+                        <p class="mt-1.5 text-xs text-gray-400">Kata kunci untuk membantu pencarian. Pisahkan dengan koma.</p>
+                        @error('keyword')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
             </div>
              <div class="flex items-center justify-end gap-x-4 border-t border-gray-100 bg-gray-50/50 px-4 py-4 sm:px-6">
                 <a href="{{ route('admin.series.index') }}" 

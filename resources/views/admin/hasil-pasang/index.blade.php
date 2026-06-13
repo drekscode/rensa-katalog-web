@@ -4,11 +4,6 @@
 @section('page-title', 'Hasil Pasang')
 
 @section('content')
-@php
-    $groupedHasilPasang = $hasilPasang->getCollection()->groupBy(function ($item) {
-        return $item->series_id ?? 'unknown';
-    });
-@endphp
 <div x-data="{ 
     showViewModal: false, 
     selectedItem: {},
@@ -67,7 +62,7 @@
         </div>
     </div>
 
-    @if($hasilPasang->isEmpty())
+    @if($groupedHasilPasang->isEmpty())
     <!-- Empty State -->
     <div class="relative block w-full rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center hover:border-[#8b9b7e] focus:outline-none focus:ring-2 focus:ring-[#8b9b7e] focus:ring-offset-2 transition-all duration-300 group bg-white/50 max-w-3xl mx-auto">
         <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-50 group-hover:bg-[#8b9b7e]/10 transition-colors duration-300">
@@ -168,12 +163,12 @@
                             'project_id': '{{ $item->id_project }}',
                             'series': '{{ $item->series->nama_series ?? 'Deleted Series' }}',
                             'date': '{{ $item->tanggal }}',
-                            'image': '{{ $item->foto ? $item->foto : '' }}',
+                            'image': '{{ $item->foto ? (str_starts_with($item->foto, 'data:') || str_starts_with($item->foto, 'http') ? $item->foto : asset('storage/' . $item->foto)) : '' }}',
                         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
                             <!-- Image Header -->
                              <div class="aspect-video w-full bg-gray-100 overflow-hidden relative">
                                 @if($item->foto)
-                                    <img src="{{ $item->foto }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                    <img src="{{ str_starts_with($item->foto, 'data:') || str_starts_with($item->foto, 'http') ? $item->foto : asset('storage/' . $item->foto) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                 @else
                                     <div class="absolute inset-0 flex items-center justify-center text-gray-400">
                                         <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -240,10 +235,6 @@
             </div>
         </div>
         @endforeach
-    </div>
-
-    <div class="mt-8">
-        {{ $hasilPasang->links() }}
     </div>
 
     @endif
@@ -316,9 +307,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50/50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+                    <div class="bg-gray-50/50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100 gap-2">
+                        <a :href="'/admin/hasil-pasang/' + selectedItem.id" 
+                           class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:ml-3 sm:w-auto transition-all transform active:scale-95">
+                            View Details
+                        </a>
                         <button type="button" 
-                                class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:ml-3 sm:w-auto transition-all transform active:scale-95" 
+                                class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-all" 
                                 @click="showViewModal = false">
                             Close
                         </button>

@@ -6,22 +6,50 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Series;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('series')->latest();
+        $search = $request->search;
 
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where('nama_product', 'like', "%{$search}%")
-                  ->orWhereHas('series', function($q) use ($search) {
-                      $q->where('nama_series', 'like', "%{$search}%");
+        $seriesQuery = Series::has('products')->latest();
+        if ($request->has('search') && $search) {
+            $seriesQuery->where(function($q) use ($search) {
+                $q->where('nama_series', 'like', "%{$search}%")
+                  ->orWhereHas('products', function($sq) use ($search) {
+                      $sq->where('nama_product', 'like', "%{$search}%");
                   });
+            });
         }
 
-        $products = $query->paginate(10);
+        $paginatedSeries = $seriesQuery->paginate(5);
+        $seriesIds = $paginatedSeries->pluck('id');
+
+        $productsQuery = Product::with('series')
+            ->whereIn('series_id', $seriesIds)
+            ->latest();
+
+        if ($request->has('search') && $search) {
+            $productsQuery->where(function($q) use ($search) {
+                $q->where('nama_product', 'like', "%{$search}%")
+                  ->orWhereHas('series', function($sq) use ($search) {
+                      $sq->where('nama_series', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $productsCollection = $productsQuery->get();
+
+        $products = new \Illuminate\Pagination\LengthAwarePaginator(
+            $productsCollection,
+            $paginatedSeries->total(),
+            5,
+            $paginatedSeries->currentPage(),
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
         return view('admin.product.index', compact('products'));
     }
 
@@ -37,19 +65,14 @@ class AdminProductController extends Controller
             'series_id' => 'required|exists:series,id',
             'nama_product' => 'required|string|max:255|unique:product,nama_product',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
-
         if ($request->hasFile('thumbnail')) {
-            $file = $request->file('thumbnail');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['thumbnail'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
         }
 
         if ($request->hasFile('big_pic')) {
-            $file = $request->file('big_pic');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['big_pic'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
         }
 
         Product::create($validated);
@@ -75,19 +98,20 @@ class AdminProductController extends Controller
             'series_id' => 'required|exists:series,id',
             'nama_product' => 'required|string|max:255|unique:product,nama_product,' . $product->id,
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
-
         if ($request->hasFile('thumbnail')) {
-            $file = $request->file('thumbnail');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['thumbnail'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($product->thumbnail && !str_starts_with($product->thumbnail, 'data:')) {
+                Storage::disk('public')->delete($product->thumbnail);
+            }
+            $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
         }
 
         if ($request->hasFile('big_pic')) {
-            $file = $request->file('big_pic');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['big_pic'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($product->big_pic && !str_starts_with($product->big_pic, 'data:')) {
+                Storage::disk('public')->delete($product->big_pic);
+            }
+            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
         }
 
         $product->update($validated);
@@ -103,6 +127,13 @@ class AdminProductController extends Controller
 
     public function destroy(Product $product)
     {
+        if ($product->thumbnail && !str_starts_with($product->thumbnail, 'data:')) {
+            Storage::disk('public')->delete($product->thumbnail);
+        }
+        if ($product->big_pic && !str_starts_with($product->big_pic, 'data:')) {
+            Storage::disk('public')->delete($product->big_pic);
+        }
+
         $product->delete();
 
         return redirect()->route('admin.product.index')

@@ -171,12 +171,12 @@
                                 'kategori': '{{ $kategori->nama_kategori }}',
                                 'urutan': '{{ $tg->urutan ?? '-' }}',
                                 'deskripsi': '{{ addslashes($tg->deskripsi) }}',
-                                'gambar': '{{ $tg->gambar ? $tg->gambar : '' }}'
+                                'gambar': '{{ $tg->gambar ? (str_starts_with($tg->gambar, 'data:') || str_starts_with($tg->gambar, 'http') ? $tg->gambar : asset('storage/' . $tg->gambar)) : '' }}'
                             })" class="flex flex-col h-full overflow-hidden bg-white shadow-sm ring-1 ring-gray-200 rounded-xl transition-all hover:shadow-md hover:ring-[#8b9b7e]/30 hover:-translate-y-0.5 group cursor-pointer">
                                  <!-- Media -->
                                 <div class="aspect-video bg-gray-100 relative overflow-hidden">
                                     @if($tg->gambar)
-                                        <img src="{{ $tg->gambar }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <img src="{{ str_starts_with($tg->gambar, 'data:') || str_starts_with($tg->gambar, 'http') ? $tg->gambar : asset('storage/' . $tg->gambar) }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                                             <div class="text-center">

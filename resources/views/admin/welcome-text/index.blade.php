@@ -56,7 +56,7 @@
             'greeting': '{{ addslashes($welcomeText->greeting) }}',
             'title': '{{ addslashes($welcomeText->title) }}',
             'active': {{ $welcomeText->is_active ? 'true' : 'false' }},
-            'created_at': '{{ $welcomeText->created_at->format('d M Y H:i') }}'
+            'created_at': '{{ $welcomeText->created_at ? $welcomeText->created_at->format('d M Y H:i') : '-' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
             <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
@@ -106,7 +106,7 @@
 
             <!-- Actions -->
             <div class="bg-gray-50 px-5 py-3 flex items-center justify-between gap-3 border-t border-gray-100 mt-auto" @click.stop>
-                 <span class="text-xs text-gray-400 font-medium">{{ $welcomeText->created_at->diffForHumans() }}</span>
+                 <span class="text-xs text-gray-400 font-medium">{{ $welcomeText->created_at ? $welcomeText->created_at->diffForHumans() : '-' }}</span>
                  
                  <div class="flex items-center gap-2">
                      <a href="{{ route('admin.welcome-text.edit', $welcomeText) }}" 

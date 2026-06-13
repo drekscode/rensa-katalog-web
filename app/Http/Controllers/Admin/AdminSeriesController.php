@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use App\Models\Series;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Kreait\Laravel\Firebase\Facades\Firebase;
@@ -19,10 +20,13 @@ class AdminSeriesController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where('nama_series', 'like', "%{$search}%")
-                  ->orWhereHas('kategori', function($q) use ($search) {
-                      $q->where('nama_kategori', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_series', 'like', "%{$search}%")
+                  ->orWhere('keyword', 'like', "%{$search}%")
+                  ->orWhereHas('kategori', function ($q2) use ($search) {
+                      $q2->where('nama_kategori', 'like', "%{$search}%");
                   });
+            });
         }
 
         $series = $query->paginate(10);
@@ -46,12 +50,11 @@ class AdminSeriesController extends Controller
             'ketebalan' => 'nullable|string',
             'ukuran' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
+            'keyword' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('struktur_img')) {
-            $file = $request->file('struktur_img');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            $validated['struktur_img'] = $request->file('struktur_img')->store('series', 'public');
         }
 
 
@@ -116,12 +119,14 @@ class AdminSeriesController extends Controller
             'ketebalan' => 'nullable|string',
             'ukuran' => 'nullable|string',
             'deskripsi_produk' => 'nullable|string',
+            'keyword' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('struktur_img')) {
-            $file = $request->file('struktur_img');
-            $base64 = base64_encode(file_get_contents($file));
-            $validated['struktur_img'] = 'data:' . $file->getMimeType() . ';base64,' . $base64;
+            if ($series->struktur_img && !str_starts_with($series->struktur_img, 'data:')) {
+                Storage::disk('public')->delete($series->struktur_img);
+            }
+            $validated['struktur_img'] = $request->file('struktur_img')->store('series', 'public');
         }
 
 
@@ -139,6 +144,10 @@ class AdminSeriesController extends Controller
 
     public function destroy(Series $series)
     {
+        if ($series->struktur_img && !str_starts_with($series->struktur_img, 'data:')) {
+            Storage::disk('public')->delete($series->struktur_img);
+        }
+
         $series->delete();
 
         return redirect()->route('admin.series.index')

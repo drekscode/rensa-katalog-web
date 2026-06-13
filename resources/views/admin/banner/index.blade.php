@@ -70,12 +70,12 @@
             'id': '{{ $banner->id }}',
             'urutan': '{{ $banner->urutan ?? '-' }}',
             'link': '{{ $banner->link ?? '-' }}',
-            'image': '{{ $banner->banner_image ? $banner->banner_image : '' }}'
+            'image': '{{ $banner->banner_image ? (str_starts_with($banner->banner_image, 'data:') || str_starts_with($banner->banner_image, 'http') ? $banner->banner_image : asset('storage/' . $banner->banner_image)) : '' }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Media -->
             <div class="aspect-[3/4] bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
                 @if($banner->banner_image)
-                    <img src="{{ $banner->banner_image }}" class="w-full h-full object-cover">
+                    <img src="{{ str_starts_with($banner->banner_image, 'data:') || str_starts_with($banner->banner_image, 'http') ? $banner->banner_image : asset('storage/' . $banner->banner_image) }}" class="w-full h-full object-cover">
                 @else
                     <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
                         <span class="text-xs text-gray-400 italic">No Image</span>

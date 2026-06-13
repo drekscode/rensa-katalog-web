@@ -120,11 +120,12 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($artikel->foto)
-                                <img src="{{ $artikel->foto }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto">
+                                <img src="{{ str_starts_with($artikel->foto, 'data:') || str_starts_with($artikel->foto, 'http') ? $artikel->foto : asset('storage/' . $artikel->foto) }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="foto" id="foto"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('foto') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                             </div>
                         </div>
                         @error('foto')
@@ -144,11 +145,12 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($artikel->foto2)
-                                <img src="{{ $artikel->foto2 }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto 2">
+                                <img src="{{ str_starts_with($artikel->foto2, 'data:') || str_starts_with($artikel->foto2, 'http') ? $artikel->foto2 : asset('storage/' . $artikel->foto2) }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto 2">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="foto2" id="foto2"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('foto2') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                             </div>
                         </div>
                         @error('foto2')
@@ -168,11 +170,12 @@
                         </label>
                          <div class="mt-2 flex items-center gap-x-4">
                             @if($artikel->foto3)
-                                <img src="{{ $artikel->foto3 }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto 3">
+                                <img src="{{ str_starts_with($artikel->foto3, 'data:') || str_starts_with($artikel->foto3, 'http') ? $artikel->foto3 : asset('storage/' . $artikel->foto3) }}" class="h-24 w-auto rounded-lg object-cover ring-1 ring-gray-200" alt="Current Foto 3">
                             @endif
                             <div class="relative flex-grow">
                                 <input type="file" name="foto3" id="foto3"
                                        class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('foto3') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                             </div>
                         </div>
                         @error('foto3')

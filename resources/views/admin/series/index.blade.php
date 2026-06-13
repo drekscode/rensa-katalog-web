@@ -72,10 +72,11 @@
             'name': '{{ $s->nama_series }}',
             'material': '{{ addslashes($s->material) }}',
             'deskripsi': '{{ addslashes($s->deskripsi_produk) }}',
-            'struktur': '{{ $s->struktur_img ? $s->struktur_img : '' }}',
+            'struktur': '{{ $s->struktur_img ? (str_starts_with($s->struktur_img, 'data:') || str_starts_with($s->struktur_img, 'http') ? $s->struktur_img : asset('storage/' . $s->struktur_img)) : '' }}',
             'cover': '{{ $s->cover_area ? $s->cover_area : '' }}',
             'ketebalan': '{{ $s->ketebalan ? $s->ketebalan : '' }}',
-            'ukuran': '{{ $s->ukuran ? $s->ukuran : '' }}'
+            'ukuran': '{{ $s->ukuran ? $s->ukuran : '' }}',
+            'keyword': '{{ addslashes($s->keyword) }}'
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Header -->
             <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
@@ -98,7 +99,7 @@
 
                     @if($s->struktur_img)
                     <div class="aspect-video rounded-lg bg-gray-100 overflow-hidden relative">
-                         <img src="{{ $s->struktur_img }}" class="w-full h-full object-cover">
+                         <img src="{{ str_starts_with($s->struktur_img, 'data:') || str_starts_with($s->struktur_img, 'http') ? $s->struktur_img : asset('storage/' . $s->struktur_img) }}" class="w-full h-full object-cover">
 
                     </div>
                     @endif
@@ -120,6 +121,12 @@
                     <div class="flex items-start gap-2">
                         <span class="text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">Cover</span>
                         <p class="text-xs text-gray-600 line-clamp-1">{{ $s->cover_area }}</p>
+                    </div>
+                    @endif
+                    @if($s->keyword)
+                     <div class="flex items-start gap-2">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider w-20 shrink-0">Keyword</span>
+                        <p class="text-xs text-[#8b9b7e] font-medium line-clamp-1">{{ $s->keyword }}</p>
                     </div>
                     @endif
                     @if($s->deskripsi_produk)
@@ -249,6 +256,10 @@
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="col-span-full">
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Keyword</label>
+                                    <p class="mt-1 text-sm text-[#8b9b7e] font-medium" x-text="selectedItem.keyword || '-'"></p>
                                 </div>
                                 <div class="col-span-full">
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Deskripsi Produk</label>

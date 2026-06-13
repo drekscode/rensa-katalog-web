@@ -18,7 +18,10 @@ class SeriesController extends Controller
 
         $series = Series::with(['kategori', 'productOldest'])
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_series', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_series', 'like', "%{$search}%")
+                      ->orWhere('keyword', 'like', "%{$search}%");
+                });
             })
             ->orderBy('id', 'asc')
             ->get();
@@ -33,7 +36,10 @@ class SeriesController extends Controller
         $series = Series::with(['kategori', 'productOldest'])
             ->where('kategori_id', $kategoriId)
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_series', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_series', 'like', "%{$search}%")
+                      ->orWhere('keyword', 'like', "%{$search}%");
+                });
             })
             ->orderBy('id', 'asc')
             ->get();
@@ -47,7 +53,10 @@ class SeriesController extends Controller
 
         $series = Series::with(['kategori', 'productOldest'])
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_series', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_series', 'like', "%{$search}%")
+                      ->orWhere('keyword', 'like', "%{$search}%");
+                });
             })
             ->orderBy('id', 'asc')
             ->paginate(4);
@@ -60,7 +69,7 @@ class SeriesController extends Controller
                 'total' => $series->total(),
                 'sisa_item' => max(
                     0,
-                    $series->total() - ($series->currentPage() * $series->perPage())
+                    $series->total() - (($series->currentPage() - 1) * $series->perPage() + count($series->items()))
                 ),
             ]
         ]);
@@ -73,7 +82,7 @@ class SeriesController extends Controller
             'productOldest',
             'kategori.tutorial_gambars',
             'kategori.tutorial_videos',
-            'hasilPasang'
+            'hasilPasang.images'
             ])->findOrFail($seriesId);
 
         return SeriesResource::make($series);

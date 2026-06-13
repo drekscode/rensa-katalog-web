@@ -130,13 +130,34 @@
                     <!-- Foto -->
                     <div class="col-span-full">
                         <label for="foto" class="block text-sm font-medium leading-6 text-gray-900">
-                            Foto <span class="text-red-500">*</span>
+                            Foto Utama <span class="text-red-500">*</span>
                         </label>
                         <div class="mt-2">
                             <input type="file" name="foto" id="foto" required
                                    class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('foto') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                            <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                         </div>
                         @error('foto')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Foto Pendukung (Kolase) -->
+                    <div class="col-span-full">
+                        <label for="images" class="block text-sm font-medium leading-6 text-gray-900">
+                            Foto Pendukung (Bisa pilih banyak sekaligus untuk Kolase)
+                        </label>
+                        <div class="mt-2">
+                            <input type="file" name="images[]" id="images" multiple
+                                   class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('images') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                            <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB (Bisa memilih beberapa file gambar sekaligus)</p>
+                        </div>
+                        @error('images')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
