@@ -275,13 +275,11 @@
         ];
 
         try {
-            for (const item of urls) {
+            const promises = urls.map(async (item) => {
                 const response = await fetch(item.url);
                 if (!response.ok) throw new Error("Gagal mengambil gambar");
 
                 const blob = await response.blob();
-
-                // Get extension from Content-Type or route
                 const contentType = response.headers.get('Content-Type') || '';
                 let ext = 'jpg';
                 if (contentType.includes('png')) ext = 'png';
@@ -289,7 +287,9 @@
                 else if (contentType.includes('gif')) ext = 'gif';
 
                 zip.file(`${item.name}.${ext}`, blob);
-            }
+            });
+
+            await Promise.all(promises);
 
             const content = await zip.generateAsync({ type: "blob" });
             const link = document.createElement("a");
