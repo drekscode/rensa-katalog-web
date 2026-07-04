@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Survey Request Detail')
-@section('page-title', 'Survey Request Detail')
+@section('title', 'Detail Request Survey')
+@section('page-title', 'Detail Request Survey')
 
 @section('content')
 <div class="mx-auto max-w-6xl space-y-6">
@@ -16,7 +16,7 @@
             </a>
             <div>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs text-gray-500 font-semibold">Survey Request #{{ $surveyRequest->id }}</span>
+                    <span class="text-xs text-gray-500 font-semibold">Request Survey #{{ $surveyRequest->id }}</span>
                 </div>
                 <h2 class="text-xl font-bold text-gray-900 mt-1 leading-tight">{{ $surveyRequest->nama }}</h2>
             </div>
@@ -68,7 +68,7 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Client Name</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Nama</span>
                             <span class="text-sm font-bold text-gray-800">{{ $surveyRequest->nama }}</span>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Contact Number</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Kontak</span>
                             <span class="text-sm font-bold text-gray-800">{{ $surveyRequest->kontak }}</span>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Request Date</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Tanggal Request</span>
                             <span class="text-sm font-bold text-gray-800">{{ $surveyRequest->created_at->translatedFormat('d F Y H:i') }}</span>
                         </div>
                     </div>
@@ -128,11 +128,11 @@
             <!-- Address and Room description -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
                 <div>
-                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Survey Address</span>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Alamat Survey</span>
                     <p class="text-sm text-gray-700 whitespace-pre-line leading-relaxed">{{ $surveyRequest->alamat }}</p>
                 </div>
                 <div class="border-t border-gray-100 pt-4">
-                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Room Description</span>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Ruangan yang akan disurvey</span>
                     <div class="text-sm text-gray-700 whitespace-pre-line bg-gray-50 p-4 rounded-xl border border-gray-100 leading-relaxed">{{ $surveyRequest->ruangan }}</div>
                 </div>
             </div>
@@ -166,7 +166,7 @@
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-5">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        Foto Pendukung Survey
+                        Gambar Pendukung Survey
                     </h3>
                     <span class="text-xs font-semibold text-[#8b9b7e] bg-[#8b9b7e]/10 px-2.5 py-1 rounded-full">
                         {{ $totalPhotos }} Foto

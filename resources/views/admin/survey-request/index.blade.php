@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Survey Requests')
-@section('page-title', 'Survey Requests')
+@section('title', 'Request Survey')
+@section('page-title', 'Request Survey')
 
 @section('content')
 <div x-data="{
@@ -16,7 +16,7 @@
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-             <h2 class="text-lg font-semibold text-gray-900">Survey Requests</h2>
+             <h2 class="text-lg font-semibold text-gray-900">Request Survey</h2>
              <p class="text-sm text-gray-500">Manage client survey requests and update execution progress.</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
@@ -66,10 +66,10 @@
             $imagesArray = $request->images->map(fn($img) => str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:') ? $img->foto : asset('storage/' . $img->foto))->toArray();
 
             $badgeColor = match($request->status) {
-                'pending' => 'bg-yellow-500/10 text-yellow-500',
-                'scheduled' => 'bg-blue-500/10 text-blue-500',
-                'completed' => 'bg-green-500/10 text-green-500',
-                'cancelled' => 'bg-red-500/10 text-red-500',
+                'pending' => 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/10',
+                'scheduled' => 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/10',
+                'completed' => 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/10',
+                'cancelled' => 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10',
             };
         @endphp
         <!-- Content Card -->
@@ -94,7 +94,7 @@
                         <svg class="h-8 w-8 text-gray-300 mb-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                         </svg>
-                        <span class="text-[10px] uppercase tracking-wider font-semibold">No Image</span>
+                        <span class="text-xs text-gray-400 italic">No Image</span>
                     </div>
                 @endif
                 <div class="absolute top-2 left-2">
@@ -107,17 +107,17 @@
             <!-- Body -->
             <div class="flex-1 px-5 py-5 flex flex-col justify-between">
                 <div>
-                     <h3 class="text-base font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
+                     <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
                          {{ $request->nama }}
                      </h3>
 
                      <div class="space-y-2 mb-2">
                          <div class="flex items-center gap-2">
-                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Contact</span>
+                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Kontak</span>
                              <span class="text-xs text-gray-700 font-medium truncate">{{ $request->kontak }}</span>
                          </div>
                          <div class="flex items-start gap-2">
-                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Address</span>
+                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Alamat</span>
                              <span class="text-xs text-gray-600 line-clamp-2 leading-relaxed">{{ $request->alamat }}</span>
                          </div>
                      </div>
@@ -136,8 +136,8 @@
 
                 <button type="button"
                         @click="$dispatch('confirm-delete', {
-                            title: 'Delete Survey Request?',
-                            message: 'Are you sure you want to delete this survey request? It will be permanently removed.',
+                            title: 'Hapus Request Survey?',
+                            message: 'Apakah Anda yakin ingin menghapus request survey ini? Data akan dihapus secara permanen.',
                             formId: 'delete-form-{{ $request->id }}'
                         })"
                         class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-500 hover:ring-red-200 transition-all duration-200" title="Delete">
@@ -193,7 +193,7 @@
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div class="w-full text-left">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-                                <h3 class="text-lg font-bold leading-6 text-gray-900" x-text="'Survey Details #' + selectedItem.id"></h3>
+                                <h3 class="text-lg font-bold leading-6 text-gray-900" x-text="'Detail Survey #' + selectedItem.id"></h3>
                                 <button @click="showViewModal = false" class="text-gray-400 hover:text-gray-500 transition-colors">
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -203,25 +203,25 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Client Name</label>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Nama</label>
                                         <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.name"></p>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Contact</label>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Kontak</label>
                                         <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.kontak"></p>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Address</label>
-                                        <p class="mt-1 text-sm text-gray-600 font-medium" x-text="selectedItem.alamat"></p>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Alamat Survey</label>
+                                        <p class="mt-1 text-sm text-gray-650 font-medium" x-text="selectedItem.alamat"></p>
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Room Description</label>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ruangan yang akan disurvey</label>
                                         <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap leading-relaxed" x-text="selectedItem.ruangan"></div>
                                     </div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Images</label>
-                                    <div class="grid grid-cols-2 gap-3" x-show="selectedItem.images && selectedItem.images.length > 0">
+                                <div x-show="selectedItem.images && selectedItem.images.length > 0">
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Gambar Pendukung</label>
+                                    <div class="grid grid-cols-2 gap-3">
                                         <template x-for="(imgUrl, index) in selectedItem.images" :key="index">
                                             <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-square flex items-center justify-center">
                                                 <img :src="imgUrl"
@@ -230,11 +230,6 @@
                                             </div>
                                         </template>
                                     </div>
-                                    <template x-if="!selectedItem.image">
-                                        <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-[3/4] flex items-center justify-center">
-                                            <span class="text-gray-400 text-sm">No Image</span>
-                                        </div>
-                                    </template>
                                 </div>
                             </div>
                         </div>
