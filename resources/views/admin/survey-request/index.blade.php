@@ -86,7 +86,7 @@
             'images': {{ json_encode($imagesArray) }}
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
             <!-- Media -->
-            <div class="aspect-[3/4] bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
+            <div class="aspect-square bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
                 @if($imageUrl)
                     <img src="{{ $imageUrl }}" class="w-full h-full object-cover">
                 @else
