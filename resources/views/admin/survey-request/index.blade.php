@@ -64,6 +64,13 @@
             $firstImage = $request->images->first();
             $imageUrl = $firstImage ? (str_starts_with($firstImage->foto, 'http') || str_starts_with($firstImage->foto, 'data:') ? $firstImage->foto : asset('storage/' . $firstImage->foto)) : '';
             $imagesArray = $request->images->map(fn($img) => str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:') ? $img->foto : asset('storage/' . $img->foto))->toArray();
+
+            $badgeColor = match($request->status) {
+                'pending' => 'bg-yellow-500/10 text-yellow-500',
+                'scheduled' => 'bg-blue-500/10 text-blue-500',
+                'completed' => 'bg-green-500/10 text-green-500',
+                'cancelled' => 'bg-red-500/10 text-red-500',
+            };
         @endphp
         <!-- Content Card -->
         <div @click="openViewModal({
@@ -78,59 +85,42 @@
             'image': '{{ $imageUrl }}',
             'images': {{ json_encode($imagesArray) }}
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
-            <!-- Header -->
-            <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
-                <div class="flex items-center gap-2">
-                    @php
-                        $badgeColor = match($request->status) {
-                            'pending' => 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/10',
-                            'scheduled' => 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/10',
-                            'completed' => 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/10',
-                            'cancelled' => 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/10',
-                        };
-                    @endphp
-                    <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium {{ $badgeColor }}">
+            <!-- Media -->
+            <div class="aspect-[3/4] bg-gray-100 relative overflow-hidden group-hover:opacity-90 transition-opacity">
+                @if($imageUrl)
+                    <img src="{{ $imageUrl }}" class="w-full h-full object-cover">
+                @else
+                    <div class="w-full h-full flex flex-col items-center justify-center bg-gray-50 border-b border-gray-100 text-gray-400">
+                        <svg class="h-8 w-8 text-gray-300 mb-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        <span class="text-[10px] uppercase tracking-wider font-semibold">No Image</span>
+                    </div>
+                @endif
+                <div class="absolute top-2 left-2">
+                    <span class="inline-flex items-center rounded-lg backdrop-blur-sm px-2 py-1 text-xs font-semibold shadow-sm {{ $badgeColor }}">
                         {{ ucfirst($request->status) }}
                     </span>
                 </div>
-                <span class="text-xs font-medium text-gray-400">#{{ $request->id }}</span>
             </div>
 
             <!-- Body -->
-            <div class="flex-1 px-6 py-6 flex flex-col justify-between">
+            <div class="flex-1 px-5 py-5 flex flex-col justify-between">
                 <div>
-                    @if($imageUrl)
-                    <div class="flex justify-center mb-4">
-                        <div class="h-20 w-20 flex items-center justify-center bg-gray-50 rounded-xl border-2 border-gray-200 p-2 group-hover:border-[#8b9b7e] transition-colors">
-                            <img src="{{ $imageUrl }}" alt="{{ $request->nama }}" class="max-h-full max-w-full object-contain">
-                        </div>
-                    </div>
-                    @endif
+                     <h3 class="text-base font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
+                         {{ $request->nama }}
+                     </h3>
 
-                    <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
-                        {{ $request->nama }}
-                    </h3>
-
-                    <div class="space-y-3 mb-4">
-                        <div class="flex items-start gap-3 text-sm text-gray-600">
-                             <svg class="h-5 w-5 text-gray-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                            </svg>
-                            <p class="line-clamp-2">{{ $request->alamat }}</p>
-                        </div>
-                        <div class="flex items-center gap-3 text-sm text-gray-600">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                            </svg>
-                            <p>{{ $request->kontak }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2 text-xs text-gray-500">
-                    <span>DP: Rp {{ number_format($request->dp_survey, 0, ',', '.') }}</span>
-                    <span>{{ $request->created_at->format('d M Y') }}</span>
+                     <div class="space-y-2 mb-2">
+                         <div class="flex items-center gap-2">
+                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Contact</span>
+                             <span class="text-xs text-gray-700 font-medium truncate">{{ $request->kontak }}</span>
+                         </div>
+                         <div class="flex items-start gap-2">
+                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Address</span>
+                             <span class="text-xs text-gray-600 line-clamp-2 leading-relaxed">{{ $request->alamat }}</span>
+                         </div>
+                     </div>
                 </div>
             </div>
 
@@ -147,7 +137,7 @@
                 <button type="button"
                         @click="$dispatch('confirm-delete', {
                             title: 'Delete Survey Request?',
-                            message: 'Are you sure you want to delete \'{{ addslashes($request->nama) }}\'\'s survey request? This will permanently remove it.',
+                            message: 'Are you sure you want to delete this survey request? It will be permanently removed.',
                             formId: 'delete-form-{{ $request->id }}'
                         })"
                         class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-500 hover:ring-red-200 transition-all duration-200" title="Delete">
@@ -178,7 +168,8 @@
     <template x-teleport="body">
         <div x-show="showViewModal"
              class="fixed inset-0 z-[100] overflow-y-auto"
-             style="display: none;">
+             style="display: none;"
+             x-show="showViewModal">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div x-show="showViewModal"
                      x-transition:enter="transition ease-out duration-300"
@@ -228,9 +219,9 @@
                                         <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap leading-relaxed" x-text="selectedItem.ruangan"></div>
                                     </div>
                                 </div>
-                                <div x-show="selectedItem.images && selectedItem.images.length > 0">
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Supporting Images</label>
-                                    <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Images</label>
+                                    <div class="grid grid-cols-2 gap-3" x-show="selectedItem.images && selectedItem.images.length > 0">
                                         <template x-for="(imgUrl, index) in selectedItem.images" :key="index">
                                             <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-square flex items-center justify-center">
                                                 <img :src="imgUrl"
@@ -239,6 +230,11 @@
                                             </div>
                                         </template>
                                     </div>
+                                    <template x-if="!selectedItem.image">
+                                        <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-[3/4] flex items-center justify-center">
+                                            <span class="text-gray-400 text-sm">No Image</span>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +242,7 @@
                     <div class="bg-gray-50/50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100 gap-2">
                         <a :href="'/admin/survey-request/' + selectedItem.id"
                            class="inline-flex w-full justify-center rounded-lg bg-[#8b9b7e] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#7a8a6f] sm:ml-3 sm:w-auto transition-all transform active:scale-95">
-                            Manage Request
+                            View Details
                         </a>
                         <button type="button"
                                 class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-all"

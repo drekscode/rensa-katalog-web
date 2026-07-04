@@ -47,6 +47,9 @@
 
         <!-- Left Column: Specs Details -->
         <div class="space-y-6">
+            @php
+                $totalPhotos = $surveyRequest->images->count();
+            @endphp
             <!-- Details Sheet -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-5">
                 <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-3 flex items-center gap-2">
@@ -98,12 +101,25 @@
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                         <div>
                             <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Request Date</span>
                             <span class="text-sm font-bold text-gray-800">{{ $surveyRequest->created_at->translatedFormat('d F Y H:i') }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Foto -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex-shrink-0 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Total Foto</span>
+                            <span class="text-sm font-bold text-gray-800">{{ $totalPhotos }} Gambar</span>
                         </div>
                     </div>
                 </div>
@@ -150,22 +166,31 @@
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                 <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-5">
                     <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        Supporting Images
+                        Foto Pendukung Survey
                     </h3>
                     <span class="text-xs font-semibold text-[#8b9b7e] bg-[#8b9b7e]/10 px-2.5 py-1 rounded-full">
-                        {{ $surveyRequest->images->count() }} Images
+                        {{ $totalPhotos }} Foto
                     </span>
                 </div>
 
-                @if($surveyRequest->images->isNotEmpty())
-                    <!-- Asymmetrical Bento-Grid Collage for Supporting Images -->
-                    <div x-data class="grid grid-cols-2 gap-3 auto-rows-[120px] sm:auto-rows-[150px]">
-                        @foreach($surveyRequest->images as $index => $img)
+                @php
+                    $allImages = $surveyRequest->images->pluck('foto')
+                        ->filter()
+                        ->map(function($img) {
+                            return str_starts_with($img, 'http') || str_starts_with($img, 'data:') ? $img : asset('storage/' . $img);
+                        });
+                @endphp
+
+                @if($allImages->isNotEmpty())
+                    <!-- Asymmetrical Bento-Grid Collage -->
+                    <div x-data class="grid grid-cols-2 sm:grid-cols-3 gap-3 auto-rows-[110px] sm:auto-rows-[140px] md:auto-rows-[160px]">
+                        @foreach($allImages as $index => $imgUrl)
                             @php
-                                $imgUrl = asset('storage/' . $img->foto);
                                 $spanClass = 'col-span-1 row-span-1';
-                                if ($index === 0) {
+                                if ($index === 0 || $index === 5) {
                                     $spanClass = 'col-span-2 row-span-2';
+                                } elseif ($index === 3 || $index === 7) {
+                                    $spanClass = 'col-span-1 row-span-2';
                                 }
                             @endphp
                             <div class="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-sm group hover:shadow-md transition-all duration-300 {{ $spanClass }}">
@@ -173,6 +198,9 @@
                                      @click="$dispatch('open-lightbox', { url: '{{ $imgUrl }}' })"
                                      class="w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-500">
                                 <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors pointer-events-none"></div>
+                                <div class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-bold px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    Foto #{{ $index + 1 }}
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -181,7 +209,7 @@
                         <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <p class="mt-2 text-sm text-gray-400 font-semibold">No supporting images uploaded.</p>
+                        <p class="mt-2 text-sm text-gray-500 font-semibold">Tidak ada foto.</p>
                     </div>
                 @endif
             </div>
