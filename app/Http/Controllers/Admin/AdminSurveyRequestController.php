@@ -75,6 +75,12 @@ class AdminSurveyRequestController extends Controller
             return redirect()->back()->with('error', 'Tidak ada gambar untuk diunduh.');
         }
 
+        if (!class_exists('ZipArchive')) {
+            // Fallback if ZipArchive php extension is disabled/missing
+            // Return files in response as raw download or handle gracefully
+            return redirect()->back()->with('error', 'Fitur unduh ZIP tidak didukung pada server ini. Silakan buka gambar secara manual.');
+        }
+
         $zip = new \ZipArchive();
         $zipFileName = 'images-survey-' . $surveyRequest->id . '-' . strtolower(str_replace(' ', '-', $surveyRequest->nama)) . '.zip';
         $zipFilePath = storage_path('app/public/' . $zipFileName);
