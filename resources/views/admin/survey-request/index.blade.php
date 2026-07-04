@@ -208,6 +208,14 @@
                                 </button>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="col-span-full aspect-video rounded-xl overflow-hidden bg-gray-100 relative mb-4">
+                                     <template x-if="selectedItem.image">
+                                        <img :src="selectedItem.image"
+                                             @click="$dispatch('open-lightbox', { url: selectedItem.image })"
+                                             class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                    </template>
+                                </div>
+
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Nama</label>
@@ -217,25 +225,15 @@
                                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Kontak</label>
                                         <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.kontak"></p>
                                     </div>
+                                </div>
+                                <div class="space-y-4">
                                     <div>
                                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Alamat Survey</label>
                                         <p class="mt-1 text-sm text-gray-650 font-medium" x-text="selectedItem.alamat"></p>
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Ruangan yang akan disurvey</label>
-                                        <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap leading-relaxed" x-text="selectedItem.ruangan"></div>
-                                    </div>
-                                </div>
-                                <div x-show="selectedItem.images && selectedItem.images.length > 0">
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Gambar Pendukung</label>
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <template x-for="(imgUrl, index) in selectedItem.images" :key="index">
-                                            <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-square flex items-center justify-center">
-                                                <img :src="imgUrl"
-                                                     @click="$dispatch('open-lightbox', { url: imgUrl })"
-                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
-                                            </div>
-                                        </template>
+                                        <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap leading-relaxed max-h-[120px] overflow-y-auto" x-text="selectedItem.ruangan"></div>
                                     </div>
                                 </div>
                             </div>
