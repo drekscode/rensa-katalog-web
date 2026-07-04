@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminWelcomeTextController;
 use App\Http\Controllers\Admin\AdminHasilPasangController;
+use App\Http\Controllers\Admin\AdminSurveyRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -41,5 +42,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('hasil-pasang', AdminHasilPasangController::class);
         Route::post('hasil-pasang/{id}/upload-image', [AdminHasilPasangController::class, 'uploadImage'])->name('hasil-pasang.upload-image');
         Route::delete('hasil-pasang/images/{image_id}', [AdminHasilPasangController::class, 'deleteImage'])->name('hasil-pasang.delete-image');
+        Route::get('survey-request/{id}/download-image/{index}', [AdminSurveyRequestController::class, 'downloadImage'])->name('survey-request.download-image');
+        Route::resource('survey-request', AdminSurveyRequestController::class)->only(['index', 'show', 'update', 'destroy']);
     });
 });
