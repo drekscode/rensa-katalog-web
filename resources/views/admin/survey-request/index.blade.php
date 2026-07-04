@@ -120,6 +120,10 @@
 
                      <div class="space-y-2 mb-2">
                          <div class="flex items-center gap-2">
+                             <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Foto</span>
+                             <span class="text-xs text-gray-700 font-medium">{{ $request->images->count() }} Gambar</span>
+                         </div>
+                         <div class="flex items-center gap-2">
                              <span class="text-xs font-bold text-gray-400 uppercase tracking-wider min-w-[50px]">Kontak</span>
                              <span class="text-xs text-gray-700 font-medium truncate">{{ $request->kontak }}</span>
                          </div>
