@@ -80,9 +80,17 @@ class AdminSurveyRequestController extends Controller
 
         if (str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:')) {
             try {
-                $fileContent = file_get_contents($img->foto);
+                // Fetch external seed images through curl/file_contents securely on the server
+                $context = stream_context_create([
+                    "http" => [
+                        "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\r\n"
+                    ]
+                ]);
+                $fileContent = file_get_contents($img->foto, false, $context);
                 if ($fileContent !== false) {
                     $ext = pathinfo(parse_url($img->foto, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+                    // Strip query parameters if any from extension
+                    $ext = explode('?', $ext)[0];
                     $mimeType = 'image/' . $ext;
                     if ($ext === 'png') {
                         $mimeType = 'image/png';
@@ -96,8 +104,7 @@ class AdminSurveyRequestController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                // Fallback to redirect
-                return redirect($img->foto);
+                abort(404);
             }
         }
 
