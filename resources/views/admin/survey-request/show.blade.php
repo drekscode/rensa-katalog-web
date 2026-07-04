@@ -259,12 +259,13 @@
 
         urls.forEach((url, index) => {
             setTimeout(() => {
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = url;
-                document.body.appendChild(iframe);
-                setTimeout(() => document.body.removeChild(iframe), 2000);
-            }, index * 500);
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', '');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, index * 400);
         });
     }
 </script>

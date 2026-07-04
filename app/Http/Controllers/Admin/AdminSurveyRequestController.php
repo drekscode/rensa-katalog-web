@@ -76,9 +76,29 @@ class AdminSurveyRequestController extends Controller
             abort(404);
         }
 
+        $filename = 'survey-' . $surveyRequest->id . '-image-' . ($index + 1);
+
         if (str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:')) {
-            // If it is external URL seed data, redirect to it
-            return redirect($img->foto);
+            try {
+                $fileContent = file_get_contents($img->foto);
+                if ($fileContent !== false) {
+                    $ext = pathinfo(parse_url($img->foto, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+                    $mimeType = 'image/' . $ext;
+                    if ($ext === 'png') {
+                        $mimeType = 'image/png';
+                    } elseif ($ext === 'webp') {
+                        $mimeType = 'image/webp';
+                    }
+
+                    return response($fileContent, 200, [
+                        'Content-Type' => $mimeType,
+                        'Content-Disposition' => 'attachment; filename="' . $filename . '.' . $ext . '"',
+                    ]);
+                }
+            } catch (\Exception $e) {
+                // Fallback to redirect
+                return redirect($img->foto);
+            }
         }
 
         $path = Storage::disk('public')->path($img->foto);
