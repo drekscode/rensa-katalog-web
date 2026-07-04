@@ -63,7 +63,7 @@
 
     @else
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
         @foreach($surveyRequests as $request)
         <!-- Content Card -->
         <div @click="openViewModal({
@@ -98,7 +98,7 @@
             <!-- Body -->
             <div class="flex-1 px-6 py-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
                         {{ $request->nama }}
                     </h3>
 
@@ -126,7 +126,7 @@
             </div>
 
             <!-- Actions -->
-            <div class="bg-gray-50 px-5 py-3 flex items-center justify-end gap-2 border-t border-gray-100" @click.stop>
+            <div class="bg-gray-50 px-5 py-3 flex items-center justify-end gap-2 border-t border-gray-100 mt-auto" @click.stop>
                 <a href="{{ route('admin.survey-request.show', $request->id) }}"
                    class="inline-flex justify-center items-center p-2 rounded-lg bg-white text-gray-400 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 hover:text-[#8b9b7e] hover:ring-[#8b9b7e]/30 transition-all duration-200" title="View Details">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
