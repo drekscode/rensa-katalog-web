@@ -65,6 +65,11 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
         @foreach($surveyRequests as $request)
+        @php
+            $firstImage = $request->images->first();
+            $imageUrl = $firstImage ? (str_starts_with($firstImage->foto, 'http') || str_starts_with($firstImage->foto, 'data:') ? $firstImage->foto : asset('storage/' . $firstImage->foto)) : '';
+            $imagesArray = $request->images->map(fn($img) => str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:') ? $img->foto : asset('storage/' . $img->foto))->toArray();
+        @endphp
         <!-- Content Card -->
         <div @click="openViewModal({
             'id': '{{ $request->id }}',
@@ -75,43 +80,53 @@
             'status': '{{ $request->status }}',
             'dp_survey': 'Rp {{ number_format($request->dp_survey, 0, ",", ".") }}',
             'date': '{{ $request->created_at->format("d M Y H:i") }}',
-            'image': '{{ $request->images->first() ? asset("storage/" . $request->images->first()->foto) : "" }}'
+            'image': '{{ $imageUrl }}',
+            'images': {{ json_encode($imagesArray) }}
         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
-            <!-- Header -->
-            <div class="border-b border-gray-100 bg-gray-50/30 px-5 py-4 flex items-center justify-between gap-4">
-                <div class="flex items-center gap-2">
+            <!-- Media / Thumbnail Header -->
+            <div class="aspect-video w-full bg-gray-100 overflow-hidden relative">
+                @if($imageUrl)
+                    <img src="{{ $imageUrl }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                @else
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-gray-50/50 text-gray-400 group-hover:text-[#8b9b7e] transition-colors duration-300">
+                        <svg class="h-8 w-8 text-gray-300 mb-1" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        <span class="text-[10px] uppercase tracking-wider font-semibold">No Image</span>
+                    </div>
+                @endif
+                <div class="absolute top-2 right-2">
                     @php
                         $badgeColor = match($request->status) {
-                            'pending' => 'bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-600/15',
-                            'scheduled' => 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/15',
-                            'completed' => 'bg-green-50 text-green-700 ring-1 ring-inset ring-green-600/15',
-                            'cancelled' => 'bg-red-50 text-red-700 ring-1 ring-inset ring-red-600/15',
+                            'pending' => 'bg-yellow-50/90 text-yellow-700 ring-1 ring-inset ring-yellow-600/15',
+                            'scheduled' => 'bg-blue-50/90 text-blue-700 ring-1 ring-inset ring-blue-600/15',
+                            'completed' => 'bg-green-50/90 text-green-700 ring-1 ring-inset ring-green-600/15',
+                            'cancelled' => 'bg-red-50/90 text-red-700 ring-1 ring-inset ring-red-600/15',
                         };
                     @endphp
-                    <span class="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold {{ $badgeColor }}">
+                    <span class="inline-flex items-center rounded-lg backdrop-blur-sm px-2 py-1 text-xs font-semibold shadow-sm {{ $badgeColor }}">
                         {{ ucfirst($request->status) }}
                     </span>
                 </div>
-                <span class="text-xs font-medium text-gray-400">#{{ $request->id }}</span>
             </div>
 
             <!-- Body -->
-            <div class="flex-1 px-6 py-6 flex flex-col justify-between">
+            <div class="flex-1 px-5 py-4 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
+                    <h3 class="text-base font-bold text-gray-900 leading-snug mb-3 group-hover:text-[#8b9b7e] transition-colors line-clamp-2">
                         {{ $request->nama }}
                     </h3>
 
-                    <div class="space-y-3 mb-4">
-                        <div class="flex items-start gap-3 text-sm text-gray-600">
-                            <svg class="h-5 w-5 text-gray-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-start gap-2.5 text-xs text-gray-500">
+                            <svg class="h-4.5 w-4.5 text-gray-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                             </svg>
-                            <p class="line-clamp-2">{{ $request->alamat }}</p>
+                            <p class="line-clamp-2 leading-relaxed">{{ $request->alamat }}</p>
                         </div>
-                        <div class="flex items-center gap-3 text-sm text-gray-600">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <div class="flex items-center gap-2.5 text-xs text-gray-500">
+                            <svg class="h-4.5 w-4.5 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                             </svg>
                             <p>{{ $request->kontak }}</p>
@@ -119,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2 text-xs text-gray-500">
+                <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2 text-[10px] text-gray-400 font-medium">
                     <span>DP: Rp {{ number_format($request->dp_survey, 0, ',', '.') }}</span>
                     <span>{{ $request->created_at->format('d M Y') }}</span>
                 </div>
@@ -188,7 +203,7 @@
                      x-transition:leave="transition ease-in duration-200"
                      x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-xl">
+                     class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
 
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div class="w-full text-left">
@@ -200,22 +215,36 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Client Name</label>
-                                    <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.name"></p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Client Name</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.name"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Contact</label>
+                                        <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.kontak"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Address</label>
+                                        <p class="mt-1 text-sm text-gray-600 font-medium" x-text="selectedItem.alamat"></p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Room Description</label>
+                                        <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap leading-relaxed" x-text="selectedItem.ruangan"></div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Contact</label>
-                                    <p class="mt-1 text-sm text-gray-900 font-medium" x-text="selectedItem.kontak"></p>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Address</label>
-                                    <p class="mt-1 text-sm text-gray-600 font-medium" x-text="selectedItem.alamat"></p>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Room Description</label>
-                                    <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap" x-text="selectedItem.ruangan"></div>
+                                <div x-show="selectedItem.images && selectedItem.images.length > 0">
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Supporting Images</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <template x-for="(imgUrl, index) in selectedItem.images" :key="index">
+                                            <div class="rounded-xl overflow-hidden border border-gray-100 bg-gray-50 aspect-square flex items-center justify-center">
+                                                <img :src="imgUrl"
+                                                     @click="$dispatch('open-lightbox', { url: imgUrl })"
+                                                     class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                            </div>
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
                         </div>
