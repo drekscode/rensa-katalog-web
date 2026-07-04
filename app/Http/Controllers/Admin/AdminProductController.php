@@ -65,14 +65,19 @@ class AdminProductController extends Controller
             'series_id' => 'required|exists:series,id',
             'nama_product' => 'required|string|max:255|unique:product,nama_product',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'big_pic' => 'nullable|array',
+            'big_pic.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $request->file('thumbnail')->store('products/thumbnails', 'public');
         }
 
         if ($request->hasFile('big_pic')) {
-            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
+            $bigPics = [];
+            foreach ($request->file('big_pic') as $file) {
+                $bigPics[] = $file->store('products/big_pics', 'public');
+            }
+            $validated['big_pic'] = $bigPics;
         }
 
         Product::create($validated);
@@ -98,7 +103,8 @@ class AdminProductController extends Controller
             'series_id' => 'required|exists:series,id',
             'nama_product' => 'required|string|max:255|unique:product,nama_product,' . $product->id,
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'big_pic' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'big_pic' => 'nullable|array',
+            'big_pic.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
         if ($request->hasFile('thumbnail')) {
             if ($product->thumbnail && !str_starts_with($product->thumbnail, 'data:')) {
@@ -108,10 +114,18 @@ class AdminProductController extends Controller
         }
 
         if ($request->hasFile('big_pic')) {
-            if ($product->big_pic && !str_starts_with($product->big_pic, 'data:')) {
-                Storage::disk('public')->delete($product->big_pic);
+            if ($product->big_pic && is_array($product->big_pic)) {
+                foreach ($product->big_pic as $old_pic) {
+                    if ($old_pic && !str_starts_with($old_pic, 'data:')) {
+                        Storage::disk('public')->delete($old_pic);
+                    }
+                }
             }
-            $validated['big_pic'] = $request->file('big_pic')->store('products/big_pics', 'public');
+            $bigPics = [];
+            foreach ($request->file('big_pic') as $file) {
+                $bigPics[] = $file->store('products/big_pics', 'public');
+            }
+            $validated['big_pic'] = $bigPics;
         }
 
         $product->update($validated);
@@ -130,8 +144,12 @@ class AdminProductController extends Controller
         if ($product->thumbnail && !str_starts_with($product->thumbnail, 'data:')) {
             Storage::disk('public')->delete($product->thumbnail);
         }
-        if ($product->big_pic && !str_starts_with($product->big_pic, 'data:')) {
-            Storage::disk('public')->delete($product->big_pic);
+        if ($product->big_pic && is_array($product->big_pic)) {
+            foreach ($product->big_pic as $pic) {
+                if ($pic && !str_starts_with($pic, 'data:')) {
+                    Storage::disk('public')->delete($pic);
+                }
+            }
         }
 
         $product->delete();

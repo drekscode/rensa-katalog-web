@@ -177,7 +177,7 @@
                             'series': '{{ addslashes($product->series->nama_series ?? '-') }}',
                             'name': '{{ addslashes($product->nama_product) }}',
                             'thumbnail': '{{ $product->thumbnail ? (str_starts_with($product->thumbnail, 'data:') || str_starts_with($product->thumbnail, 'http') ? $product->thumbnail : asset('storage/' . $product->thumbnail)) : '' }}',
-                            'big_pic': '{{ $product->big_pic ? (str_starts_with($product->big_pic, 'data:') || str_starts_with($product->big_pic, 'http') ? $product->big_pic : asset('storage/' . $product->big_pic)) : '' }}'
+                            'big_pic': {{ $product->big_pic ? json_encode(array_values(array_filter(array_map(function($pic) { return is_string($pic) ? (str_starts_with($pic, 'data:') || str_starts_with($pic, 'http') ? $pic : asset('storage/' . $pic)) : null; }, is_array($product->big_pic) ? $product->big_pic : [$product->big_pic])))) : '[]' }}
                         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
                             <div class="aspect-square bg-gray-100 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
                                 @if($product->thumbnail)
@@ -308,14 +308,33 @@
                                          <div>
                                              <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Big Picture</label>
                                              <div class="mt-2 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 aspect-square flex items-center justify-center">
-                                                 <template x-if="selectedItem.big_pic">
-                                                     <img :src="selectedItem.big_pic" 
-                                                          @click="$dispatch('open-lightbox', { url: selectedItem.big_pic })"
-                                                          class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
-                                                 </template>
-                                                 <template x-if="!selectedItem.big_pic">
-                                                     <div class="text-gray-400 text-xs">No Image</div>
-                                                 </template>
+                                                 <div x-data="{ currentIndex: 0 }" class="relative w-full h-full flex items-center justify-center">
+                                                     <template x-if="selectedItem.big_pic && selectedItem.big_pic.length > 0">
+                                                         <div class="relative w-full h-full">
+                                                             <img :src="selectedItem.big_pic[currentIndex]" 
+                                                                  @click="$dispatch('open-lightbox', { url: selectedItem.big_pic[currentIndex] })"
+                                                                  class="w-full h-full object-cover cursor-zoom-in hover:opacity-90 transition-opacity">
+                                                             <template x-if="selectedItem.big_pic.length > 1">
+                                                                 <div>
+                                                                     <button @click="currentIndex = (currentIndex > 0) ? currentIndex - 1 : selectedItem.big_pic.length - 1" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1.5 hover:bg-black/75 transition-colors">
+                                                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                                                     </button>
+                                                                     <button @click="currentIndex = (currentIndex < selectedItem.big_pic.length - 1) ? currentIndex + 1 : 0" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1.5 hover:bg-black/75 transition-colors">
+                                                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                                                     </button>
+                                                                     <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                                                                         <template x-for="(pic, index) in selectedItem.big_pic" :key="index">
+                                                                             <div class="w-2 h-2 rounded-full cursor-pointer transition-colors" :class="currentIndex === index ? 'bg-white' : 'bg-white/50'" @click="currentIndex = index"></div>
+                                                                         </template>
+                                                                     </div>
+                                                                 </div>
+                                                             </template>
+                                                         </div>
+                                                     </template>
+                                                     <template x-if="!selectedItem.big_pic || selectedItem.big_pic.length === 0">
+                                                         <div class="text-gray-400 text-xs">No Image</div>
+                                                     </template>
+                                                 </div>
                                              </div>
                                          </div>
                                      </div>
