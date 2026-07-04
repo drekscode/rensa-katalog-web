@@ -15,6 +15,10 @@ class Product extends Model
         'big_pic',
     ];
 
+    protected $casts = [
+        'big_pic' => 'array',
+    ];
+
     public function series()
     {
         return $this->belongsTo(Series::class);
