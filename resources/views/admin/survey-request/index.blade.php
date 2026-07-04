@@ -75,10 +75,10 @@
         <!-- Content Card -->
         <div @click="openViewModal({
             'id': '{{ $request->id }}',
-            'name': '{{ addslashes($request->nama) }}',
-            'kontak': '{{ $request->kontak }}',
-            'alamat': '{{ addslashes($request->alamat) }}',
-            'ruangan': '{{ addslashes($request->ruangan) }}',
+            'name': {{ json_encode($request->nama) }},
+            'kontak': {{ json_encode($request->kontak) }},
+            'alamat': {{ json_encode($request->alamat) }},
+            'ruangan': {{ json_encode($request->ruangan) }},
             'status': '{{ $request->status }}',
             'dp_survey': 'Rp {{ number_format($request->dp_survey, 0, ",", ".") }}',
             'date': '{{ $request->created_at->format("d M Y H:i") }}',
