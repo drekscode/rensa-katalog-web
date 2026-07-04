@@ -66,4 +66,48 @@ class AdminSurveyRequestController extends Controller
         return redirect()->route('admin.survey-request.index')
             ->with('success', 'Survey request deleted successfully.');
     }
+
+    public function downloadImages($id)
+    {
+        $surveyRequest = SurveyRequest::with('images')->findOrFail($id);
+
+        if ($surveyRequest->images->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada gambar untuk diunduh.');
+        }
+
+        $zip = new \ZipArchive();
+        $zipFileName = 'images-survey-' . $surveyRequest->id . '-' . strtolower(str_replace(' ', '-', $surveyRequest->nama)) . '.zip';
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+
+        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
+            foreach ($surveyRequest->images as $index => $img) {
+                if ($img->foto) {
+                    if (str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:')) {
+                        try {
+                            $fileContent = file_get_contents($img->foto);
+                            if ($fileContent !== false) {
+                                $ext = pathinfo(parse_url($img->foto, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+                                $zip->addFromString('image-' . ($index + 1) . '.' . $ext, $fileContent);
+                            }
+                        } catch (\Exception $e) {
+                            // Skip failing external urls
+                        }
+                    } else {
+                        $absolutePath = Storage::disk('public')->path($img->foto);
+                        if (file_exists($absolutePath)) {
+                            $ext = pathinfo($absolutePath, PATHINFO_EXTENSION);
+                            $zip->addFile($absolutePath, 'image-' . ($index + 1) . '.' . $ext);
+                        }
+                    }
+                }
+            }
+            $zip->close();
+        }
+
+        if (file_exists($zipFilePath)) {
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        }
+
+        return redirect()->back()->with('error', 'Gagal membuat file zip gambar.');
+    }
 }
