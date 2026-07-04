@@ -248,25 +248,62 @@
 </div>
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-    function downloadAllImages(event) {
+    async function downloadAllImages(event) {
         event.preventDefault();
+
+        const button = event.currentTarget;
+        const originalText = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = `
+            <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Zipping...
+        `;
+
+        const zip = new JSZip();
         const urls = [
             @foreach($surveyRequest->images as $index => $img)
-                "{{ route('admin.survey-request.download-image', ['id' => $surveyRequest->id, 'index' => $index]) }}",
+                {
+                    url: "{{ route('admin.survey-request.download-image', ['id' => $surveyRequest->id, 'index' => $index]) }}",
+                    name: "image-{{ $index + 1 }}"
+                },
             @endforeach
         ];
 
-        urls.forEach((url, index) => {
-            setTimeout(() => {
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', '');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }, index * 400);
-        });
+        try {
+            for (const item of urls) {
+                const response = await fetch(item.url);
+                if (!response.ok) throw new Error("Gagal mengambil gambar");
+
+                const blob = await response.blob();
+
+                // Get extension from Content-Type or route
+                const contentType = response.headers.get('Content-Type') || '';
+                let ext = 'jpg';
+                if (contentType.includes('png')) ext = 'png';
+                else if (contentType.includes('webp')) ext = 'webp';
+                else if (contentType.includes('gif')) ext = 'gif';
+
+                zip.file(`${item.name}.${ext}`, blob);
+            }
+
+            const content = await zip.generateAsync({ type: "blob" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(content);
+            link.download = "images-survey-{{ $surveyRequest->id }}-{{ strtolower(str_replace(' ', '-', $surveyRequest->nama)) }}.zip";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            alert("Gagal mengunduh gambar sebagai ZIP: " + error.message);
+        } finally {
+            button.disabled = false;
+            button.innerHTML = originalText;
+        }
     }
 </script>
 @endpush
