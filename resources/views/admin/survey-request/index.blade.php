@@ -102,6 +102,13 @@
                         {{ ucfirst($request->status) }}
                     </span>
                 </div>
+                @if($request->images->isNotEmpty())
+                <div class="absolute bottom-2 right-2">
+                    <span class="inline-flex items-center rounded-lg bg-black/60 backdrop-blur-sm px-2 py-1 text-[10px] font-semibold text-white shadow-sm">
+                        {{ $request->images->count() }} Foto
+                    </span>
+                </div>
+                @endif
             </div>
 
             <!-- Body -->
