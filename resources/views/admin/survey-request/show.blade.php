@@ -136,6 +136,28 @@
                     <div class="text-sm text-gray-700 whitespace-pre-line bg-gray-50 p-4 rounded-xl border border-gray-100 leading-relaxed">{{ $surveyRequest->ruangan }}</div>
                 </div>
             </div>
+
+            <!-- Danger Zone -->
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
+                <h3 class="text-sm font-bold text-red-600 border-b border-red-50 pb-2">Danger Zone</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">Menghapus request survey ini akan menghapus data tersebut dan semua gambar pendukungnya secara permanen dari server.</p>
+                <button type="button"
+                        @click="$dispatch('confirm-delete', {
+                            title: 'Hapus Request Survey?',
+                            message: 'Apakah Anda yakin ingin menghapus request survey ini? Tindakan ini tidak dapat dibatalkan.',
+                            formId: 'delete-form-{{ $surveyRequest->id }}'
+                        })"
+                        class="w-full inline-flex justify-center items-center px-4 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition text-sm font-semibold">
+                    Hapus Request
+                </button>
+                <form action="{{ route('admin.survey-request.destroy', $surveyRequest->id) }}"
+                      method="POST"
+                      id="delete-form-{{ $surveyRequest->id }}"
+                      class="hidden">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            </div>
         </div>
 
         <!-- Right Column: Images Grid & Status Control -->
@@ -212,28 +234,6 @@
                         <p class="mt-2 text-sm text-gray-500 font-semibold">Tidak ada foto.</p>
                     </div>
                 @endif
-            </div>
-
-            <!-- Danger Zone -->
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
-                <h3 class="text-sm font-bold text-red-650 border-b border-red-50 pb-2">Danger Zone</h3>
-                <p class="text-xs text-gray-500 leading-relaxed">Menghapus request survey ini akan menghapus data tersebut dan semua gambar pendukungnya secara permanen dari server.</p>
-                <button type="button"
-                        @click="$dispatch('confirm-delete', {
-                            title: 'Hapus Request Survey?',
-                            message: 'Apakah Anda yakin ingin menghapus request survey ini? Tindakan ini tidak dapat dibatalkan.',
-                            formId: 'delete-form-{{ $surveyRequest->id }}'
-                        })"
-                        class="w-full inline-flex justify-center items-center px-4 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition text-sm font-semibold">
-                    Hapus Request
-                </button>
-                <form action="{{ route('admin.survey-request.destroy', $surveyRequest->id) }}"
-                      method="POST"
-                      id="delete-form-{{ $surveyRequest->id }}"
-                      class="hidden">
-                    @csrf
-                    @method('DELETE')
-                </form>
             </div>
         </div>
     </div>
