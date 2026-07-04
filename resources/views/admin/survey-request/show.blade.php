@@ -252,20 +252,19 @@
     function downloadAllImages(event) {
         event.preventDefault();
         const urls = [
-            @foreach($surveyRequest->images as $img)
-                "{{ str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:') ? $img->foto : asset('storage/' . $img->foto) }}",
+            @foreach($surveyRequest->images as $index => $img)
+                "{{ route('admin.survey-request.download-image', ['id' => $surveyRequest->id, 'index' => $index]) }}",
             @endforeach
         ];
 
         urls.forEach((url, index) => {
             setTimeout(() => {
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `survey-image-${index + 1}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }, index * 400);
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                setTimeout(() => document.body.removeChild(iframe), 2000);
+            }, index * 500);
         });
     }
 </script>

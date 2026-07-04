@@ -66,4 +66,26 @@ class AdminSurveyRequestController extends Controller
         return redirect()->route('admin.survey-request.index')
             ->with('success', 'Survey request deleted successfully.');
     }
+
+    public function downloadImage($id, $index)
+    {
+        $surveyRequest = SurveyRequest::with('images')->findOrFail($id);
+        $img = $surveyRequest->images->skip($index)->first();
+
+        if (!$img || !$img->foto) {
+            abort(404);
+        }
+
+        if (str_starts_with($img->foto, 'http') || str_starts_with($img->foto, 'data:')) {
+            // If it is external URL seed data, redirect to it
+            return redirect($img->foto);
+        }
+
+        $path = Storage::disk('public')->path($img->foto);
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->download($path);
+    }
 }
