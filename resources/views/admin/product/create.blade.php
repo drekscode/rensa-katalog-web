@@ -108,26 +108,50 @@
                             Big Picture
                         </label>
                         <div class="mt-2 flex items-center gap-x-6">
-                            <div class="relative flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
-                                <img x-show="bigPicPreview" :src="bigPicPreview" class="h-full w-full object-cover" style="display: none;">
-                                <svg x-show="!bigPicPreview" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                </svg>
+                            <div class="flex gap-2 flex-wrap">
+                                <template x-if="bigPicPreviews.length > 0">
+                                    <template x-for="(preview, index) in bigPicPreviews" :key="index">
+                                        <div class="relative flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                            <img :src="preview" class="h-full w-full object-cover">
+                                        </div>
+                                    </template>
+                                </template>
+                                <template x-if="bigPicPreviews.length === 0">
+                                    <div class="relative flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
+                                        <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                        </svg>
+                                    </div>
+                                </template>
                             </div>
                             <div class="flex-1">
-                                <input type="file" name="big_pic" id="big_pic" @change="updatePreview($event, 'bigPicPreview')"
-                                       class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('big_pic') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
+                                <input type="file" name="big_pic[]" id="big_pic" multiple @change="updateMultiplePreview($event, 'bigPicPreviews')"
+                                       class="block w-full text-sm text-gray-900 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold {{ $errors->has('big_pic') || $errors->has('big_pic.*') ? 'file:bg-red-50 file:text-red-600' : 'file:bg-[#8b9b7e]/10 file:text-[#8b9b7e]' }} hover:file:bg-[#8b9b7e]/20 transition-all duration-200">
                                 <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF, WEBP up to 5MB</p>
                             </div>
                         </div>
-                        @error('big_pic')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                                </svg>
-                                {{ $message }}
-                            </p>
-                        @enderror
+                        @if($errors->has('big_pic') || $errors->has('big_pic.*'))
+                            <div class="mt-2 text-sm text-red-600 flex flex-col gap-1">
+                                @if($errors->has('big_pic'))
+                                    <p class="flex items-center gap-1">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                        </svg>
+                                        {{ $errors->first('big_pic') }}
+                                    </p>
+                                @endif
+                                @foreach($errors->get('big_pic.*') as $messages)
+                                    @foreach($messages as $message)
+                                        <p class="flex items-center gap-1">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @endforeach
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -153,7 +177,7 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('filePreview', () => ({
             thumbnailPreview: null,
-            bigPicPreview: null,
+            bigPicPreviews: [],
             updatePreview(event, previewVar) {
                 const file = event.target.files[0];
                 if (file) {
@@ -164,6 +188,19 @@
                     reader.readAsDataURL(file);
                 } else {
                     this[previewVar] = null;
+                }
+            },
+            updateMultiplePreview(event, previewVar) {
+                this[previewVar] = [];
+                const files = event.target.files;
+                if (files) {
+                    Array.from(files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this[previewVar].push(e.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    });
                 }
             }
         }))
