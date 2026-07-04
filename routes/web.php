@@ -42,7 +42,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('hasil-pasang', AdminHasilPasangController::class);
         Route::post('hasil-pasang/{id}/upload-image', [AdminHasilPasangController::class, 'uploadImage'])->name('hasil-pasang.upload-image');
         Route::delete('hasil-pasang/images/{image_id}', [AdminHasilPasangController::class, 'deleteImage'])->name('hasil-pasang.delete-image');
-        Route::get('survey-request/{id}/download-images', [AdminSurveyRequestController::class, 'downloadImages'])->name('survey-request.download-images');
         Route::resource('survey-request', AdminSurveyRequestController::class)->only(['index', 'show', 'update', 'destroy']);
     });
 });
