@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             TutorialVideoSeeder::class,
             WelcomeTextSeeder::class,
             HasilPasangSeeder::class,
+            SurveyRequestSeeder::class,
         ]);
     }
 }

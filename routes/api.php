@@ -49,6 +49,8 @@ Route::prefix('stores')->group(function () {
     Route::get('/', [TokoController::class, 'getAllToko']);
 });
 
+Route::post('survey-requests', [\App\Http\Controllers\SurveyRequestController::class, 'store']);
+
 Route::prefix('welcomes')->group(function () {
     Route::get('/', [AdminWelcomeTextController::class, 'getWelcomeTextsJson']);
 });
