@@ -11,18 +11,25 @@
     formatDimension(item) {
         if (item.rumus === 'Rumus Batang') {
             if (item.panjang && item.lebar) {
-                return `${item.panjang} x ${item.lebar} cm`;
+                return `${item.panjang} x ${item.lebar} m`;
             }
             return '-';
         }
 
         if (item.rumus === 'Rumus Box') {
-            const sizePart = item.panjang && item.lebar ? `${item.panjang} x ${item.lebar} cm` : '-';
+            const sizePart = item.panjang && item.lebar ? `${item.panjang} x ${item.lebar} m` : '-';
             const sheetPart = item.lembar ? `, ${item.lembar} pcs` : '';
             return `${sizePart}${sheetPart}`;
         }
 
+        if (item.rumus === 'Rumus M2') {
+            return 'm²';
+        }
+
         return '-';
+    },
+    formatRumusName(name) {
+        return name === 'Rumus M2' ? 'Rumus M²' : name;
     },
     openViewModal(item) {
         item.dimension_text = this.formatDimension(item);
@@ -85,14 +92,17 @@
         @php
             $dimensionText = '-';
             if ($item->rumus === 'Rumus Batang' && $item->panjang !== null && $item->lebar !== null) {
-                $dimensionText = rtrim(rtrim((string) $item->panjang, '0'), '.') . ' x ' . rtrim(rtrim((string) $item->lebar, '0'), '.') . ' cm';
+                $dimensionText = rtrim(rtrim((string) $item->panjang, '0'), '.') . ' x ' . rtrim(rtrim((string) $item->lebar, '0'), '.') . ' m';
             } elseif ($item->rumus === 'Rumus Box') {
                 $sizeText = ($item->panjang !== null && $item->lebar !== null)
-                    ? (rtrim(rtrim((string) $item->panjang, '0'), '.') . ' x ' . rtrim(rtrim((string) $item->lebar, '0'), '.') . ' cm')
+                    ? (rtrim(rtrim((string) $item->panjang, '0'), '.') . ' x ' . rtrim(rtrim((string) $item->lebar, '0'), '.') . ' m')
                     : '-';
                 $sheetText = $item->lembar !== null ? ', ' . $item->lembar . ' pcs' : '';
                 $dimensionText = $sizeText . $sheetText;
+            } elseif ($item->rumus === 'Rumus M2') {
+                $dimensionText = 'm²';
             }
+            $rumusDisplay = $item->rumus === 'Rumus M2' ? 'Rumus M²' : $item->rumus;
         @endphp
         <!-- Content Card -->
         <div @click="openViewModal({
@@ -119,7 +129,7 @@
                 
                 <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 font-mono text-sm text-gray-600 whitespace-pre-wrap overflow-x-auto relative group-hover:bg-white group-hover:shadow-inner transition-colors">
                     <div class="absolute top-1 right-2 text-[10px] text-gray-400 font-sans uppercase font-bold tracking-wider">Formula</div>
-                    {{ $item->rumus }}
+                    {{ $rumusDisplay }}
                 </div>
             </div>
 
@@ -210,7 +220,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Rumus</label>
-                                    <div class="mt-2 text-sm font-mono text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap" x-text="selectedItem.rumus"></div>
+                                    <div class="mt-2 text-sm font-mono text-gray-600 bg-gray-50 p-4 rounded-xl border border-gray-100 whitespace-pre-wrap" x-text="formatRumusName(selectedItem.rumus)"></div>
                                 </div>
                             </div>
                         </div>

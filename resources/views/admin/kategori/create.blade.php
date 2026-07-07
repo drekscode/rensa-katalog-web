@@ -64,6 +64,26 @@
                         @enderror
                     </div>
 
+                    <!-- Allowed Rumus -->
+                    <div class="col-span-full">
+                        <label class="block text-sm font-medium leading-6 text-gray-900">
+                            Rumus yang Tersedia
+                        </label>
+                        <p class="text-xs text-gray-500 mt-1">Pilih jenis rumus yang dapat digunakan untuk kategori ini.</p>
+                        <div class="mt-3 space-y-2">
+                            @foreach(['Rumus Batang', 'Rumus Box', 'Rumus M2'] as $rumusOption)
+                                <label class="relative flex items-center gap-3 rounded-lg border border-gray-300 px-4 py-3 cursor-pointer hover:border-[#8b9b7e]/50 transition-all">
+                                    <input type="checkbox"
+                                           name="allowed_rumus[]"
+                                           value="{{ $rumusOption }}"
+                                           class="h-4 w-4 rounded border-gray-300 text-[#8b9b7e] focus:ring-[#8b9b7e]"
+                                           {{ in_array($rumusOption, old('allowed_rumus', [])) ? 'checked' : '' }}>
+                                    <span class="text-sm font-medium text-gray-800">{{ $rumusOption === 'Rumus M2' ? 'Rumus M²' : $rumusOption }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="col-span-full">
                         <label for="icon_file" class="block text-sm font-medium leading-6 text-gray-900">
                             Icon

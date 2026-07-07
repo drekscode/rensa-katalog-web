@@ -14,207 +14,143 @@ class SeriesSeeder extends Seeder
         $now = now();
 
         DB::table('series')->insert([
-            // Atap Metal — kategori_id: 1
+            // Wallpanel Indoor/Outdoor — kategori_id: 1
             [
                 'kategori_id'    => 1,
-                'nama_series'    => 'Rensa Metal Roof Premium',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1533038590840-1cde6e668a91?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '1.62m2 per lembar',
-                'material'       => 'Zinc-Aluminium coating steel',
-                'ketebalan'      => '0.25mm - 0.45mm',
-                'ukuran'         => '800mm x 1800mm',
-                'deskripsi_produk' => 'Atap metal premium dengan lapisan zinc-aluminium untuk perlindungan maksimal terhadap korosi. Tersedia dalam berbagai warna dan profil.',
-                'keyword' => 'atap metal, zinc aluminium, anti karat, premium, galvalume',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-            [
-                'kategori_id'    => 1,
-                'nama_series'    => 'Rensa Spandek Pro',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1533038590840-1cde6e668a91?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '0.75mm - 1.00mm BMT',
-                'material'       => 'Galvalume steel',
-                'ketebalan'      => '0.30mm - 0.50mm',
-                'ukuran'         => '1000mm x Custom Length',
-                'deskripsi_produk' => 'Atap spandek berkualitas tinggi dengan ketahanan korosi superior. Cocok untuk bangunan industri dan komersial.',
-                'keyword' => 'spandek, galvalume, industri, komersial, anti karat',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-
-            // Atap Bitumen — kategori_id: 2
-            [
-                'kategori_id'    => 2,
-                'nama_series'    => 'Rensa Bitumen Shield',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1631641042533-5c798e2110c7?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '3m2 per bundle',
-                'material'       => 'Modified bitumen membrane',
-                'ketebalan'      => '3mm',
-                'ukuran'         => '1000mm x 333mm',
-                'deskripsi_produk' => 'Membran bitumen modified dengan daya rekat tinggi. Solusi waterproofing terbaik untuk atap datar.',
-                'keyword' => 'bitumen, waterproofing, atap datar, membran, anti bocor',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-
-            // Atap Genteng — kategori_id: 3
-            [
-                'kategori_id'    => 3,
-                'nama_series'    => 'Rensa Genteng Keramik',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1555519846-95333f2c525f?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '14.5 pcs / m2',
-                'material'       => 'High quality ceramic',
-                'ketebalan'      => '12mm',
-                'ukuran'         => '315mm x 315mm',
-                'deskripsi_produk' => 'Genteng keramik dengan finishing glazur. Tahan lama, tidak pudar, dan memberikan kesan mewah.',
-                'keyword' => 'genteng keramik, glazur, mewah, tahan lama, klasik',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-            [
-                'kategori_id'    => 3,
-                'nama_series'    => 'Rensa Genteng Beton',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '10 pcs / m2',
-                'material'       => 'High strength concrete',
-                'ketebalan'      => '15mm',
-                'ukuran'         => '420mm x 330mm',
-                'deskripsi_produk' => 'Genteng beton dengan kekuatan tinggi. Ekonomis dan tahan terhadap perubahan cuaca ekstrem.',
-                'keyword' => 'genteng beton, ekonomis, kuat, tahan cuaca, konkrit',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-
-            // Plafon — kategori_id: 4
-            [
-                'kategori_id'    => 4,
-                'nama_series'    => 'Rensa Gypsum Board',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '2.88m2 per lembar',
-                'material'       => 'Gypsum core with paper liner',
-                'ketebalan'      => '9mm',
-                'ukuran'         => '1200mm x 2400mm',
-                'deskripsi_produk' => 'Plafon gypsum berkualitas tinggi untuk interior modern. Permukaan halus dan mudah finishing.',
-                'keyword' => 'gypsum, plafon, interior, modern, board',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-            [
-                'kategori_id'    => 4,
-                'nama_series'    => 'Rensa PVC Ceiling',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '0.8m2 per lembar',
-                'material'       => 'UV resistant PVC',
-                'ketebalan'      => '8mm',
-                'ukuran'         => '200mm x 4000mm',
-                'deskripsi_produk' => 'Plafon PVC anti air dan mudah dibersihkan. Ideal untuk kamar mandi dan area basah.',
-                'keyword' => 'PVC, plafon, anti air, kamar mandi, area basah',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-
-            // Dinding — kategori_id: 5
-            [
-                'kategori_id'    => 5,
-                'nama_series'    => 'Rensa Wall Panel',
+                'nama_series'    => 'Rensa Wallpanel Classic',
                 'struktur_img'   => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&h=600&auto=format&fit=crop',
                 'cover_area'     => '2.97m2 per lembar',
-                'material'       => 'Composite sandwich panel',
-                'ketebalan'      => '50mm',
-                'ukuran'         => '1000mm x 2970mm',
-                'deskripsi_produk' => 'Panel dinding sandwich dengan insulasi thermal. Ringan, kuat, dan cepat dipasang.',
-                'keyword' => 'panel dinding, sandwich panel, insulasi, ringan, cepat pasang',
+                'material'       => 'WPC (Wood Plastic Composite)',
+                'ketebalan'      => '8mm - 12mm',
+                'ukuran'         => '2900mm x 160mm',
+                'deskripsi_produk' => 'Panel dinding WPC untuk indoor dan outdoor. Tahan air, anti rayap, dan mudah dipasang.',
+                'keyword' => 'wallpanel, WPC, dinding, indoor, outdoor',
                 'created_at' => $now, 'updated_at' => $now
             ],
 
-            // Rangka Atap — kategori_id: 6
+            // UVM — kategori_id: 2
             [
-                'kategori_id'    => 6,
-                'nama_series'    => 'Rensa Truss System',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => 'Custom per project',
-                'material'       => 'Galvanized steel',
-                'ketebalan'      => '0.75mm - 1.00mm',
-                'ukuran'         => 'Custom dimensions',
-                'deskripsi_produk' => 'Sistem rangka atap baja ringan presisi tinggi. Kuat, ringan, dan tahan karat untuk berbagai bentang.',
-                'keyword' => 'rangka atap, baja ringan, truss, galvanized, struktur',
+                'kategori_id'    => 2,
+                'nama_series'    => 'Rensa UVM Premium',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '2.90m2 per lembar',
+                'material'       => 'UV Marble sheet',
+                'ketebalan'      => '3mm - 5mm',
+                'ukuran'         => '2900mm x 160mm',
+                'deskripsi_produk' => 'Panel dinding UV Marble dengan finishing glossy premium. Tahan gores dan mudah dibersihkan.',
+                'keyword' => 'UVM, UV marble, dinding, glossy, premium',
                 'created_at' => $now, 'updated_at' => $now
             ],
 
-            // Insulasi — kategori_id: 7
+            // Wallboard — kategori_id: 3
             [
-                'kategori_id'    => 7,
-                'nama_series'    => 'Rensa Thermal Insulation',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '10m2 per roll',
-                'material'       => 'Fiberglass wool',
-                'ketebalan'      => '50mm - 100mm',
-                'ukuran'         => '1200mm x 8000mm',
-                'deskripsi_produk' => 'Insulasi thermal berkualitas tinggi untuk efisiensi energi maksimal. Tahan api dan kedap suara.',
-                'keyword' => 'insulasi, thermal, fiberglass, hemat energi, kedap suara',
+                'kategori_id'    => 3,
+                'nama_series'    => 'Rensa Wallboard Standard',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '2.90m2 per lembar',
+                'material'       => 'Calcium silicate board',
+                'ketebalan'      => '6mm - 9mm',
+                'ukuran'         => '2900mm x 160mm',
+                'deskripsi_produk' => 'Papan dinding serbaguna untuk partisi dan plafon. Tahan api dan kelembaban.',
+                'keyword' => 'wallboard, calcium silicate, partisi, plafon, tahan api',
                 'created_at' => $now, 'updated_at' => $now
             ],
 
-            // Talang Air — kategori_id: 8
+            // PU Stone — kategori_id: 4
             [
-                'kategori_id'    => 8,
-                'nama_series'    => 'Rensa Gutter System',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '3m per piece',
-                'material'       => 'PVC / Galvanized steel',
-                'ketebalan'      => '0.40mm',
-                'ukuran'         => '150mm x 3000mm',
-                'deskripsi_produk' => 'Sistem talang air modern dengan kapasitas drainase optimal. Tahan korosi dan mudah maintenance.',
-                'keyword' => 'talang air, gutter, drainase, PVC, galvanized',
+                'kategori_id'    => 4,
+                'nama_series'    => 'Rensa PU Stone Natural',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '0.5m2 per piece',
+                'material'       => 'Polyurethane foam',
+                'ketebalan'      => '20mm - 30mm',
+                'ukuran'         => '2900mm x 160mm',
+                'deskripsi_produk' => 'Batu tiruan PU ringan dengan tampilan natural. Cocok untuk aksen dinding indoor dan outdoor.',
+                'keyword' => 'PU stone, batu tiruan, polyurethane, aksen dinding, dekorasi',
                 'created_at' => $now, 'updated_at' => $now
             ],
 
-            // Fasad — kategori_id: 9
+            // Decking Plank — kategori_id: 5
             [
-                'kategori_id'    => 9,
-                'nama_series'    => 'Rensa Facade Panel',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '2.4m2 per panel',
-                'material'       => 'Aluminum composite panel',
-                'ketebalan'      => '4mm',
-                'ukuran'         => '1220mm x 2440mm',
-                'deskripsi_produk' => 'Panel fasad aluminum composite untuk eksterior modern. Ringan, tahan cuaca, dan berbagai pilihan warna.',
-                'keyword' => 'fasad, ACP, aluminum composite, eksterior, modern',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-
-            // Kanopi — kategori_id: 10
-            [
-                'kategori_id'    => 10,
-                'nama_series'    => 'Rensa Canopy Polycarbonate',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '2.1m2 per sheet',
-                'material'       => 'UV protected polycarbonate',
-                'ketebalan'      => '6mm - 10mm',
-                'ukuran'         => '1050mm x 2100mm',
-                'deskripsi_produk' => 'Kanopi polycarbonate dengan perlindungan UV. Transparan, kuat, dan tahan benturan.',
-                'keyword' => 'kanopi, polycarbonate, UV, transparan, outdoor',
-                'created_at' => $now, 'updated_at' => $now
-            ],
-
-            // Flooring — kategori_id: 11
-            [
-                'kategori_id'    => 11,
-                'nama_series'    => 'Rensa Deck Flooring',
+                'kategori_id'    => 5,
+                'nama_series'    => 'Rensa Decking Plank WPC',
                 'struktur_img'   => 'https://images.unsplash.com/photo-1615971677499-5467cbab01c0?q=80&w=800&h=600&auto=format&fit=crop',
                 'cover_area'     => '0.48m2 per piece',
                 'material'       => 'WPC (Wood Plastic Composite)',
                 'ketebalan'      => '25mm',
-                'ukuran'         => '150mm x 3000mm',
-                'deskripsi_produk' => 'Decking WPC anti slip dan tahan cuaca. Tampilan natural kayu dengan perawatan minimal.',
-                'keyword' => 'decking, WPC, flooring, anti slip, outdoor',
+                'ukuran'         => '2900mm x 160mm',
+                'deskripsi_produk' => 'Papan decking WPC untuk teras dan area outdoor. Anti slip, tahan cuaca, dan tampilan natural.',
+                'keyword' => 'decking, plank, WPC, outdoor, anti slip',
                 'created_at' => $now, 'updated_at' => $now
             ],
 
-            // Partisi — kategori_id: 12
+            // Plafon — kategori_id: 6
             [
-                'kategori_id'    => 12,
-                'nama_series'    => 'Rensa Partition System',
-                'struktur_img'   => 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&h=600&auto=format&fit=crop',
-                'cover_area'     => '2.88m2 per panel',
-                'material'       => 'Gypsum board on metal frame',
-                'ketebalan'      => '75mm - 100mm',
+                'kategori_id'    => 6,
+                'nama_series'    => 'Rensa Plafon PVC',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '0.8m2 per lembar',
+                'material'       => 'PVC',
+                'ketebalan'      => '8mm',
+                'ukuran'         => '2900mm x 160mm',
+                'deskripsi_produk' => 'Plafon PVC anti air dan mudah dibersihkan. Tersedia berbagai motif kayu dan polos.',
+                'keyword' => 'plafon, PVC, anti air, interior, ceiling',
+                'created_at' => $now, 'updated_at' => $now
+            ],
+
+            // SPC — kategori_id: 7
+            [
+                'kategori_id'    => 7,
+                'nama_series'    => 'Rensa SPC Flooring',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1615971677499-5467cbab01c0?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '2.24m2 per box',
+                'material'       => 'Stone Plastic Composite',
+                'ketebalan'      => '4mm - 5mm',
+                'ukuran'         => '2900mm x 140mm',
+                'deskripsi_produk' => 'Lantai SPC tahan air dengan click-lock system. Anti gores dan cocok untuk seluruh ruangan.',
+                'keyword' => 'SPC, flooring, lantai, tahan air, click lock',
+                'created_at' => $now, 'updated_at' => $now
+            ],
+
+            // Vinyl — kategori_id: 8
+            [
+                'kategori_id'    => 8,
+                'nama_series'    => 'Rensa Vinyl Flooring',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1615971677499-5467cbab01c0?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '3.34m2 per box',
+                'material'       => 'Luxury Vinyl Plank',
+                'ketebalan'      => '2mm - 3mm',
+                'ukuran'         => '2900mm x 140mm',
+                'deskripsi_produk' => 'Lantai vinyl premium dengan berbagai motif kayu. Nyaman di kaki dan kedap suara.',
+                'keyword' => 'vinyl, flooring, lantai, LVP, motif kayu',
+                'created_at' => $now, 'updated_at' => $now
+            ],
+
+            // Decking Tile — kategori_id: 9
+            [
+                'kategori_id'    => 9,
+                'nama_series'    => 'Rensa Decking Tile',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1615971677499-5467cbab01c0?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '0.09m2 per tile',
+                'material'       => 'WPC interlocking tile',
+                'ketebalan'      => '22mm',
+                'ukuran'         => '2900mm x 140mm',
+                'deskripsi_produk' => 'Tile decking modular untuk balkon dan teras. Sistem interlocking, pasang tanpa lem.',
+                'keyword' => 'decking, tile, modular, interlocking, balkon',
+                'created_at' => $now, 'updated_at' => $now
+            ],
+
+            // Sandblast — kategori_id: 10
+            [
+                'kategori_id'    => 10,
+                'nama_series'    => 'Rensa Sandblast Panel',
+                'struktur_img'   => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&h=600&auto=format&fit=crop',
+                'cover_area'     => '2.88m2 per lembar',
+                'material'       => 'Fiber cement sandblast',
+                'ketebalan'      => '8mm',
                 'ukuran'         => '1200mm x 2400mm',
-                'deskripsi_produk' => 'Sistem partisi modular dengan insulasi suara. Cepat dipasang dan dapat dibongkar pasang.',
-                'keyword' => 'partisi, modular, kedap suara, gypsum, interior',
+                'deskripsi_produk' => 'Panel sandblast fiber cement untuk eksterior. Tekstur premium, tahan cuaca ekstrem.',
+                'keyword' => 'sandblast, fiber cement, eksterior, fasad, tekstur',
                 'created_at' => $now, 'updated_at' => $now
             ],
         ]);

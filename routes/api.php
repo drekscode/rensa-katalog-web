@@ -39,6 +39,7 @@ Route::prefix('articles')->group(function () {
 
 Route::prefix('formulas')->group(function () {
     Route::get('by-category/{kategoriId}', [RumusController::class, 'getRumusByKategori']);
+    Route::post('calculate', [RumusController::class, 'calculate']);
 });
 
 Route::prefix('products')->group(function () {
