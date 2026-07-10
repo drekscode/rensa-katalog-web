@@ -4,7 +4,22 @@
 @section('page-title', 'Edit Rumus')
 
 @section('content')
-<div class="mx-auto max-w-3xl" x-data="{ selectedRumus: '{{ old('rumus', $rumus->rumus) }}' }">
+<div class="mx-auto max-w-3xl" x-data="{ 
+    selectedRumus: '{{ old('rumus', $rumus->rumus) }}',
+    selectedKategori: '{{ old('kategori_id', $rumus->kategori_id) }}',
+    allowedRumusMap: {{ Js::from($allowedRumusMap) }},
+    allRumus: ['Rumus Batang', 'Rumus Box', 'Rumus M2'],
+    rumusLabel(val) {
+        return val === 'Rumus M2' ? 'Rumus M²' : val;
+    },
+    get allowedRumus() {
+        if (!this.selectedKategori) return [];
+        return this.allowedRumusMap[this.selectedKategori] || this.allRumus;
+    },
+    isAllowed(rumus) {
+        return this.allowedRumus.includes(rumus);
+    }
+}">
     <form action="{{ route('admin.rumus.update', ['rumus' => $rumus->id]) }}" method="POST" class="space-y-6">
         @csrf
         @method('PUT')
@@ -23,6 +38,8 @@
                         </label>
                         <div class="mt-2 relative">
                             <select id="kategori_id" name="kategori_id" required
+                                    x-model="selectedKategori"
+                                    @change="selectedRumus = ''"
                                     class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('kategori_id') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
                                 <option value="">Select Kategori</option>
                                 @foreach($kategoris as $kategori)
@@ -54,9 +71,16 @@
                         <label class="block text-sm font-medium leading-6 text-gray-900">
                             Rumus <span class="text-red-500">*</span>
                         </label>
-                        <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+                        <!-- Hint: select kategori first -->
+                        <div x-show="!selectedKategori" class="mt-3 rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm text-gray-400 text-center">
+                            Pilih kategori terlebih dahulu untuk melihat rumus yang tersedia.
+                        </div>
+
+                        <div x-show="selectedKategori" x-cloak class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
                             @foreach(['Rumus Batang', 'Rumus Box', 'Rumus M2'] as $rumusOption)
-                                <label class="relative flex items-center gap-3 rounded-lg border px-4 py-3 cursor-pointer transition-all"
+                                <label x-show="isAllowed('{{ $rumusOption }}')"
+                                       class="relative flex items-center gap-3 rounded-lg border px-4 py-3 cursor-pointer transition-all"
                                        :class="selectedRumus === '{{ $rumusOption }}' ? 'border-[#8b9b7e] bg-[#8b9b7e]/10 ring-1 ring-[#8b9b7e]' : 'border-gray-300 bg-white hover:border-[#8b9b7e]/50'">
                                     <input type="radio"
                                            name="rumus"
@@ -64,7 +88,7 @@
                                            class="h-4 w-4 rounded border-gray-300 text-[#8b9b7e] focus:ring-[#8b9b7e]"
                                            x-model="selectedRumus"
                                            @if($loop->first) required @endif>
-                                    <span class="text-sm font-medium text-gray-800">{{ $rumusOption }}</span>
+                                    <span class="text-sm font-medium text-gray-800" x-text="rumusLabel('{{ $rumusOption }}')"></span>
                                 </label>
                             @endforeach
                         </div>
@@ -90,7 +114,7 @@
                                            :required="selectedRumus === 'Rumus Batang' || selectedRumus === 'Rumus Box'"
                                            class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('panjang') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
                                 </div>
-                                <p class="mt-1 text-xs text-gray-500">Satuan: cm</p>
+                                <p class="mt-1 text-xs text-gray-500">Satuan: meter</p>
                                 @error('panjang')
                                     <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -110,7 +134,7 @@
                                            :required="selectedRumus === 'Rumus Batang' || selectedRumus === 'Rumus Box'"
                                            class="block w-full rounded-lg border-0 py-3 px-3 text-gray-900 shadow-sm ring-1 ring-inset {{ $errors->has('lebar') ? 'ring-red-500 bg-red-50' : 'ring-gray-300' }} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#8b9b7e] sm:text-sm sm:leading-6 transition-all duration-200">
                                 </div>
-                                <p class="mt-1 text-xs text-gray-500">Satuan: cm</p>
+                                <p class="mt-1 text-xs text-gray-500">Satuan: meter</p>
                                 @error('lebar')
                                     <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

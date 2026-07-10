@@ -15,6 +15,11 @@ class Kategori extends Model
         'nama_kategori',
         'keunggulan_produk',
         'icon',
+        'allowed_rumus',
+    ];
+
+    protected $casts = [
+        'allowed_rumus' => 'array',
     ];
 
     public function series()
