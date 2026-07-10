@@ -181,7 +181,7 @@
                         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
                             <div class="aspect-square bg-gray-100 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
                                 @if($product->thumbnail)
-                                    <img src="{{ str_starts_with($product->thumbnail, 'data:') || str_starts_with($product->thumbnail, 'http') ? $product->thumbnail : asset('storage/' . $product->thumbnail) }}" class="w-full h-full object-cover">
+                                    <img src="{{ str_starts_with($product->thumbnail, 'data:') || str_starts_with($product->thumbnail, 'http') ? $product->thumbnail : asset('storage/' . $product->thumbnail) }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 @else
                                     <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
