@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+        $middleware->validateCsrfTokens(except: [
+            'api/*', // pastikan ini ada jika pakai CSRF
+        ]);
         $middleware->redirectTo(
             guests: '/admin/login',
             users: '/admin/dashboard'
