@@ -34,11 +34,15 @@ class AdminKategoriController extends Controller
             'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori',
             'keunggulan_produk' => 'nullable|string',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'allowed_rumus' => 'nullable|array',
+            'allowed_rumus.*' => 'in:Rumus Batang,Rumus Box,Rumus M2',
         ]);
 
         if ($request->hasFile('icon')) {
             $validated['icon'] = $request->file('icon')->store('kategori', 'public');
         }
+
+        $validated['allowed_rumus'] = $request->input('allowed_rumus', []);
 
         Kategori::create($validated);
 
@@ -62,6 +66,8 @@ class AdminKategoriController extends Controller
             'nama_kategori' => 'required|string|max:255|unique:kategori,nama_kategori,' . $kategori->id,
             'keunggulan_produk' => 'nullable|string',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'allowed_rumus' => 'nullable|array',
+            'allowed_rumus.*' => 'in:Rumus Batang,Rumus Box,Rumus M2',
         ]);
 
         if ($request->hasFile('icon')) {
@@ -70,6 +76,8 @@ class AdminKategoriController extends Controller
             }
             $validated['icon'] = $request->file('icon')->store('kategori', 'public');
         }
+
+        $validated['allowed_rumus'] = $request->input('allowed_rumus', []);
 
         $kategori->update($validated);
 

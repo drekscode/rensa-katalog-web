@@ -14,40 +14,21 @@ class RumusSeeder extends Seeder
         $now = now();
 
         DB::table('rumus')->insert([
-            // Atap Metal — kategori_id: 1
-            ['kategori_id' => 1,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-            ['kategori_id' => 1,  'rumus' => 'Rumus Batang', 'panjang' => 300.00, 'lebar' => 8.00,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+            // Rumus Batang categories (panjang/lebar in meters, matching Excel)
+            ['kategori_id' => 1,  'rumus' => 'Rumus Batang', 'panjang' => 2.90, 'lebar' => 0.16,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // Wallpanel Indoor/Outdoor
+            ['kategori_id' => 2,  'rumus' => 'Rumus Batang', 'panjang' => 2.90, 'lebar' => 0.16,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // UVM
+            ['kategori_id' => 3,  'rumus' => 'Rumus Batang', 'panjang' => 2.90, 'lebar' => 0.16,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // Wallboard
+            ['kategori_id' => 4,  'rumus' => 'Rumus Batang', 'panjang' => 2.90, 'lebar' => 0.16,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // PU Stone
+            ['kategori_id' => 5,  'rumus' => 'Rumus Batang', 'panjang' => 2.90, 'lebar' => 0.16,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // Decking Plank
+            ['kategori_id' => 6,  'rumus' => 'Rumus Batang', 'panjang' => 2.90, 'lebar' => 0.16,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // Plafon
 
-            // Atap Bitumen — kategori_id: 2
-            ['kategori_id' => 2,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+            // Rumus Box categories (panjang/lebar in meters, matching Excel)
+            ['kategori_id' => 7,  'rumus' => 'Rumus Box',    'panjang' => 2.90, 'lebar' => 0.14,  'lembar' => 10, 'created_at' => $now, 'updated_at' => $now], // SPC
+            ['kategori_id' => 8,  'rumus' => 'Rumus Box',    'panjang' => 2.90, 'lebar' => 0.14,  'lembar' => 10, 'created_at' => $now, 'updated_at' => $now], // Vinyl
+            ['kategori_id' => 9,  'rumus' => 'Rumus Box',    'panjang' => 2.90, 'lebar' => 0.14,  'lembar' => 10, 'created_at' => $now, 'updated_at' => $now], // Decking Tile
 
-            // Atap Genteng — kategori_id: 3
-            ['kategori_id' => 3,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-            ['kategori_id' => 3,  'rumus' => 'Rumus Batang', 'panjang' => 400.00, 'lebar' => 10.00, 'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Plafon — kategori_id: 4
-            ['kategori_id' => 4,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Dinding — kategori_id: 5
-            ['kategori_id' => 5,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Rangka Atap — kategori_id: 6
-            ['kategori_id' => 6,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Insulasi — kategori_id: 7
-            ['kategori_id' => 7,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Talang Air — kategori_id: 8
-            ['kategori_id' => 8,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Fasad — kategori_id: 9
-            ['kategori_id' => 9,  'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
-
-            // Kanopi — kategori_id: 10
-            ['kategori_id' => 10, 'rumus' => 'Rumus Box',   'panjang' => 200.00, 'lebar' => 100.00, 'lembar' => 10, 'created_at' => $now, 'updated_at' => $now],
-
-            // Flooring — kategori_id: 11
-            ['kategori_id' => 11, 'rumus' => 'Rumus M2',    'panjang' => null,   'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now],
+            // Rumus M2 categories
+            ['kategori_id' => 10, 'rumus' => 'Rumus M2',     'panjang' => null,  'lebar' => null,  'lembar' => null, 'created_at' => $now, 'updated_at' => $now], // Sandblast
         ]);
     }
 }

@@ -16,14 +16,14 @@ class RumusResource extends JsonResource
         $label = $kategoriName;
 
         if ($kategoriName && $this->rumus === 'Rumus Batang' && $panjang !== null && $lebar !== null) {
-            $label = "{$kategoriName} ukuran {$panjang} cm x {$lebar} cm";
+            $label = "{$kategoriName} ukuran {$panjang} m x {$lebar} m";
         } elseif ($kategoriName && strcasecmp((string) $this->rumus, 'Rumus Box') === 0 && $panjang !== null && $lebar !== null) {
-            $label = "{$kategoriName} ukuran {$panjang} cm x {$lebar} cm";
+            $label = "{$kategoriName} ukuran {$panjang} m x {$lebar} m";
             if ($this->lembar !== null) {
                 $label .= ", {$this->lembar} pcs";
             }
         } elseif ($kategoriName && $this->rumus === 'Rumus M2') {
-            $label = $kategoriName;
+            $label = $kategoriName . ' (m²)';
         }
 
         return [

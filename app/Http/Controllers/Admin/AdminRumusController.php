@@ -33,18 +33,27 @@ class AdminRumusController extends Controller
     public function create()
     {
         $kategoris = Kategori::all();
-        return view('admin.rumus.create', compact('kategoris'));
+        $allowedRumusMap = $kategoris->pluck('allowed_rumus', 'id')
+            ->map(fn ($v) => $v ?? ['Rumus Batang', 'Rumus Box', 'Rumus M2']);
+        return view('admin.rumus.create', compact('kategoris', 'allowedRumusMap'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'rumus' => 'required|string',
+            'rumus' => 'required|string|in:Rumus Batang,Rumus Box,Rumus M2',
             'panjang' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
             'lebar' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
             'lembar' => 'required_if:rumus,Rumus Box|nullable|integer|min:1',
         ]);
+
+        // Validate rumus is allowed for this kategori
+        $kategori = Kategori::findOrFail($validated['kategori_id']);
+        $allowed = $kategori->allowed_rumus ?? ['Rumus Batang', 'Rumus Box', 'Rumus M2'];
+        if (!in_array($validated['rumus'], $allowed)) {
+            return back()->withErrors(['rumus' => 'Rumus ini tidak tersedia untuk kategori yang dipilih.'])->withInput();
+        }
 
         Rumus::create($this->normalizeRumusFields($validated));
 
@@ -60,18 +69,27 @@ class AdminRumusController extends Controller
     public function edit(Rumus $rumus)
     {
         $kategoris = Kategori::all();
-        return view('admin.rumus.edit', compact('rumus', 'kategoris'));
+        $allowedRumusMap = $kategoris->pluck('allowed_rumus', 'id')
+            ->map(fn ($v) => $v ?? ['Rumus Batang', 'Rumus Box', 'Rumus M2']);
+        return view('admin.rumus.edit', compact('rumus', 'kategoris', 'allowedRumusMap'));
     }
 
     public function update(Request $request, Rumus $rumus)
     {
         $validated = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'rumus' => 'required|string',
+            'rumus' => 'required|string|in:Rumus Batang,Rumus Box,Rumus M2',
             'panjang' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
             'lebar' => 'required_if:rumus,Rumus Batang,Rumus Box|nullable|numeric|min:0',
             'lembar' => 'required_if:rumus,Rumus Box|nullable|integer|min:1',
         ]);
+
+        // Validate rumus is allowed for this kategori
+        $kategori = Kategori::findOrFail($validated['kategori_id']);
+        $allowed = $kategori->allowed_rumus ?? ['Rumus Batang', 'Rumus Box', 'Rumus M2'];
+        if (!in_array($validated['rumus'], $allowed)) {
+            return back()->withErrors(['rumus' => 'Rumus ini tidak tersedia untuk kategori yang dipilih.'])->withInput();
+        }
 
         $rumus->update($this->normalizeRumusFields($validated));
 
