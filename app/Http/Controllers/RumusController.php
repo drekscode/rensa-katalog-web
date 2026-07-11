@@ -93,13 +93,13 @@ class RumusController extends Controller
         // Batang Per Baris
         if ($panjangProduk >= $panjangBidang) {
             $divisor = (int) floor(round($panjangProduk / $panjangBidang, 10));
-            $batangPerBaris = ($divisor == 0) ? 1 : (int) (1 / $divisor);
+            $batangPerBaris = ($divisor == 0) ? 1.0 : (1.0 / $divisor);
         } else {
-            $batangPerBaris = (int) floor(round($panjangBidang / $panjangProduk, 10));
+            $batangPerBaris = (float) floor(round($panjangBidang / $panjangProduk, 10));
         }
 
         // Total Bidang Utama
-        $totalBidangUtama = $jumlahBaris * $batangPerBaris;
+        $totalBidangUtama = ceil($jumlahBaris * $batangPerBaris);
 
         // Sisa Batang
         $sisaBatang = ($panjangProduk >= $panjangBidang) ? 0.0 : $panjangBidang - ($panjangProduk * $batangPerBaris);
