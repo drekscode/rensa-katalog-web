@@ -16,5 +16,8 @@
     },
     "dependencies": {
         "quill": "^2.0.3"
+    },
+    "allowScripts": {
+        "esbuild@0.27.2": true
     }
 }
