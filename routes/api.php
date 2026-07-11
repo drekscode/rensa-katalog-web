@@ -7,6 +7,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RumusController;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\SurveyRequestController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\TutorialGambarController;
 use App\Http\Controllers\TutorialVideoController;
@@ -50,7 +51,7 @@ Route::prefix('stores')->group(function () {
     Route::get('/', [TokoController::class, 'getAllToko']);
 });
 
-Route::post('survey-requests', [\App\Http\Controllers\SurveyRequestController::class, 'store']);
+Route::post('/survey-requests', [SurveyRequestController::class, 'store']);
 
 Route::prefix('welcomes')->group(function () {
     Route::get('/', [AdminWelcomeTextController::class, 'getWelcomeTextsJson']);

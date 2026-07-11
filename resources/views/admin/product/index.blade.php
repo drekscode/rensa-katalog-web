@@ -167,7 +167,12 @@
             </div>
 
             <div x-show="isSeriesExpanded('{{ $seriesKey }}')"
-                 x-collapse.duration.300ms
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
                  class="border-t border-gray-100">
                 <div class="p-5 bg-gray-50/30">
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
@@ -181,7 +186,7 @@
                         })" class="flex flex-col h-full overflow-hidden bg-white shadow-lg shadow-gray-200/50 ring-1 ring-gray-200 rounded-2xl transition-all hover:shadow-xl hover:shadow-gray-200/60 hover:-translate-y-1 group cursor-pointer">
                             <div class="aspect-square bg-gray-100 relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
                                 @if($product->thumbnail)
-                                    <img src="{{ str_starts_with($product->thumbnail, 'data:') || str_starts_with($product->thumbnail, 'http') ? $product->thumbnail : asset('storage/' . $product->thumbnail) }}" class="w-full h-full object-cover">
+                                    <img src="{{ str_starts_with($product->thumbnail, 'data:') || str_starts_with($product->thumbnail, 'http') ? $product->thumbnail : asset('storage/' . $product->thumbnail) }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 @else
                                     <div class="w-full h-full flex items-center justify-center bg-gray-50 border-b border-gray-100">
