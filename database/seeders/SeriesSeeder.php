@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Series;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class SeriesSeeder extends Seeder
 {
     public function run(): void
     {
-        $now = now();
-
-        DB::table('series')->insert([
+        $data = [
             // Wallpanel Indoor/Outdoor — kategori_id: 1
             [
                 'kategori_id'    => 1,
@@ -25,7 +23,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 160mm',
                 'deskripsi_produk' => 'Panel dinding WPC untuk indoor dan outdoor. Tahan air, anti rayap, dan mudah dipasang.',
                 'keyword' => 'wallpanel, WPC, dinding, indoor, outdoor',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // UVM — kategori_id: 2
@@ -37,9 +34,8 @@ class SeriesSeeder extends Seeder
                 'material'       => 'UV Marble sheet',
                 'ketebalan'      => '3mm - 5mm',
                 'ukuran'         => '2900mm x 160mm',
-                'deskripsi_produk' => 'Panel dinding UV Marble dengan finishing glossy premium. Tahan gores dan mudah dibersihkan.',
+                'deskripsi_produk' => 'Panel dinding UV Marble dengan finishing glossy premium. Tahan gores and mudah dibersihkan.',
                 'keyword' => 'UVM, UV marble, dinding, glossy, premium',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // Wallboard — kategori_id: 3
@@ -53,7 +49,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 160mm',
                 'deskripsi_produk' => 'Papan dinding serbaguna untuk partisi dan plafon. Tahan api dan kelembaban.',
                 'keyword' => 'wallboard, calcium silicate, partisi, plafon, tahan api',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // PU Stone — kategori_id: 4
@@ -67,7 +62,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 160mm',
                 'deskripsi_produk' => 'Batu tiruan PU ringan dengan tampilan natural. Cocok untuk aksen dinding indoor dan outdoor.',
                 'keyword' => 'PU stone, batu tiruan, polyurethane, aksen dinding, dekorasi',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // Decking Plank — kategori_id: 5
@@ -81,7 +75,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 160mm',
                 'deskripsi_produk' => 'Papan decking WPC untuk teras dan area outdoor. Anti slip, tahan cuaca, dan tampilan natural.',
                 'keyword' => 'decking, plank, WPC, outdoor, anti slip',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // Plafon — kategori_id: 6
@@ -95,7 +88,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 160mm',
                 'deskripsi_produk' => 'Plafon PVC anti air dan mudah dibersihkan. Tersedia berbagai motif kayu dan polos.',
                 'keyword' => 'plafon, PVC, anti air, interior, ceiling',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // SPC — kategori_id: 7
@@ -109,7 +101,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 140mm',
                 'deskripsi_produk' => 'Lantai SPC tahan air dengan click-lock system. Anti gores dan cocok untuk seluruh ruangan.',
                 'keyword' => 'SPC, flooring, lantai, tahan air, click lock',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // Vinyl — kategori_id: 8
@@ -123,7 +114,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 140mm',
                 'deskripsi_produk' => 'Lantai vinyl premium dengan berbagai motif kayu. Nyaman di kaki dan kedap suara.',
                 'keyword' => 'vinyl, flooring, lantai, LVP, motif kayu',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // Decking Tile — kategori_id: 9
@@ -137,7 +127,6 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '2900mm x 140mm',
                 'deskripsi_produk' => 'Tile decking modular untuk balkon dan teras. Sistem interlocking, pasang tanpa lem.',
                 'keyword' => 'decking, tile, modular, interlocking, balkon',
-                'created_at' => $now, 'updated_at' => $now
             ],
 
             // Sandblast — kategori_id: 10
@@ -151,8 +140,14 @@ class SeriesSeeder extends Seeder
                 'ukuran'         => '1200mm x 2400mm',
                 'deskripsi_produk' => 'Panel sandblast fiber cement untuk eksterior. Tekstur premium, tahan cuaca ekstrem.',
                 'keyword' => 'sandblast, fiber cement, eksterior, fasad, tekstur',
-                'created_at' => $now, 'updated_at' => $now
             ],
-        ]);
+        ];
+
+        foreach ($data as $item) {
+            Series::firstOrCreate(
+                ['nama_series' => $item['nama_series']],
+                $item
+            );
+        }
     }
 }

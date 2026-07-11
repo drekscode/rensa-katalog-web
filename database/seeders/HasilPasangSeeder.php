@@ -41,26 +41,31 @@ class HasilPasangSeeder extends Seeder
             'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1600210492493-0946911123ea?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?q=80&w=1000&auto=format&fit=crop',
-            'https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-160056675355-35792bedcfea?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1600607687644-c7171b42498b?q=80&w=1000&auto=format&fit=crop',
         ];
 
         foreach ($projects as $project) {
-            $hp = HasilPasang::create([
-                'nama_project' => $project['nama_project'],
-                'id_project'   => $project['id_project'],
-                'tanggal'      => Carbon::now()->subDays($project['days'])->format('Y-m-d'),
-                'foto'         => $project['foto'],
-                'id_series'    => $seriesIds[array_rand($seriesIds)],
-            ]);
+            $hp = HasilPasang::firstOrCreate(
+                ['id_project' => $project['id_project']],
+                [
+                    'nama_project' => $project['nama_project'],
+                    'tanggal'      => Carbon::now()->subDays($project['days'])->format('Y-m-d'),
+                    'foto'         => $project['foto'],
+                    'id_series'    => $seriesIds[array_rand($seriesIds)],
+                ]
+            );
 
-            $count = rand(3, 6);
-            $shuffled = $supportPhotos;
-            shuffle($shuffled);
+            // only seed support images if we just created the project to avoid duplicates
+            if ($hp->wasRecentlyCreated) {
+                $count = rand(3, 6);
+                $shuffled = $supportPhotos;
+                shuffle($shuffled);
 
-            foreach (array_slice($shuffled, 0, $count) as $photoUrl) {
-                $hp->images()->create(['foto' => $photoUrl]);
+                foreach (array_slice($shuffled, 0, $count) as $photoUrl) {
+                    $hp->images()->create(['foto' => $photoUrl]);
+                }
             }
         }
     }
