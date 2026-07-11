@@ -11,29 +11,31 @@ class RumusTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_calculate_rumus_batang_case_a()
+    private function getExpectedHtmlResult($panjangBidang, $lebarBidang, $panjangProduk, $lebarProduk)
     {
-        $kategori = Kategori::create(['nama_kategori' => 'Wallpanel']);
-        $rumus = Rumus::create([
-            'kategori_id' => $kategori->id,
-            'rumus' => 'Rumus Batang',
-            'panjang' => 2.9,
-            'lebar' => 0.16,
-        ]);
+        // Port of JS calculation logic from kalkulator-batang-wallpanel.html with clean names
+        $jumlahBaris = (int) ceil($lebarBidang / $lebarProduk);
+        $isCaseA = $panjangProduk >= $panjangBidang;
 
-        $response = $this->postJson('/api/formulas/calculate', [
-            'rumus_id' => $rumus->id,
-            'panjang_bidang' => 2.4,
-            'lebar_bidang' => 7.0,
-        ]);
+        if ($isCaseA) {
+            $n = (int) floor($panjangProduk / $panjangBidang);
+            $batangPerBaris = $n == 0 ? 1.0 : 1.0 / $n;
+        } else {
+            $batangPerBaris = (float) floor($panjangBidang / $panjangProduk);
+        }
 
-        $response->assertStatus(200);
-        $data = $response->json();
+        $totalBidangUtama = $jumlahBaris * $batangPerBaris;
+        $sisaBatang = $isCaseA ? 0.0 : ($panjangBidang - $panjangProduk * $batangPerBaris);
         
-        $this->assertEquals(45, $data['total']);
+        $jumlahPotonganPerBaris = ($sisaBatang == 0.0) ? 0 : (int) floor(round($panjangProduk / $sisaBatang, 10));
+        $batangDariSisa = ($jumlahPotonganPerBaris == 0) ? 0 : (int) ceil(round($jumlahBaris / $jumlahPotonganPerBaris, 10));
+        
+        $totalBatang = $totalBidangUtama + $batangDariSisa + 1;
+        
+        return (int) round($totalBatang);
     }
 
-    public function test_calculate_rumus_batang_case_b()
+    public function test_calculate_against_html_logic()
     {
         $kategori = Kategori::create(['nama_kategori' => 'Wallpanel']);
         $rumus = Rumus::create([
@@ -43,47 +45,28 @@ class RumusTest extends TestCase
             'lebar' => 0.16,
         ]);
 
-        $response = $this->postJson('/api/formulas/calculate', [
-            'rumus_id' => $rumus->id,
-            'panjang_bidang' => 3.0,
-            'lebar_bidang' => 7.0,
-        ]);
+        $panjangBidangs = [0.5, 1.2, 2.4, 2.9, 3.0, 4.5, 5.8, 8.7];
+        $lebarBidangs = [0.5, 1.5, 3.0, 7.0, 10.0, 12.5];
 
-        $response->assertStatus(200);
-        $data = $response->json();
+        foreach ($panjangBidangs as $panjangBidang) {
+            foreach ($lebarBidangs as $lebarBidang) {
+                $expected = $this->getExpectedHtmlResult($panjangBidang, $lebarBidang, 2.9, 0.16);
 
-        $this->assertEquals(47, $data['total']);
-    }
+                $response = $this->postJson('/api/formulas/calculate', [
+                    'rumus_id' => $rumus->id,
+                    'panjang_bidang' => $panjangBidang,
+                    'lebar_bidang' => $lebarBidang,
+                ]);
 
-    public function test_calculate_with_another_case_a()
-    {
-        $kategori = Kategori::create(['nama_kategori' => 'Wallpanel']);
-        // Let's test a Case A where shareN > 1.
-        // e.g. b5 (panjangProduk) = 2.9, b3 (panjangBidang) = 1.2
-        // shareN = Math.floor(2.9 / 1.2) = 2
-        // baris9 = 1 / 2 = 0.5
-        // baris8 = Math.ceil(7 / 0.16) = 44
-        // baris10 = 44 * 0.5 = 22
-        // baris11 = 0
-        // baris12 = 0
-        // baris13 = 0
-        // baris14 = 22 + 0 + 1 = 23
-        $rumus = Rumus::create([
-            'kategori_id' => $kategori->id,
-            'rumus' => 'Rumus Batang',
-            'panjang' => 2.9,
-            'lebar' => 0.16,
-        ]);
+                $response->assertStatus(200);
+                $actual = $response->json('total');
 
-        $response = $this->postJson('/api/formulas/calculate', [
-            'rumus_id' => $rumus->id,
-            'panjang_bidang' => 1.2,
-            'lebar_bidang' => 7.0,
-        ]);
-
-        $response->assertStatus(200);
-        $data = $response->json();
-        
-        $this->assertEquals(23, $data['total']);
+                $this->assertEquals(
+                    $expected, 
+                    $actual, 
+                    "Failed for: panjangBidang={$panjangBidang}, lebarBidang={$lebarBidang}. Expected: {$expected}, Got: {$actual}"
+                );
+            }
+        }
     }
 }
