@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Banner;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class BannerSeeder extends Seeder
 {
@@ -29,14 +29,11 @@ class BannerSeeder extends Seeder
             'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=800&h=1067&auto=format&fit=crop',
         ];
 
-        $now = now();
-
-        $rows = array_map(
-            fn (int $i, string $url) => ['banner_image' => $url, 'link' => null, 'urutan' => $i + 1, 'created_at' => $now, 'updated_at' => $now],
-            array_keys($images),
-            $images
-        );
-
-        DB::table('banner')->insert($rows);
+        foreach ($images as $index => $url) {
+            Banner::firstOrCreate(
+                ['banner_image' => $url],
+                ['link' => null, 'urutan' => $index + 1]
+            );
+        }
     }
 }

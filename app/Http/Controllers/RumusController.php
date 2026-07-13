@@ -87,32 +87,36 @@ class RumusController extends Controller
             return ['error' => 'Dimensi produk belum diatur oleh admin.'];
         }
 
-        // Jumlah Baris = ROUNDUP(Lebar Bidang / Lebar Produk)
+        // 1. Jumlah Baris = ROUNDUP(Lebar Bidang / Lebar Produk)
         $jumlahBaris = (int) ceil(round($lebarBidang / $lebarProduk, 10));
 
-        // Batang Per Baris
-        if ($panjangProduk >= $panjangBidang) {
-            $divisor = (int) floor(round($panjangProduk / $panjangBidang, 10));
-            $batangPerBaris = ($divisor == 0) ? 1.0 : (1.0 / $divisor);
+        $isCaseA = $panjangProduk >= $panjangBidang;
+
+        // 2. Batang Per Baris
+        if ($isCaseA) {
+            $n = (int) floor(round($panjangProduk / $panjangBidang, 10));
+            $batangPerBaris = ($n == 0) ? 1.0 : (1.0 / $n);
         } else {
             $batangPerBaris = (float) floor(round($panjangBidang / $panjangProduk, 10));
         }
 
-        // Total Bidang Utama
-        $totalBidangUtama = ceil($jumlahBaris * $batangPerBaris);
+        // 3. Total Bidang Utama = Jumlah Baris * Batang Per Baris
+        $totalBidangUtama = $jumlahBaris * $batangPerBaris;
 
-        // Sisa Batang
-        $sisaBatang = ($panjangProduk >= $panjangBidang) ? 0.0 : $panjangBidang - ($panjangProduk * $batangPerBaris);
+        // 4. Sisa Batang (Hanya relevan Case B)
+        $sisaBatang = $isCaseA ? 0.0 : ($panjangBidang - $panjangProduk * $batangPerBaris);
 
-        // Jumlah Potongan Per Baris
-        // Round to 10 decimal places before floor to match Excel decimal arithmetic
-        $jumlahPotongan = ($sisaBatang == 0) ? 0 : (int) floor(round($panjangProduk / $sisaBatang, 10));
+        // 5. Jumlah Potongan Per Baris (Potongan yang bisa didapat dari 1 batang sisa)
+        $jumlahPotonganPerBaris = ($sisaBatang == 0.0) ? 0 : (int) floor(round($panjangProduk / $sisaBatang, 10));
 
-        // Jumlah Batang dari Bidang Sisa
-        $batangDariSisa = ($jumlahPotongan == 0) ? 0 : (int) ceil($jumlahBaris / $jumlahPotongan);
+        // 6. Jumlah Batang dari Bidang Sisa
+        $batangDariSisa = ($jumlahPotonganPerBaris == 0) ? 0 : (int) ceil(round($jumlahBaris / $jumlahPotonganPerBaris, 10));
 
-        // TOTAL BATANG (+ 1 cadangan sesuai Excel)
+        // 7. Total Batang yang Dibeli = Total Bidang Utama + Batang Dari Sisa + 1 (Cadangan)
         $totalBatang = $totalBidangUtama + $batangDariSisa + 1;
+
+        // Pembulatan ke integer terdekat (menyinkronkan dengan Math.round di javascript/HTML)
+        $totalBatang = (int) round($totalBatang);
 
         return [
             'total' => $totalBatang,

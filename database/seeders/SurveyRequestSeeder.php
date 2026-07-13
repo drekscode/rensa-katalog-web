@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\SurveyRequest;
-use App\Models\SurveyRequestImage;
 use Illuminate\Database\Seeder;
 
 class SurveyRequestSeeder extends Seeder
@@ -54,9 +53,12 @@ class SurveyRequestSeeder extends Seeder
         ];
 
         foreach ($requests as $request) {
-            $survey = SurveyRequest::create($request);
+            $survey = SurveyRequest::firstOrCreate(
+                ['nama' => $request['nama'], 'kontak' => $request['kontak']],
+                $request
+            );
 
-            if ($request['status'] !== 'cancelled') {
+            if ($survey->wasRecentlyCreated && $request['status'] !== 'cancelled') {
                 $count = rand(1, 3);
                 $shuffled = $photos;
                 shuffle($shuffled);
